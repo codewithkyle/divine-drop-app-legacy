@@ -1,0 +1,30 @@
+{
+	"version": 1,
+	"tables": [
+		{
+			"name": "users",
+			"keyPath": "Uid",
+			"columns": [
+				{
+					"key": "Uid",
+					"unique": true
+				},
+				{
+					"key": "Name"
+				},
+				{
+					"key": "Email"
+				},
+				{
+					"key": "Verified"
+				},
+				{
+					"key": "Suspended"
+				},
+				{
+					"key": "Admin"
+				}
+			]
+		}
+	]
+}

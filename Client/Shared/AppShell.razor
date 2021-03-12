@@ -1,0 +1,81 @@
+@inherits AppShellBase
+@using Client.Models.Globals
+@using Client.Shared.Modals
+
+@if (CanRender){
+	<main class="app-shell">
+		<a href="/dashboard" class="app-logo pb-0.125 @(NavigationIsOpen ? "open" : "closed")">
+			@if (MaintenanceMode){
+				<div style="background: url(/images/maintenance-mode.svg) repeat-x 12px 0;cursor:help;z-index:2000;position:absolute;top:0;left:0;width:100%;height:4px;" title="This application is currently in maintenance mode."></div>
+			}
+			<span>App Name</span>
+		</a>
+		<header class="app-header">
+			<div>
+				<button class="nav-button js-nav-menu-button" @onclick="ToggleNavigation" aria-label="Open navigation">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+				</button>
+			</div>
+			<div>
+				<button class="profile-button" aria-label="open profile menu" tooltip="Account details">
+					@if (String.IsNullOrEmpty(CurrentUser.Avatar)){						
+						<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user-alt" class="svg-inline--fa fa-user-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path></svg>
+					} else {
+						<img crossorigin="use-credentials" loading="lazy" width="36" src="@CurrentUser.Avatar?w=36&ar=1:1" alt="Your profile photo">
+					}
+				</button>
+				<div class="profile-modal">
+					<div class="avatar">
+						@if (String.IsNullOrEmpty(CurrentUser.Avatar)){						
+							<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user-alt" class="svg-inline--fa fa-user-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path></svg>
+						} else {
+							<img crossorigin="use-credentials" loading="lazy" width="80" src="@CurrentUser.Avatar?w=80&ar=1:1" alt="Your profile photo">
+						}
+					</div>
+					<h2 class="block text-center font-grey-800 line-normal font-medium font-md">@CurrentUser.Name</h2>
+					<h3 class="block text-center font-grey-700 line-normal font-sm ">@CurrentUser.Email</h3>
+					<button @onclick="OpenProfileModal" class="mx-auto mt-1 button -outline -grey -pill">Manage your profile</button>
+					<hr>
+					<a class="mx-auto button -outline -grey -rounded" href="/logout">Sign out</a>
+					<hr>
+					<div class="w-full px-1 mb-1.25 pt-0.25" flex="justify-center items-center row nowrap">
+						<a class="link font-xs font-grey-700" href="#">Privacy Policy</a>
+						<svg class="font-grey-400" style="display: inline-block;margin:0 0.5rem;width:4px;height:4px;" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>
+						<a class="link font-xs font-grey-700" href="#">Terms of Service</a>
+					</div>
+				</div>
+			</div>
+		</header>
+		<aside class="js-nav-drawer app-aside @(NavigationIsOpen ? "open" : "closed")" @onkeydown="KeyPress" tabindex="0">
+			<nav>
+				<NavLink href="/dashboard" Match="NavLinkMatch.All">Dashboard</NavLink>
+				@if (CurrentUser.Admin){
+					<button @onclick="@(e => AdminIsOpen ^= true)" class=" @(AdminIsOpen ? "open" : "closed")" title="Admin Panel, Manage Users, File Management">
+						<span class="label">Admin</span>
+						<span class="description">Admin Panel, Manage Users, File Management</span>
+					</button>
+					<div class="expandable @(AdminIsOpen ? "open" : "closed")">
+						<NavLink href="/admin/dashboard">Admin Panel</NavLink>
+						<NavLink href="/admin/users">Manage Users</NavLink>
+					</div>
+				}
+			</nav>
+		</aside>
+		<section class="app-body">
+			@Body
+		</section>
+	</main>
+	<div class="nav-background @(NavigationIsOpen ? "open" : "closed")" @onclick="ToggleNavigation"></div>
+	@if (AppSettings.ActiveModal != AppSettings.Modal.None){
+		<div class="fixed-modal">
+			<div class="modal-background" @onclick="CloseModal"></div>
+			@switch (AppSettings.ActiveModal){
+				case AppSettings.Modal.Profile:
+					<EditProfileModal CloseModal="@CloseModal"></EditProfileModal>
+					break;
+				default:
+					break;
+			}
+		</div>
+	}
+}

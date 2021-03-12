@@ -1,0 +1,44 @@
+{
+    "version": "0.0.0",
+    "scripts": {
+        "reset": "rm -rf ./Client/wwwroot/css && mkdir ./Client/wwwroot/css && rm -rf ./Client/wwwroot/js && mkdir ./Client/wwwroot/js && rm -rf ./Client/public",
+        "brixi": "brixi && mv ./brixi/brixi.css ./Client/Stylesheets/brixi.css && rmdir ./brixi",
+        "dev": "npm run build",
+        "build": "npm run reset && npm run prettier && npm-run-all build:* && node ./Client/build/relocate.js && npm run publish",
+        "build:css": "cssmonster",
+        "build:js": "tsc",
+        "production": "npm run reset && npm-run-all build:* && node ./Client/build/minify.js && node ./Client/build/release.js && npm run publish",
+        "publish": "dotnet publish ./Client -c Release && mkdir ./Client/public && mv ./Client/bin/Release/net5.0/publish/wwwroot/* ./Client/public",
+        "bundle": "snowpack install",
+        "prettier": "npm-run-all prettier:*",
+        "prettier:client": "prettier --write \"./Client/Scripts/**/*.ts\" && prettier --write \"./Client/Stylesheets/**/*.scss\"",
+        "prettier:server": "prettier --write \"./Server/app/**/*.php\" && prettier --write \"./Server/database/**/*.php\" && prettier --write \"./Server/routes/*.php\" && prettier --write \"./Server/resources/**/*.php\" && prettier --write \"./Server/bootstrap/*.php\"",
+        "test": "./Server/vendor/bin/phpunit ./Server/tests",
+        "docs": "docs",
+        "setup": "npm ci && cd ./Server && composer install && cp ./.env.example ./.env && php artisan key:generate && cd ../ && echo 'Setup complete.'"
+    },
+    "dependencies": {
+        "@codewithkyle/dev-docs": "^0.2.0",
+        "@codewithkyle/notifyjs": "^2.1.1",
+        "@codewithkyle/pubsub": "^1.1.0",
+        "@prettier/plugin-php": "^0.16.1",
+        "brixi": "^0.2.3",
+        "cssmonster": "^0.2.1",
+        "glob": "^7.1.6",
+        "lit-html": "^1.3.0",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.2.1",
+        "snowpack": "^2.17.1",
+        "terser": "^5.6.0",
+        "tooltipper": "^0.1.3",
+        "typescript": "^4.2.2"
+    },
+    "snowpack": {
+        "install": [
+            "@codewithkyle/notifyjs",
+            "lit-html",
+            "tooltipper",
+            "@codewithkyle/pubsub"
+        ]
+    }
+}

@@ -1,0 +1,11 @@
+<svg viewBox="0 0 40 5" xmlns="http://www.w3.org/2000/svg">
+<style>
+	rect{
+		fill:none;
+	}
+	path{
+		fill:#f4b638;
+		fill-rule:evenodd;
+	}
+</style>
+<rect width="40" height="5"/><path d="M22,0H33L28,5H7l5-5Z"/></svg>

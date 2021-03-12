@@ -1,0 +1,101 @@
+.table {
+	display: block;
+	width: 100%;
+	padding: 0;
+
+	thead {
+		display: block;
+		width: 100%;
+		padding: 0;
+
+		tr {
+			display: flex;
+			align-items: center;
+			flex-flow: row nowrap;
+			height: 52px;
+			width: 100%;
+			border-radius: 0.25rem 0.25rem 0 0;
+			border: 1px solid var(--grey-300);
+			padding: 0;
+
+			th {
+				color: var(--grey-800);
+				font-weight: var(--font-bold);
+				font-size: var(--font-sm);
+				text-align: left;
+				text-overflow: ellipsis;
+				position: relative;
+				padding: 0;
+			}
+		}
+	}
+
+	tbody {
+		display: block;
+		width: 100%;
+		padding: 0;
+
+		tr {
+			display: flex;
+			align-items: center;
+			flex-flow: row nowrap;
+			width: 100%;
+			border-width: 0 1px 1px 1px;
+			border-style: solid;
+			border-color: var(--grey-300);
+			transition: all 150ms var(--ease-in-out);
+			padding: 0;
+
+			&:last-of-type {
+				border-radius: 0 0 0.25rem 0.25rem;
+			}
+
+			&:hover {
+				background-color: var(--grey-100);
+
+				td {
+					color: var(--grey-800);
+				}
+			}
+
+			td {
+				color: var(--grey-700);
+				font-size: var(--font-sm);
+				text-align: left;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				position: relative;
+				height: 100%;
+				height: 52px;
+				line-height: 50px;
+			}
+		}
+	}
+
+	tfoot {
+		width: 100%;
+		display: block;
+
+		tr {
+			display: flex;
+			align-items: center;
+			flex-flow: row nowrap;
+			width: 100%;
+			border-radius: 0 0 0.25rem 0.25rem;
+			border-width: 0 1px 1px 1px;
+			border-style: solid;
+			border-color: var(--grey-300);
+
+			td {
+				color: var(--grey-700);
+				font-size: var(--font-xs);
+				text-align: left;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				position: relative;
+				height: 52px;
+				line-height: 50px;
+			}
+		}
+	}
+}

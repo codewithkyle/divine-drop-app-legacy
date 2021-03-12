@@ -1,0 +1,9 @@
+{
+	"trailingComma": "es5",
+	"tabWidth": 2,
+	"semi": true,
+	"singleQuote": false,
+	"printWidth": 180,
+	"phpVersion": "7.2",
+	"useTabs": true
+}

@@ -1,0 +1,142 @@
+@layout AppShell
+@page "/admin/users"
+@inherits UsersAdmin
+@using Client.Models.Globals
+
+<data-table class="w-full max-w-laptop mx-auto">
+    <div class="w-full mb-1">
+		<div class="input">
+			<input type="text" @bind-value="Query" @bind-value:event="oninput" @onkeyup="HandleKeyUp" placeholder="Search" />
+		</div>
+	</div>
+	<table class="table user-table w-laptop">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Email Address</th>
+				<th class="text-center">Verified</th>
+				<th class="text-center">Suspended</th>
+				<th class="text-center">Admin</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@if (IsLoadingUserData){
+				@for (int i = 1; i <= UsersPerPage; i++){
+					<tr>
+						@for (int j = 0; j < 6; j++){
+							<td>
+								<span class="skeleton -copy"></span>
+							</td>
+						}
+					</tr>
+				}
+			} else {
+				@for (int i = 0; i < Users.Count; i++){
+					var User = Users[i];
+					bool IsVerified = User.Verified;
+					bool IsSuspended = User.Suspended;
+					bool IsAdmin = User.Admin;
+					<tr>
+						<td title="@User.Name">
+							<span>@User.Name</span>
+						</td>
+						<td title="@User.Email">
+							<span>@User.Email</span>
+						</td>
+						<td class="text-center">
+							<i class="icon" aria-label="@User.Name is @(IsVerified ? "verified" : "not verified")" title="@User.Name is @(IsVerified ? "verified" : "not verified")">
+								<svg viewBox="0 0 24 24">
+									@if (IsVerified){
+										<circle class="font-success-400" fill="currentColor" cx="12" cy="12" r="12"/>
+									} else {
+										<path class="font-warning-500" fill="currentColor" d="M1,22.8h20.7c0.7,0,1.2-0.8,0.9-1.5L12.3,0.6c-0.4-0.7-1.4-0.7-1.8,0L0.1,21.3C-0.2,22,0.3,22.8,1,22.8z"/>
+									}
+								</svg>
+							</i>
+						</td>
+						<td class="text-center">
+							<i class="icon" aria-label="@User.Name is @(IsSuspended ? "suspended" : "not suspended")" title="@User.Name is @(IsSuspended ? "suspended" : "not suspended")">
+								<svg viewBox="0 0 24 24">
+									<path class="@(IsSuspended ? "font-danger-500" : "font-grey-300")" fill="currentColor" d="M23,24H1c-0.6,0-1-0.5-1-1V1c0-0.6,0.5-1,1-1h22c0.6,0,1,0.5,1,1v22C24,23.5,23.5,24,23,24z"/>
+								</svg>
+							</i>
+						</td>
+						<td class="text-center">
+							<i class="icon" aria-label="@User.Name is @(IsAdmin ? "an admin" : "not an admin")" title="@User.Name is @(IsAdmin ? "an admin" : "not an admin")">
+								<svg viewBox="0 0 24 24">
+									<circle class="@(IsAdmin ? "font-success-400" : "font-grey-300")" fill="currentColor" cx="12" cy="12" r="12"/>
+								</svg>
+							</i>
+						</td>
+						<td class="text-center">
+							@if (User.Uid != CurrentUser.Uid){
+								<button class="menu-button" aria-label="open @User.Name account action menu">
+									<svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 512"><path fill="currentColor" d="M32 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32zM0 136c0 17.7 14.3 32 32 32s32-14.3 32-32-14.3-32-32-32-32 14.3-32 32zm0 240c0 17.7 14.3 32 32 32s32-14.3 32-32-14.3-32-32-32-32 14.3-32 32z"></path></svg>
+								</button>
+								<dropdown-menu>
+									@if (IsSuspended){
+										<button @onclick="@(e => UnsuspendUser(User))">Unsuspend</button>
+									} else {
+										@if (!IsVerified){
+											<button @onclick="@(e => ActivateUser(User))">Activate account</button>
+											<button @onclick="@(e => SendActivationEmail(User))">Send activation email</button>
+										} else {
+											<button @onclick="@(e => GetImpersonationLink(User))">Log in as @User.Name</button>
+											@if (IsAdmin){
+												<button @onclick="@(e => RevokeAdmin(User))">Revoke admin privileges</button>
+											} else {
+												<button @onclick="@(e => GrantAdmin(User))">Grant admin privileges</button>
+											}
+										}
+										<hr>
+										<button class="-danger" @onclick="@(e => SuspendUser(User))">Suspend</button>
+									}
+								</dropdown-menu>
+							}
+						</td>
+					</tr>
+				}
+			}
+		</tbody>
+		<tfoot>
+			<tr>
+				<td class="border-r-1 border-r-solid border-r-grey-300" flex="items-center justify-between row nowrap">
+					<div>
+						<div class="px-1 border-r-1 border-r-solid border-r-grey-300 mr-1 inline-block">
+							<label for="users-per-page">Users per page:</label>
+							<select id="users-per-page" @onchange="UpdateUsersPerPage">
+								<option value="10" selected>10</option>
+								<option value="20">20</option>
+								<option value="30">30</option>
+								<option value="40">40</option>
+								<option value="50">50</option>
+							</select>
+						</div>
+						<div class="inline-block">
+							@(Page * UsersPerPage - UsersPerPage + 1) - @(Page * UsersPerPage) of @TotalUsers users
+						</div>
+					</div>
+					<div class="border-l-1 border-l-solid border-l-grey-300 px-1">
+						<select id="users-per-page"@onchange="JumpToPage">
+							@for (int i = 1; i <= TotalPages; i++){
+								<option value="@i" selected="@(i == Page)">@i</option>    
+							}
+						</select>
+						<span>of @TotalPages pages</span>
+					</div>
+				</td>
+				<td class="border-r-1 border-r-solid border-r-grey-300">
+					<button disabled="@(Page == 1)" @onclick="PreviousPage" aria-label="Load page @(Page - 1)">
+						<svg style="transform:translateX(-2px);" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path fill="currentColor" d="M192 127.338v257.324c0 17.818-21.543 26.741-34.142 14.142L29.196 270.142c-7.81-7.81-7.81-20.474 0-28.284l128.662-128.662c12.599-12.6 34.142-3.676 34.142 14.142z"></path></svg>
+					</button>
+				</td>
+				<td>
+					<button disabled="@(Page == TotalPages)" @onclick="NextPage" aria-label="Load page @(Page + 1)">
+						<svg style="transform:translateX(2px);" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path fill="currentColor" d="M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z"></path></svg>
+					</button>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+</data-table>
