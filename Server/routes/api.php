@@ -60,6 +60,7 @@ $router->group(["prefix" => "v1"], function () use ($router) {
             $router->get("users", "IngestController@getUsers");
             $router->head("users", "IngestController@getUsersHead");
             $router->get("users/count", "IngestController@countUsers");
+            $router->post("card", "IngestController@addCard");
         });
         // $router->group(["middleware" => ["user"]], function () use ($router) {
         // });

@@ -9,11 +9,12 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
 use Symfony\Component\HttpKernel\Exception\HttpException as Exception;
 
+use App\Models\User;
 use App\Facades\Cloudflare;
 use App\Services\UserService;
 use App\Services\AdminService;
-use App\Models\User;
 use App\Jobs\RefreshUsersFileJob;
+use App\Jobs\RefreshCardsJob;
 
 class AdminController extends Controller
 {
@@ -164,6 +165,7 @@ class AdminController extends Controller
     public function clearNDJSONCache(Request $request): JsonResponse
     {
         Queue::push(new RefreshUsersFileJob());
+        Queue::push(new RefreshCardsJob());
         return $this->buildSuccessResponse();
     }
 

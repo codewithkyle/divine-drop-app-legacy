@@ -7,11 +7,31 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException as Exception;
 
-// Services
 use App\Services\IngestService;
 
 class IngestController extends Controller
 {
+    public function addCard(Request $request)
+    {
+        try {
+            $front = null;
+            $back = null;
+            if (!is_null($request->input("front")))
+            {
+                $front = $this->parseBase64Image($request->input("front"));
+            }
+            if (!is_null($request->input("back")))
+            {
+                $back = $this->parseBase64Image($request->input("back"));
+            }
+            $ingestService = new IngestService();
+            $ingestService->addCard($request->all(), $front, $back);
+        } catch (Exception $e) {
+            return response($e->getMessage(), 500);
+        }
+        return response("Success", 200);
+    }
+
     public function getUsers(Request $request)
     {
         try {
