@@ -16,12 +16,10 @@ class IngestController extends Controller
         try {
             $front = null;
             $back = null;
-            if (!is_null($request->input("front")))
-            {
+            if (!is_null($request->input("front"))) {
                 $front = $this->parseBase64Image($request->input("front"));
             }
-            if (!is_null($request->input("back")))
-            {
+            if (!is_null($request->input("back"))) {
                 $back = $this->parseBase64Image($request->input("back"));
             }
             $ingestService = new IngestService();
@@ -30,6 +28,20 @@ class IngestController extends Controller
             return response($e->getMessage(), 500);
         }
         return response("Success", 200);
+    }
+
+    public function getCards(Request $request)
+    {
+        $path = storage_path("ndjson/cards.ndjson");
+        $etag = $this->generateEtag($path);
+        return response(file_get_contents($path))->header("ETag", $etag);
+    }
+
+    public function countCards(Request $request): JsonResponse
+    {
+        $ingestService = new IngestService();
+        $data = $ingestService->countCards();
+        return $this->buildSuccessResponse($data);
     }
 
     public function getUsers(Request $request)

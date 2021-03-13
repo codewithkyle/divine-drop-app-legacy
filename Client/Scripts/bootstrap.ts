@@ -57,6 +57,34 @@ function LoadFramework() {
 	document.head.appendChild(framework);
 }
 
+function LoadCards(): Promise<void> {
+	return new Promise((resolve) => {
+		IngestTracked("/v1/ingest/cards", "cards").then((data) => {
+			if (data === null) {
+				resolve();
+				return;
+			}
+			const { workerUid, total } = data;
+			EventBus.create(workerUid);
+			loadingText.innerText = `Downloading ${total} cards.`;
+			const inbox = (data) => {
+				switch (data) {
+					case "download-finished":
+						loadingText.innerText = `Unpacking cards. This might take a few minutes.`;
+						break;
+					case "unpack-finished":
+						EventBus.destroy(workerUid);
+						resolve();
+						break;
+					default:
+						break;
+				}
+			};
+			EventBus.subscribe(workerUid, inbox.bind(this));
+		});
+	});
+}
+
 async function Bootstrap() {
 	let latestVersion = null;
 	const loadedVersion = localStorage.getItem("version");
@@ -109,6 +137,7 @@ async function Bootstrap() {
 	} else {
 		await LoadStylesheets();
 		await LoadScripts();
+		await LoadCards();
 		LoadFramework();
 	}
 }

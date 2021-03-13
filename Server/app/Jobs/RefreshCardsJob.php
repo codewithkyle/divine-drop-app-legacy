@@ -50,6 +50,6 @@ class RefreshCardsJob extends UniqueJob
         });
         rename($tempPath, $finalPath);
         $total = Card::count();
-        Cache::set("card-count", $total);
+        Cache::set("cards-count", $total);
     }
 }

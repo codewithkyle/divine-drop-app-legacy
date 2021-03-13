@@ -18,14 +18,11 @@ class IngestService
         $imageService = new ImageService();
         $slug = $params["slug"];
         $card = Card::where("slug", $slug)->first();
-        if (empty($card))
-        {
-            if (!is_null($front))
-            {
+        if (empty($card)) {
+            if (!is_null($front)) {
                 $frontImageUid = $imageService->saveImage($front, 1);
             }
-            if (!is_null($back))
-            {
+            if (!is_null($back)) {
                 $backImageUid = $imageService->saveImage($back, 1);
             }
             $uid = Uuid::uuid4()->toString();
@@ -48,15 +45,11 @@ class IngestService
                 "front" => $frontImageUid ?? null,
                 "back" => $backImageUid ?? null,
             ]);
-        }
-        else
-        {
-            if (!is_null($front))
-            {
+        } else {
+            if (!is_null($front)) {
                 $frontImageUid = $imageService->saveImage($front, 1, $card->front);
             }
-            if (!is_null($back))
-            {
+            if (!is_null($back)) {
                 $backImageUid = $imageService->saveImage($back, 1, $card->back);
             }
             $card->name = $params["name"];
@@ -101,6 +94,15 @@ class IngestService
         $count = Cache::get("user-count", null);
         if (is_null($count)) {
             $count = User::count();
+        }
+        return (int) $count;
+    }
+
+    public function countCards(): int
+    {
+        $count = Cache::get("cards-count", null);
+        if (is_null($count)) {
+            $count = Card::count();
         }
         return (int) $count;
     }

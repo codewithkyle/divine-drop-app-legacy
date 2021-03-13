@@ -56,6 +56,9 @@ $router->group(["prefix" => "v1"], function () use ($router) {
     });
 
     $router->group(["prefix" => "ingest"], function () use ($router) {
+        $router->get("cards", "IngestController@getCards");
+        $router->get("cards/count", "IngestController@countCards");
+
         $router->group(["middleware" => ["admin"]], function () use ($router) {
             $router->get("users", "IngestController@getUsers");
             $router->head("users", "IngestController@getUsersHead");

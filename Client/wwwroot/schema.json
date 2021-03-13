@@ -25,6 +25,64 @@
 					"key": "Admin"
 				}
 			]
+		},
+		{
+			"name": "cards",
+			"keyPath": "UID",
+			"columns": [
+				{
+					"key": "UID",
+					"unique": true
+				},
+				{
+					"key": "Name"
+				},
+				{
+					"key": "Slug"
+				},
+				{
+					"key": "Layout"
+				},
+				{
+					"key": "Rarity"
+				},
+				{
+					"key": "Type"
+				},
+				{
+					"key": "Text"
+				},
+				{
+					"key": "FlavorText"
+				},
+				{
+					"key": "Vitality"
+				},
+				{
+					"key": "FaceNames"
+				},
+				{
+					"key": "ManaCosts"
+				},
+				{
+					"key": "Subtypes"
+				},
+				{
+					"key": "Legalities"
+				},
+				{
+					"key": "Colors"
+				},
+				{
+					"key": "Keywords"
+				},
+				{
+					"key": "Front"
+				},
+				{
+					"key": "Back"
+				}
+			]
 		}
 	]
 }

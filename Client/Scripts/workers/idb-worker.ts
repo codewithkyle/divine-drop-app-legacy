@@ -155,7 +155,10 @@ class IDBWorker {
 					this.insertData(e.data.uid);
 				}
 				if (streamStartedCallback !== null) {
-					streamStartedCallback(e.data.uid, total);
+					streamStartedCallback({
+						workerUid: e.data.uid,
+						total: total,
+					});
 					this.workerPool[e.data.uid].streamStartedCallback = null;
 				}
 				break;
