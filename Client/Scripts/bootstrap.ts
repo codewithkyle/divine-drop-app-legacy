@@ -67,10 +67,23 @@ function LoadCards(): Promise<void> {
 			const { workerUid, total } = data;
 			EventBus.create(workerUid);
 			loadingText.innerText = `Downloading ${total} cards.`;
+			let download = 0;
+			let unpack = 0;
+			let finishedDownloading = false;
 			const inbox = (data) => {
 				switch (data) {
+					case "download-tick":
+						download++;
+						loadingText.innerText = `Download card ${download} of ${total}`;
+						break;
+					case "unpack-tick":
+						unpack++;
+						if (finishedDownloading) {
+							loadingText.innerText = `Unpacking card ${unpack} of ${total}`;
+						}
+						break;
 					case "download-finished":
-						loadingText.innerText = `Unpacking cards. This might take a few minutes.`;
+						finishedDownloading = true;
 						break;
 					case "unpack-finished":
 						EventBus.destroy(workerUid);

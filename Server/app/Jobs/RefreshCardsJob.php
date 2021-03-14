@@ -31,7 +31,7 @@ class RefreshCardsJob extends UniqueJob
         $finalPath = storage_path("ndjson/cards.ndjson");
         $tempPath = storage_path("ndjson/" . $this->uid . ".tmp");
         file_put_contents($tempPath, "");
-        Card::chunk(200, function ($cards) {
+        Card::orderBy("name", "DESC")->chunk(200, function ($cards) {
             $tempPath = storage_path("ndjson/" . $this->uid . ".tmp");
             foreach ($cards as $card) {
                 $vitality = [];
