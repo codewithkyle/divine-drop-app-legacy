@@ -209,6 +209,30 @@ function updateCardText() {
 			.replace(
 				/\{W\/P\}/g,
 				`<img width="16" loading="lazy" src="/images/symbols/WP.svg" alt="One white or two life mana symbol" title="One white mana or two life" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{100\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/100.svg" alt="100 generic mana symbol" title="100 generic mana" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{1000000\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/MILLION.svg" alt="One million generic mana symbol" title="One million generic mana" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{\∞\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/UNLIMITED.svg" alt="Infinite generic mana symbol" title="Infinite generic mana" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{\½\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/HALF.svg" alt="One-half generic mana symbol" title="One-half generic mana" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{HW\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/HW.svg" alt="One-half white mana symbol" title="One-half white mana" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{HR\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/HR.svg" alt="One-half red mana symbol" title="One-half red mana" style="width:16px;height:16px;display:inline-block;">`
 			);
 		el.innerHTML = updated;
 	});
