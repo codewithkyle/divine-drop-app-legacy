@@ -169,6 +169,26 @@ function updateCardText() {
 			.replace(
 				/\{W\/U\}/g,
 				`<img width="16" loading="lazy" src="/images/symbols/WU.svg" alt="One white one blue mana symbol" title="White blue mana" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{2\/B\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/2B.svg" alt="Two black mana symbol" title="Two black mana" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{2\/G\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/2G.svg" alt="Two green mana symbol" title="Two green mana" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{2\/R\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/2R.svg" alt="Two red mana symbol" title="Two red mana" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{2\/U\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/2U.svg" alt="Two blue mana symbol" title="Two blue mana" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{2\/W\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/2W.svg" alt="Two white mana symbol" title="Two white mana" style="width:16px;height:16px;display:inline-block;">`
 			);
 		el.innerHTML = updated;
 	});
