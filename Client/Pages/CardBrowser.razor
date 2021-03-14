@@ -3,7 +3,7 @@
 @inherits CardBrowserBase
 
 <div class="card-browser">
-    <div class="w-full mb-1" flex="row nowrap">
+    <div class="w-full my-1" flex="row nowrap">
         <button tooltip="Switch layout" class="button -text -grey -icon-only -tall -rounded mr-0.5" @onclick="CycleView">
             <i class="icon">
                 @switch (Layout)
@@ -62,7 +62,7 @@
                         for (int t = 0; t < Card.Subtypes.Length; t++){
                             Subtypes += Card.Subtypes[t] + " ";
                         }
-                        <div class="card radius-0.5 border-1 border-solid border-grey-300 p-1">
+                        <div class="card radius-0.5 border-1 border-solid border-grey-400 p-1 shadow-sm">
                             <div class="inline-block relative ar-12:17 bg-grey-100 radius-0.5 shim" style="width:200px;">
                                 <i class="spinning-icon font-grey-700">
                                     <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
