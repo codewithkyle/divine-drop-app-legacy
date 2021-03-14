@@ -421,7 +421,7 @@ class IDBWorker {
 
 	private fuzzySearch(rows: Array<unknown>, query: string, key: Array<string> | string) {
 		const options = {
-			threshold: -Infinity,
+			threshold: -100,
 			allowTypo: false,
 		};
 		if (Array.isArray(key)) {

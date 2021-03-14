@@ -22,17 +22,17 @@
             </i>
         </button>
         <div class="input w-full" style="flex: 1;">
-            <input type="search" @bind="@Search" @oninput="DebounceSearch" placeholder="Search cards...">
+            <input type="search" @bind-value="Search" @bind-value:event="oninput" @onkeyup="DebounceSearch" placeholder="Search cards...">
         </div>
     </div>
     <div class="card-grid" layout="@Layout.ToString()">
         @if(IsLoading){
-           @for (int i = 0; i < 10; i++){
+           @for (int i = 0; i < 36; i++){
                 @switch (Layout)
                 {
                     case LayoutType.List:
                         <div class="w-full bg-white relative border-1 border-solid border-grey-400 radius-0.5 p-0.5" flex="row nowrap">
-                            <div class="ar-12:17 mr-0.5" style="width:250px">
+                            <div class="ar-12:17 mr-0.5" style="width:200px;">
                                 <div class="skeleton w-full h-full radius-0.5"></div>
                             </div>
                             <div class="w-full" style="flex: 1;">
@@ -63,7 +63,7 @@
                             Subtypes += Card.Subtypes[t] + " ";
                         }
                         <div class="card radius-0.5 border-1 border-solid border-grey-300 p-1">
-                            <div class="inline-block relative ar-12:17 bg-grey-100 radius-0.5 shim" style="width:250px;">
+                            <div class="inline-block relative ar-12:17 bg-grey-100 radius-0.5 shim" style="width:200px;">
                                 <i class="spinning-icon font-grey-700">
                                     <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 512 512">
@@ -108,4 +108,10 @@
             }
         }
     </div>
+    @if(!IsLoading && TotalPages > 1){
+        <div class="block w-full py-2 text-center">
+            <button @onclick="Back" class="button -solid -primary -rounded mx-0.5" disabled="@(Page == 1)">Back</button>
+            <button @onclick="Next" class="button -solid -primary -rounded mx-0.5" disabled="@(Page == TotalPages)">Next</button>
+        </div>
+    }
 </div>

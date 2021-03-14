@@ -286,3 +286,11 @@ async function GetSetting(key: string): Promise<string> {
 function SetSetting(key: string, value) {
 	localStorage.setItem(key, `${value}`);
 }
+
+function ResetScroll() {
+	document.body.querySelector(".app-body").scrollTo({
+		top: 0,
+		left: 0,
+		behavior: "auto",
+	});
+}

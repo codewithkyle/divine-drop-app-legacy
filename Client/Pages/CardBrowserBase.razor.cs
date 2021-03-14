@@ -20,6 +20,8 @@ namespace Client.Pages
         }
         public LayoutType Layout = LayoutType.Card;
         public int Page = 1;
+        public int TotalCards = 0;
+        public int TotalPages = 1;
         protected override async Task Main()
         {
 			SearchDebouceTimer = new Timer(600);
@@ -41,16 +43,23 @@ namespace Client.Pages
         }
         public async Task SearchCards()
         {
+            SearchDebouceTimer.Stop();
             IsLoading = true;
             StateHasChanged();
             string[] keys = {"Name", "Text", "FlavorText"};
-			Cards = await JSRuntime.InvokeAsync<List<Card>>("Search", "cards", Search, keys, Page, 50);
+			Cards = await JSRuntime.InvokeAsync<List<Card>>("Search", "cards", Search, keys, Page, 36);
             IsLoading = false;
             StateHasChanged();
+            await JSRuntime.InvokeVoidAsync("ResetScroll");
         }
         public async void DebounceCallback(Object source, ElapsedEventArgs e)
 		{
+            Page = 1;
 			await SearchCards();
+            string[] keys = {"Name", "Text", "FlavorText"};
+            TotalCards = await JSRuntime.InvokeAsync<int>("Count", "cards", Search, keys);
+			TotalPages = (int)Math.Ceiling((decimal)TotalCards / 36);
+            StateHasChanged();
 		}
         public void DebounceSearch()
 		{
@@ -73,6 +82,25 @@ namespace Client.Pages
             }
             JSRuntime.InvokeVoidAsync("SetSetting", "cardLayout", Layout.ToString());
             StateHasChanged();
+        }
+        public void Next()
+        {
+            Page++;
+            if (Page > TotalPages)
+            {
+                Page = TotalPages;
+            }
+            SearchCards();
+        }
+
+        public void Back()
+        {
+            Page--;
+            if (Page < 1)
+            {
+                Page = 1;
+            }
+            SearchCards();
         }
     }
 }
