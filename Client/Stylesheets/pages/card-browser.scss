@@ -10,6 +10,10 @@
 		padding: 1rem;
 
 		&[layout="List"] {
+			@media (min-width: 1600px) {
+				grid-template-columns: 1fr 1fr;
+			}
+
 			.card {
 				display: flex;
 				flex-flow: column wrap;
@@ -52,7 +56,7 @@
 				grid-template-columns: 1fr 1fr 1fr 1fr;
 			}
 
-			@media (min-width: 1440px) {
+			@media (min-width: 1600px) {
 				grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 			}
 
@@ -65,24 +69,8 @@
 			}
 
 			.card {
-				cursor: pointer;
-				transition: all 150ms var(--ease-out);
 				width: 100%;
-				object-fit: contain;
-				transform: none;
-				z-index: 1;
 				border-radius: 0.5rem;
-
-				&:hover,
-				&:focus-visible {
-					z-index: 100;
-					transform: translateY(-2px) scale(1.01);
-					transition: all 150ms var(--ease-in);
-
-					img {
-						box-shadow: var(--shadow-lg);
-					}
-				}
 
 				img {
 					position: absolute;
@@ -91,7 +79,6 @@
 					width: 100%;
 					border-radius: 0.5rem;
 					overflow: hidden;
-					transition: all 150ms var(--ease-in-out);
 				}
 			}
 		}
