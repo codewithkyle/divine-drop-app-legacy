@@ -163,7 +163,6 @@
 			display: inline-block;
 			width: 100%;
 			height: 100%;
-			border-radius: 0.125rem;
 			background-color: transparent;
 			opacity: 0.06;
 			position: absolute;
@@ -581,20 +580,29 @@
 	}
 
 	&.-tall {
-		height: 52px;
-		line-height: 52px;
+		height: 48px;
+		line-height: 48px;
 
 		&.-pill {
 			border-radius: 26px;
 		}
 
 		&.-icon-only {
-			width: 52px;
+			width: 48px;
+
+			svg {
+				width: 24px;
+				height: 24px;
+			}
 		}
 	}
 
 	&.-rounded {
 		border-radius: 0.25rem;
+
+		&::before {
+			border-radius: 0.25rem;
+		}
 	}
 
 	&.-pill {

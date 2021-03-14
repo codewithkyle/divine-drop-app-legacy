@@ -2,7 +2,7 @@
     "version": "0.0.0",
     "scripts": {
         "reset": "rm -rf ./Client/wwwroot/css && mkdir ./Client/wwwroot/css && rm -rf ./Client/wwwroot/js && mkdir ./Client/wwwroot/js && rm -rf ./Client/public",
-        "brixi": "brixi && mv ./brixi/brixi.css ./Client/Stylesheets/globals/brixi.css && rmdir ./brixi",
+        "brixi": "brixi",
         "dev": "npm run build",
         "build": "npm run reset && npm run prettier && npm-run-all build:* && node ./Client/build/relocate.js && npm run publish",
         "build:css": "cssmonster",
@@ -22,8 +22,8 @@
         "@codewithkyle/notifyjs": "^2.1.1",
         "@codewithkyle/pubsub": "^1.1.0",
         "@prettier/plugin-php": "^0.16.1",
-        "brixi": "^0.2.3",
-        "cssmonster": "^0.2.1",
+        "brixi": "^0.3.1",
+        "cssmonster": "^0.3.0",
         "glob": "^7.1.6",
         "lit-html": "^1.3.0",
         "npm-run-all": "^4.1.5",
@@ -31,7 +31,7 @@
         "snowpack": "^2.17.1",
         "terser": "^5.6.0",
         "tooltipper": "^0.1.3",
-        "typescript": "^4.2.2"
+        "typescript": "^4.2.3"
     },
     "snowpack": {
         "install": [

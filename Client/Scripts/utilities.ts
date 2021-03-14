@@ -271,3 +271,18 @@ if (sw?.controller && navigator.onLine) {
 		type: "flush-outbox",
 	});
 }
+
+async function CopyToClipboard(value: string) {
+	if ("clipboard" in navigator) {
+		navigator.clipboard.writeText(value);
+	}
+	return;
+}
+
+async function GetSetting(key: string): Promise<string> {
+	return localStorage.getItem(key) ?? null;
+}
+
+function SetSetting(key: string, value) {
+	localStorage.setItem(key, `${value}`);
+}

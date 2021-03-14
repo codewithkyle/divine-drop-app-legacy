@@ -1,5 +1,16 @@
 const API_URL = "http://api.divinedrop.local";
-const scripts = ["/js/uid.js", "/js/utilities.js", "/js/tooltipper.js", "/js/lit-html.js", "/js/idb-manager.js", "/js/auth.js", "/js/account.js", "/js/admin.js", "/js/pubsub.js"];
+const scripts = [
+	"/js/uid.js",
+	"/js/utilities.js",
+	"/js/tooltipper.js",
+	"/js/lit-html.js",
+	"/js/idb-manager.js",
+	"/js/auth.js",
+	"/js/account.js",
+	"/js/admin.js",
+	"/js/pubsub.js",
+	"/js/card-text.js",
+];
 const stylesheets = [
 	"/css/spinner.css",
 	"/css/loading.css",
@@ -15,4 +26,5 @@ const stylesheets = [
 	"/css/user-table.css",
 	"/css/full-modal.css",
 	"/css/edit-profile-modal.css",
+	"/css/card-browser.css",
 ];

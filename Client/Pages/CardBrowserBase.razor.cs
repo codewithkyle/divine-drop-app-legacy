@@ -14,11 +14,29 @@ namespace Client.Pages
         private Timer SearchDebouceTimer;
         public bool IsLoading = true;
         public List<Card> Cards = new List<Card>();
+        public enum LayoutType {
+            Card,
+            List,
+        }
+        public LayoutType Layout = LayoutType.Card;
+        public int Page = 1;
         protected override async Task Main()
         {
 			SearchDebouceTimer = new Timer(600);
         	SearchDebouceTimer.Elapsed += DebounceCallback;
-        	SearchDebouceTimer.AutoReset = false;
+            string savedLayout = await JSRuntime.InvokeAsync<string>("GetSetting", "cardLayout");
+            if (!String.IsNullOrEmpty(savedLayout))
+            {
+                switch(savedLayout)
+                {
+                    case "List":
+                        Layout = LayoutType.List;
+                        break;
+                    case "Card":
+                        Layout = LayoutType.Card;
+                        break;
+                }
+            }
             await SearchCards();
         }
         public async Task SearchCards()
@@ -26,7 +44,7 @@ namespace Client.Pages
             IsLoading = true;
             StateHasChanged();
             string[] keys = {"Name", "Text", "FlavorText"};
-			Cards = await JSRuntime.InvokeAsync<List<Card>>("Search", "cards", Search, keys, 1, 1);
+			Cards = await JSRuntime.InvokeAsync<List<Card>>("Search", "cards", Search, keys, Page, 50);
             IsLoading = false;
             StateHasChanged();
         }
@@ -39,5 +57,22 @@ namespace Client.Pages
 			SearchDebouceTimer.Stop();
 			SearchDebouceTimer.Start();
 		}
+        public void CycleView()
+        {
+            switch(Layout)
+            {
+                case LayoutType.Card:
+                    Layout = LayoutType.List;
+                    break;
+                case LayoutType.List:
+                    Layout = LayoutType.Card;
+                    break;
+                default:
+                    Layout = LayoutType.Card;
+                    break;
+            }
+            JSRuntime.InvokeVoidAsync("SetSetting", "cardLayout", Layout.ToString());
+            StateHasChanged();
+        }
     }
 }
