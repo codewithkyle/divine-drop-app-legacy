@@ -212,6 +212,20 @@
 					opacity: 0;
 					transition: all 150ms var(--ease-in-out);
 				}
+
+				i {
+					width: 24px;
+					height: 24px;
+					display: inline-flex;
+					justify-content: center;
+					align-items: center;
+					margin-right: 0.5rem;
+
+					svg {
+						width: 18px;
+						height: 18px;
+					}
+				}
 			}
 		}
 	}

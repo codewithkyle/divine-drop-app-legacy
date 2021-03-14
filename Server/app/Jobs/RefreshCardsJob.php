@@ -17,6 +17,15 @@ class RefreshCardsJob extends UniqueJob
         $this->uid = Uuid::uuid4()->toString();
     }
 
+    private function isLegal(string $status): bool
+    {
+        if ($status === "legal") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function handle()
     {
         $finalPath = storage_path("ndjson/cards.ndjson");
@@ -25,6 +34,13 @@ class RefreshCardsJob extends UniqueJob
         Card::chunk(200, function ($cards) {
             $tempPath = storage_path("ndjson/" . $this->uid . ".tmp");
             foreach ($cards as $card) {
+                $vitality = [];
+                foreach ($card->vitality as $value) {
+                    $vitality[] = [
+                        "Power" => $value["power"],
+                        "Toughness" => $value["toughness"],
+                    ];
+                }
                 $line =
                     json_encode([
                         "UID" => $card->uid,
@@ -35,11 +51,10 @@ class RefreshCardsJob extends UniqueJob
                         "Type" => $card->type,
                         "Text" => $card->text,
                         "FlavorText" => $card->flavorText,
-                        "Vitality" => $card->vitality,
+                        "Vitality" => $vitality,
                         "FaceNames" => $card->faceNames,
                         "ManaCosts" => $card->manaCosts,
                         "Subtypes" => $card->subtypes,
-                        "Legalities" => $card->legalities,
                         "Colors" => $card->colors,
                         "Keywords" => $card->keywords,
                         "Front" => $card->front,

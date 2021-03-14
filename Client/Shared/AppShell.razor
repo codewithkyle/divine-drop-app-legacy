@@ -19,7 +19,9 @@
 			<div>
 				<button class="profile-button" aria-label="open profile menu" tooltip="Account details">
 					@if (String.IsNullOrEmpty(CurrentUser.Avatar)){						
-						<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user-alt" class="svg-inline--fa fa-user-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path></svg>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+							<path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+						</svg>
 					} else {
 						<img crossorigin="use-credentials" loading="lazy" width="36" src="@CurrentUser.Avatar?w=36&ar=1:1" alt="Your profile photo">
 					}
@@ -27,7 +29,9 @@
 				<div class="profile-modal">
 					<div class="avatar">
 						@if (String.IsNullOrEmpty(CurrentUser.Avatar)){						
-							<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user-alt" class="svg-inline--fa fa-user-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path></svg>
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+								<path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+							</svg>
 						} else {
 							<img crossorigin="use-credentials" loading="lazy" width="80" src="@CurrentUser.Avatar?w=80&ar=1:1" alt="Your profile photo">
 						}
@@ -48,7 +52,36 @@
 		</header>
 		<aside class="js-nav-drawer app-aside @(NavigationIsOpen ? "open" : "closed")" @onkeydown="KeyPress" tabindex="0">
 			<nav>
-				<NavLink href="/dashboard" Match="NavLinkMatch.All">Dashboard</NavLink>
+				<NavLink href="/dashboard" Match="NavLinkMatch.All">
+					<i>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+						</svg>
+					</i>
+					Dashboard
+				</NavLink>
+				<NavLink href="/cards" Match="NavLinkMatch.All">
+					<i>
+						<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor">
+							<polyline stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="14.3,15.6 14.3,19.9 3.4,19.9 3.4,2.1 14.3,2.1 14.3,10.6 "/>
+							<polyline stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="14.3,4.1 20.6,4.1 20.6,21.9 9.7,21.9 9.7,19.9 "/>
+							<polygon stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="8.8,7.5 6.5,11 8.8,14.5 11.2,11 "/>
+							<polygon stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="17.3,13.1 15,16.6 14.3,15.6 14.3,10.6 15,9.6 "/>
+							<line stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="5.3" y1="4.1" x2="5.3" y2="5.3"/>
+							<line stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="12.2" y1="16.6" x2="12.2" y2="17.8"/>
+							<line stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="18.5" y1="18.7" x2="18.5" y2="19.9"/>
+						</svg>
+					</i>
+					Card Browser
+				</NavLink>
+				<NavLink href="/decks" Match="NavLinkMatch.All">
+					<i>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+						</svg>
+					</i>
+					Decks
+				</NavLink>
 				@if (CurrentUser.Admin){
 					<button @onclick="@(e => AdminIsOpen ^= true)" class=" @(AdminIsOpen ? "open" : "closed")" title="Admin Panel, Manage Users, File Management">
 						<span class="label">Admin</span>
