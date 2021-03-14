@@ -189,6 +189,26 @@ function updateCardText() {
 			.replace(
 				/\{2\/W\}/g,
 				`<img width="16" loading="lazy" src="/images/symbols/2W.svg" alt="Two white mana symbol" title="Two white mana" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{B\/P\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/BP.svg" alt="One black or two life mana symbol" title="One black mana or two life" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{R\/P\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/RP.svg" alt="One red or two life mana symbol" title="One red mana or two life" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{G\/P\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/GP.svg" alt="One green or two life mana symbol" title="One green mana or two life" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{U\/P\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/UP.svg" alt="One blue or two life mana symbol" title="One blue mana or two life" style="width:16px;height:16px;display:inline-block;">`
+			)
+			.replace(
+				/\{W\/P\}/g,
+				`<img width="16" loading="lazy" src="/images/symbols/WP.svg" alt="One white or two life mana symbol" title="One white mana or two life" style="width:16px;height:16px;display:inline-block;">`
 			);
 		el.innerHTML = updated;
 	});
