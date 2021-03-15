@@ -28,6 +28,10 @@ $router->group(["prefix" => "v1"], function () use ($router) {
         $router->post("logout", "AuthController@logout");
         $router->get("image/{uid}", "FileController@getImage");
         $router->get("file/{uid}", "FileController@getFile");
+        $router->get("decks", "FileController@getDecks");
+        $router->post("deck", "FileController@updateDeck");
+        $router->get("deck/{uid}", "FileController@getDeck");
+        $router->delete("deck/{uid}", "FileController@deleteDeck");
     });
 
     $router->group(["prefix" => "user", "middleware" => "user"], function () use ($router) {

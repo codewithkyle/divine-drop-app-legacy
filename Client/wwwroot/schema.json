@@ -83,6 +83,25 @@
 					"key": "Back"
 				}
 			]
+		},
+		{
+			"name": "decks",
+			"keyPath": "UID",
+			"columns": [
+				{
+					"key": "UID",
+					"unique": true
+				},
+				{
+					"key": "Name"
+				},
+				{
+					"key": "Commander"
+				},
+				{
+					"key": "Cards"
+				}
+			]
 		}
 	]
 }
