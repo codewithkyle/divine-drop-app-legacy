@@ -83,4 +83,133 @@
 			}
 		}
 	}
+
+	.filter-bttn {
+		&:active,
+		&:focus {
+			& + card-filter-menu {
+				opacity: 1;
+				visibility: visible;
+				pointer-events: all;
+			}
+		}
+	}
+
+	card-filter-menu {
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		z-index: 1000;
+		position: absolute;
+		top: 100%;
+		right: 0;
+		border-radius: 0.5rem;
+		background-color: var(--white);
+		padding: 1rem;
+		box-shadow: var(--shadow-lg);
+		width: 480px;
+		max-width: calc(100vw - 3rem);
+		max-height: 66vh;
+		overflow-y: auto;
+		border: 1px solid var(--grey-300);
+
+		&:focus-within,
+		&:hover {
+			opacity: 1;
+			visibility: visible;
+			pointer-events: all;
+		}
+
+		.color-checkboxes {
+			display: grid;
+			gap: 1rem;
+			grid-template-columns: 1fr 1fr 1fr 1fr;
+			width: 100%;
+			position: relative;
+
+			input {
+				position: absolute;
+				top: 0;
+				left: 0;
+				opacity: 0;
+				visibility: hidden;
+				width: 0;
+				height: 0;
+
+				&:checked {
+					& + label {
+						box-shadow: var(--shadow-sm);
+						border-color: var(--primary-500);
+					}
+				}
+			}
+
+			label {
+				height: 48px;
+				width: 100%;
+				display: inline-flex;
+				justify-content: center;
+				align-items: center;
+				font-size: var(--font-sm);
+				font-weight: var(--font-medium);
+				color: var(--grey-800);
+				border-radius: 0.5rem;
+				border: 1px solid var(--grey-300);
+				position: relative;
+				transition: all 75ms var(--ease-in-out);
+				cursor: pointer;
+
+				&:hover,
+				&:focus-visible {
+					border-color: var(--primary-500);
+				}
+
+				&:active {
+					border-color: var(--primary-500);
+					box-shadow: 0 0 0 5px var(--primary-100) !important;
+				}
+
+				img {
+					width: 24px;
+					height: 24px;
+					display: inline-block;
+					margin-right: 0.25rem;
+				}
+			}
+		}
+	}
+
+	.sort-bttn {
+		&:active,
+		&:focus {
+			& + card-sort-menu {
+				opacity: 1;
+				visibility: visible;
+				pointer-events: all;
+			}
+		}
+	}
+
+	card-sort-menu {
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		z-index: 1000;
+		position: absolute;
+		top: 100%;
+		left: calc(48px + 0.25rem);
+		border-radius: 0.5rem;
+		background-color: var(--white);
+		padding: 0.5rem;
+		box-shadow: var(--shadow-lg);
+		border: 1px solid var(--grey-300);
+		width: 275px;
+
+		&:focus-within,
+		&:hover {
+			opacity: 1;
+			visibility: visible;
+			pointer-events: all;
+		}
+	}
 }

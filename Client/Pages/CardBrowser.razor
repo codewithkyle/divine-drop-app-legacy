@@ -4,26 +4,188 @@
 
 <div class="card-browser">
     <div class="w-full my-1" flex="row nowrap">
-        <button tooltip="Switch layout" class="button -text -grey -icon-only -tall -rounded mr-0.5" @onclick="CycleView">
+        <button tooltip="Switch layout" class="button -text -grey -icon-only -tall -round mr-0.25" @onclick="CycleView">
             <i class="icon">
-                @switch (Layout)
-                {
-                    case LayoutType.List:
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
-                        </svg>
-                        break;
-                    default:
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                        </svg>
-                        break;
-                }
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
             </i>
         </button>
+        <button class="button -grey -text -icon-only -tall -round mr-0.5 sort-bttn" tooltip="Sort results" aria-label="open sort menu">
+            <i class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                </svg>
+            </i>
+        </button>
+        <card-sort-menu>
+            <div class="radio">
+                <input type="radio"  name="card-sort" id="alphabetical" tabindex="0" value="abc" checked @onchange="UpdateSort" />
+                <label tabindex="0" for="alphabetical">
+                    <i></i>
+                    <span>Alphabetical</span>
+                </label>
+            </div>
+            <div class="radio">
+                <input type="radio"  name="card-sort" id="mana-low" tabindex="0" value="mana-low" @onchange="UpdateSort" />
+                <label tabindex="0" for="mana-low">
+                    <i></i>
+                    <span>Mana Cost (Low to High)</span>
+                </label>
+            </div>
+            <div class="radio">
+                <input type="radio"  name="card-sort" id="mana-high" tabindex="0" value="mana-high" @onchange="UpdateSort" />
+                <label tabindex="0" for="mana-high">
+                    <i></i>
+                    <span>Mana Cost (High to Low)</span>
+                </label>
+            </div>
+            <div class="radio">
+                <input type="radio"  name="card-sort" id="power-low" tabindex="0" value="power-low" @onchange="UpdateSort" />
+                <label tabindex="0" for="power-low">
+                    <i></i>
+                    <span>Power (Low to High)</span>
+                </label>
+            </div>
+            <div class="radio">
+                <input type="radio"  name="card-sort" id="power-high" tabindex="0" value="power-high" @onchange="UpdateSort" />
+                <label tabindex="0" for="power-high">
+                    <i></i>
+                    <span>Power (High to Low)</span>
+                </label>
+            </div>
+            <div class="radio">
+                <input type="radio"  name="card-sort" id="toughness-low" tabindex="0" value="toughness-low" @onchange="UpdateSort" />
+                <label tabindex="0" for="toughness-low">
+                    <i></i>
+                    <span>Toughness (Low to High)</span>
+                </label>
+            </div>
+            <div class="radio">
+                <input type="radio"  name="card-sort" id="toughness-high" tabindex="0" value="toughness-high" @onchange="UpdateSort" />
+                <label tabindex="0" for="toughness-high">
+                    <i></i>
+                    <span>Toughness (High to Low)</span>
+                </label>
+            </div>
+        </card-sort-menu>
         <div class="input w-full" style="flex: 1;">
             <input type="search" @bind-value="Search" @bind-value:event="oninput" @onkeyup="DebounceSearch" placeholder="Search cards...">
         </div>
+        <button class="button -text -grey -rounded ml-0.5 -tall pr-1 pl-0.75 filter-bttn">
+            <i class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                </svg>
+            </i>
+            Filters
+        </button>
+        <card-filter-menu>
+            <div class="color-checkboxes mb-1.5">
+                <div>
+                    <input type="checkbox" id="black" value="B">
+                    <label for="black" tabindex="0" aria-label="filter cards by black mana" tooltip="Black mana">
+                        <i>
+                            <img loading="lazy" src="/images/symbols/B.svg" alt="Black mana symbol" title="Black mana">
+                        </i>
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="red" value="R">
+                    <label for="red" tabindex="0" aria-label="filter cards by red mana" tooltip="Red mana">
+                        <i>
+                            <img loading="lazy" src="/images/symbols/R.svg" alt="Red mana symbol" title="Red mana">
+                        </i>
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="green" value="G">
+                    <label for="green" tabindex="0" aria-label="filter cards by green mana" tooltip="Green mana">
+                        <i>
+                            <img loading="lazy" src="/images/symbols/G.svg" alt="Green mana symbol" title="Green mana">
+                        </i>
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="blue" value="U">
+                    <label for="blue" tabindex="0" aria-label="filter cards by blue mana" tooltip="Blue mana">
+                        <i>
+                            <img loading="lazy" src="/images/symbols/U.svg" alt="Blue mana symbol" title="Blue mana">
+                        </i>
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="white" value="W">
+                    <label for="white" tabindex="0" aria-label="filter cards by white mana" tooltip="White mana">
+                        <i>
+                            <img loading="lazy" src="/images/symbols/W.svg" alt="White mana symbol" title="White mana">
+                        </i>
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="colorless" value="C">
+                    <label for="colorless" tabindex="0" aria-label="filter cards by colorless mana" tooltip="Colorless mana">
+                        <i>
+                            <img loading="lazy" src="/images/symbols/C.svg" alt="Colorless mana symbol" title="Colorless mana">
+                        </i>
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="snow" value="S">
+                    <label for="snow" tabindex="0" aria-label="filter cards by snow mana" tooltip="Snow mana">
+                        <i>
+                            <img loading="lazy" src="/images/symbols/S.svg" alt="Snow mana symbol" title="Snow mana">
+                        </i>
+                    </label>
+                </div>
+            </div>
+            <div class="w-full" grid="columns 2 gap-1">
+                <div class="select">
+                    <label for="type">Type</label>
+                    <select id="type" required>
+                        <option selected value="">Any</option>
+                    </select>
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </i>
+                </div>
+                <div class="select">
+                    <label for="type">Subtype</label>
+                    <select id="type" required>
+                        <option selected value="">Any</option>
+                    </select>
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </i>
+                </div>
+                <div class="select">
+                    <label for="type">Keywords</label>
+                    <select id="type" required>
+                        <option selected value="">Any</option>
+                    </select>
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </i>
+                </div>
+                <div class="select">
+                    <label for="type">Rarity</label>
+                    <select id="type" required>
+                        <option selected value="">Any</option>
+                    </select>
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </i>
+                </div>
+            </div>
+        </card-filter-menu>
     </div>
     <div class="card-grid" layout="@Layout.ToString()">
         @if(IsLoading){
@@ -77,12 +239,17 @@
                                         </g>
                                     </svg>
                                 </i>
-                                <img class="radius-0.5 card-image" draggable="false" src="http://api.divinedrop.local/v1/image/@Cards[i].Front" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
+                                <img class="radius-0.5 card-image shadow-sm" draggable="false" src="http://api.divinedrop.local/v1/image/@Cards[i].Front" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
                             </div>
                             <div class="w-full" style="flex: 1;">
                                 <h2 class="block mb-0.25 line-normal font-grey-800 font-bold font-lg">@Card.Name</h2>
-                                <h3 class="block mb-0.5 line-normal font-grey-800 font-sm font-bold">@Card.Type @(String.IsNullOrEmpty(Subtypes) ? "" : "- " + Subtypes)</h3>
-                                <card-text class="block w-full line-normal font-grey-700 font-sm">@Card.Text</card-text>
+                                <h3 class="block line-normal font-grey-800 font-sm font-bold">@Card.Type @(String.IsNullOrEmpty(Subtypes) ? "" : "- " + Subtypes)</h3>
+                                @if(!String.IsNullOrEmpty(Card.Text)){
+                                    <card-text class="block w-full line-normal font-grey-700 font-sm mt-0.5">@Card.Text</card-text>
+                                }
+                                @if(!String.IsNullOrEmpty(Card.FlavorText)){
+                                    <p class="block w-full line-normal mt-0.5 font-grey-700 font-sm font-style-italic">@Card.FlavorText</p>
+                                }
                             </div>
                         </div>
                         break;

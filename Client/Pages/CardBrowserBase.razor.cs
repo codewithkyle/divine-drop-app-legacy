@@ -5,6 +5,7 @@ using Client.Models.Data;
 using System.Timers;
 using Microsoft.JSInterop;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Components;
 
 namespace Client.Pages
 {
@@ -101,6 +102,10 @@ namespace Client.Pages
                 Page = 1;
             }
             SearchCards();
+        }
+        public void UpdateSort(ChangeEventArgs e)
+        {
+            Console.WriteLine(e.Value.ToString());
         }
     }
 }

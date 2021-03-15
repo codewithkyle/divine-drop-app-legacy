@@ -43,6 +43,18 @@ button {
 	}
 }
 
+.font-style-italic {
+	font-style: italic;
+}
+
+.font-style-underline {
+	text-decoration: underline;
+}
+
+.font-style-dotted {
+	text-decoration: dotted;
+}
+
 * {
 	user-select: none;
 }

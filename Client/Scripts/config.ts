@@ -27,4 +27,6 @@ const stylesheets = [
 	"/css/full-modal.css",
 	"/css/edit-profile-modal.css",
 	"/css/card-browser.css",
+	"/css/radio.css",
+	"/css/select.css",
 ];
