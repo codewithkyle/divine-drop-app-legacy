@@ -45,12 +45,13 @@ class IngestService
                 "front" => $frontImageUid ?? null,
                 "back" => $backImageUid ?? null,
             ]);
+            Log::info("Created card: " . $card->name);
         } else {
             if (!is_null($front)) {
-                $frontImageUid = $imageService->saveImage($front, 1, $card->front);
+                $imageService->saveImage($front, 1, $card->front);
             }
             if (!is_null($back)) {
-                $backImageUid = $imageService->saveImage($back, 1, $card->back);
+                $imageService->saveImage($back, 1, $card->back);
             }
             $card->name = $params["name"];
             $card->slug = $slug;
@@ -62,12 +63,11 @@ class IngestService
             $card->vitality = $params["vitalitys"];
             $card->faceNames = $params["faceNames"];
             $card->manaCosts = $params["manaCosts"];
+            $card->totalManaCosts = $params["totalManaCost"];
             $card->subtypes = $params["subtypes"];
             $card->legalities = $params["legalities"];
             $card->colors = $params["colors"];
             $card->keywords = $params["keywords"];
-            $card->front = $frontImageUid ?? null;
-            $card->back = $backImageUid ?? null;
             $card->save();
         }
     }

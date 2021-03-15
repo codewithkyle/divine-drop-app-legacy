@@ -27,6 +27,12 @@ namespace Client.Pages
         public string[] Subtypes = {};
         public string[] Keywords = {};
         public string[] Rarities = {"Common", "Uncommon", "Rare", "Mythic"};
+        public List<string> Colors = new List<string>();
+        public string Sort = "abc";
+        public string Rarity = "";
+        public string Type = "";
+        public string Subtype = "";
+        public string Keyword = "";
         protected override async Task Main()
         {
 			SearchDebouceTimer = new Timer(600);
@@ -54,20 +60,21 @@ namespace Client.Pages
             SearchDebouceTimer.Stop();
             IsLoading = true;
             StateHasChanged();
-            string[] keys = {"Name", "Text", "FlavorText"};
-			Cards = await JSRuntime.InvokeAsync<List<Card>>("Search", "cards", Search, keys, Page, 36);
+			Cards = await JSRuntime.InvokeAsync<List<Card>>("SearchCards", Search, Page, Type, Subtype, Keyword, Rarity, Colors, Sort);
+            TotalCards = await JSRuntime.InvokeAsync<int>("CountCards", Search, Page, Type, Subtype, Keyword, Rarity, Colors, Sort);
+            TotalPages = (int)Math.Ceiling((decimal)TotalCards / 36);
             IsLoading = false;
             StateHasChanged();
             await JSRuntime.InvokeVoidAsync("ResetScroll");
+        }
+        private void Reset(){
+            Page = 1;
+            SearchCards();
         }
         public async void DebounceCallback(Object source, ElapsedEventArgs e)
 		{
             Page = 1;
 			await SearchCards();
-            string[] keys = {"Name", "Text", "FlavorText"};
-            TotalCards = await JSRuntime.InvokeAsync<int>("Count", "cards", Search, keys);
-			TotalPages = (int)Math.Ceiling((decimal)TotalCards / 36);
-            StateHasChanged();
 		}
         public void DebounceSearch()
 		{
@@ -112,11 +119,41 @@ namespace Client.Pages
         }
         public void UpdateSort(ChangeEventArgs e)
         {
-            Console.WriteLine(e.Value.ToString());
+            Sort = e.Value.ToString();
+            Reset();
         }
         public void UpdateRarityFilter(ChangeEventArgs e)
         {
-            Console.WriteLine(e.Value.ToString());
+            Rarity = e.Value.ToString();
+            Reset();
+        }
+        public void UpdateTypeFilter(ChangeEventArgs e)
+        {
+            Type = e.Value.ToString();
+            Reset();
+        }
+        public void UpdateSubtypeFilter(ChangeEventArgs e)
+        {
+            Subtype = e.Value.ToString();
+            Reset();
+        }
+        public void UpdateKeywordFilter(ChangeEventArgs e)
+        {
+            Keyword = e.Value.ToString();
+            Reset();
+        }
+        public void UpdateColorFilter(string color, bool enabled)
+        {
+            int index = Colors.IndexOf(color);
+            if (enabled && index == -1)
+            {
+                Colors.Add(color);
+            }
+            else
+            {
+                Colors.RemoveAt(index);
+            }
+            Reset();
         }
     }
 }

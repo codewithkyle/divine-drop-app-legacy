@@ -261,3 +261,39 @@ function GetCardKeywords(): Promise<Array<string>> {
 		}
 	});
 }
+
+function SearchCards(query: string, page: number, type: string, subtype: string, keyword: string, rarity: string, colors: Array<string>, sort: string): Promise<Array<unknown>> {
+	return new Promise((resolve) => {
+		idbManager.send(
+			"search-cards",
+			{
+				query: query,
+				page: page,
+				type: type,
+				subtype: subtype,
+				rarity: rarity,
+				colors: colors,
+				sort: sort,
+			},
+			resolve
+		);
+	});
+}
+
+function CountCards(query: string, page: number, type: string, subtype: string, keyword: string, rarity: string, colors: Array<string>, sort: string): Promise<Array<unknown>> {
+	return new Promise((resolve) => {
+		idbManager.send(
+			"count-cards",
+			{
+				query: query,
+				page: page,
+				type: type,
+				subtype: subtype,
+				rarity: rarity,
+				colors: colors,
+				sort: sort,
+			},
+			resolve
+		);
+	});
+}

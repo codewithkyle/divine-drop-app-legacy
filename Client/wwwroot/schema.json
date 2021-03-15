@@ -65,6 +65,9 @@
 					"key": "ManaCosts"
 				},
 				{
+					"key": "TotalManaCost"
+				},
+				{
 					"key": "Subtypes"
 				},
 				{

@@ -63,6 +63,16 @@ class IDBWorker {
 		const origin = e?.origin ?? null;
 		const { type, data, uid } = messageEventData;
 		switch (type) {
+			case "count-cards":
+				this.countCards(data).then((results) => {
+					this.send("response", results, uid, origin);
+				});
+				break;
+			case "search-cards":
+				this.getCards(data).then((results) => {
+					this.send("response", results, uid, origin);
+				});
+				break;
 			case "get-card-keywords":
 				this.getCardKeywords().then((results) => {
 					this.send("response", results, uid, origin);
@@ -514,7 +524,7 @@ class IDBWorker {
 				output.push(rows[i].Type);
 			}
 		}
-		return output;
+		return output.sort();
 	}
 
 	private async getCardSubtypes(): Promise<Array<string>> {
@@ -527,7 +537,7 @@ class IDBWorker {
 				}
 			}
 		}
-		return output;
+		return output.sort();
 	}
 
 	private async getCardKeywords(): Promise<Array<string>> {
@@ -540,7 +550,191 @@ class IDBWorker {
 				}
 			}
 		}
+		return output.sort();
+	}
+
+	private async searchCards({ query, page, type, subtype, rarity, colors, sort }): Promise<Array<unknown>> {
+		const rows: Array<any> = await this.db.getAll("cards");
+		let output = [];
+		let filteredOutput = [];
+
+		if (query.length) {
+			output = this.fuzzySearch(rows, query, ["Name", "Text", "FlavorText"]);
+		} else {
+			output = rows;
+		}
+
+		if (rarity.length) {
+			for (let i = 0; i < output.length; i++) {
+				if (output[i].Rarity === rarity) {
+					filteredOutput.push(output[i]);
+				}
+			}
+			output = filteredOutput;
+			filteredOutput = [];
+		}
+
+		if (type.length) {
+			for (let i = 0; i < output.length; i++) {
+				if (output[i].Type === type) {
+					filteredOutput.push(output[i]);
+				}
+			}
+			output = filteredOutput;
+			filteredOutput = [];
+		}
+
+		if (subtype.length) {
+			for (let i = 0; i < output.length; i++) {
+				for (let k = 0; k < output[i].Subtypes.length; k++) {
+					if (output[i].Subtypes[k] === subtype) {
+						filteredOutput.push(output[i]);
+						break;
+					}
+				}
+			}
+			output = filteredOutput;
+			filteredOutput = [];
+		}
+
+		if (colors.length) {
+			const blacklist = ["R", "G", "B", "U", "S", "W"];
+			for (let b = blacklist.length - 1; b >= 0; b--) {
+				for (let i = 0; i < colors.length; i++) {
+					if (blacklist[b] === colors[i]) {
+						blacklist.splice(b, 1);
+					}
+				}
+			}
+			for (let i = 0; i < output.length; i++) {
+				let containsExtraColor = false;
+				if (colors.length > 1 || (colors.length === 1 && colors[0] !== "C")) {
+					if (colors.length === 1) {
+						if (output[i].Colors.length) {
+							for (let k = 0; k < output[i].Colors.length; k++) {
+								if (!colors.includes(output[i].Colors[k])) {
+									containsExtraColor = true;
+									break;
+								}
+							}
+						} else {
+							if (!colors.includes("C")) {
+								containsExtraColor = true;
+							}
+						}
+					} else {
+						const indexOfColorless = colors.indexOf("C");
+						if (indexOfColorless !== -1) {
+							colors.splice(indexOfColorless, 1);
+						}
+						for (let j = 0; j < colors.length; j++) {
+							if (!output[i].Colors.includes(colors[j])) {
+								containsExtraColor = true;
+								break;
+							}
+						}
+						for (let j = 0; j < blacklist.length; j++) {
+							if (output[i].Colors.includes(blacklist[j])) {
+								containsExtraColor = true;
+								break;
+							}
+						}
+					}
+				} else if (output[i].Colors.length) {
+					containsExtraColor = true;
+				}
+				if (!containsExtraColor) {
+					filteredOutput.push(output[i]);
+				}
+			}
+			output = filteredOutput;
+			filteredOutput = [];
+		}
+
+		switch (sort) {
+			case "toughness-high":
+				output = output.sort((a, b) => {
+					let aVal = parseInt(a.Vitality?.[0]?.Toughness ?? 0);
+					if (isNaN(aVal)) {
+						aVal = 9999;
+					}
+					let bVal = parseInt(b.Vitality?.[0]?.Toughness ?? 0);
+					if (isNaN(bVal)) {
+						aVal = 9999;
+					}
+					return aVal < bVal ? 1 : -1;
+				});
+				break;
+			case "toughness-low":
+				output = output.sort((a, b) => {
+					let aVal = parseInt(a.Vitality?.[0]?.Toughness ?? 0);
+					if (isNaN(aVal)) {
+						aVal = 9999;
+					}
+					let bVal = parseInt(b.Vitality?.[0]?.Toughness ?? 0);
+					if (isNaN(bVal)) {
+						aVal = 9999;
+					}
+					return aVal > bVal ? 1 : -1;
+				});
+				break;
+			case "power-high":
+				output = output.sort((a, b) => {
+					let aVal = parseInt(a.Vitality?.[0]?.Power ?? 0);
+					if (isNaN(aVal)) {
+						aVal = 9999;
+					}
+					let bVal = parseInt(b.Vitality?.[0]?.Power ?? 0);
+					if (isNaN(bVal)) {
+						aVal = 9999;
+					}
+					return aVal < bVal ? 1 : -1;
+				});
+				break;
+			case "power-low":
+				output = output.sort((a, b) => {
+					let aVal = parseInt(a.Vitality?.[0]?.Power ?? 0);
+					if (isNaN(aVal)) {
+						aVal = 9999;
+					}
+					let bVal = parseInt(b.Vitality?.[0]?.Power ?? 0);
+					if (isNaN(bVal)) {
+						aVal = 9999;
+					}
+					return aVal > bVal ? 1 : -1;
+				});
+				break;
+			case "mana-high":
+				output = output.sort((a, b) => {
+					return a.TotalManaCost < b.TotalManaCost ? 1 : -1;
+				});
+				break;
+			case "mana-low":
+				output = output.sort((a, b) => {
+					return a.TotalManaCost > b.TotalManaCost ? 1 : -1;
+				});
+				break;
+			default:
+				output = output.sort((a, b) => {
+					return a.Name > b.Name ? 1 : -1;
+				});
+				break;
+		}
+
 		return output;
+	}
+
+	private async getCards(data): Promise<Array<unknown>> {
+		let output = await this.searchCards(data);
+		let start = (data.page - 1) * 36;
+		let end = data.page * 36;
+		output = output.slice(start, end);
+		return output;
+	}
+
+	private async countCards(data): Promise<number> {
+		const output = await this.searchCards(data);
+		return output.length;
 	}
 }
 new IDBWorker();

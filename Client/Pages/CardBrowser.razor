@@ -83,7 +83,7 @@
         <card-filter-menu tabindex="0">
             <div class="color-checkboxes mb-1.5">
                 <div>
-                    <input type="checkbox" id="black" value="B">
+                    <input type="checkbox" id="black" value="B" @onchange="@(e => UpdateColorFilter("B", (bool)e.Value))">
                     <label for="black" tabindex="0" aria-label="filter cards by black mana" tooltip="Black mana">
                         <i>
                             <img loading="lazy" src="/images/symbols/B.svg" alt="Black mana symbol" title="Black mana">
@@ -91,7 +91,7 @@
                     </label>
                 </div>
                 <div>
-                    <input type="checkbox" id="red" value="R">
+                    <input type="checkbox" id="red" value="R" @onchange="@(e => UpdateColorFilter("R", (bool)e.Value))">
                     <label for="red" tabindex="0" aria-label="filter cards by red mana" tooltip="Red mana">
                         <i>
                             <img loading="lazy" src="/images/symbols/R.svg" alt="Red mana symbol" title="Red mana">
@@ -99,7 +99,7 @@
                     </label>
                 </div>
                 <div>
-                    <input type="checkbox" id="green" value="G">
+                    <input type="checkbox" id="green" value="G" @onchange="@(e => UpdateColorFilter("G", (bool)e.Value))">
                     <label for="green" tabindex="0" aria-label="filter cards by green mana" tooltip="Green mana">
                         <i>
                             <img loading="lazy" src="/images/symbols/G.svg" alt="Green mana symbol" title="Green mana">
@@ -107,7 +107,7 @@
                     </label>
                 </div>
                 <div>
-                    <input type="checkbox" id="blue" value="U">
+                    <input type="checkbox" id="blue" value="U" @onchange="@(e => UpdateColorFilter("U", (bool)e.Value))">
                     <label for="blue" tabindex="0" aria-label="filter cards by blue mana" tooltip="Blue mana">
                         <i>
                             <img loading="lazy" src="/images/symbols/U.svg" alt="Blue mana symbol" title="Blue mana">
@@ -115,7 +115,7 @@
                     </label>
                 </div>
                 <div>
-                    <input type="checkbox" id="white" value="W">
+                    <input type="checkbox" id="white" value="W" @onchange="@(e => UpdateColorFilter("W", (bool)e.Value))">
                     <label for="white" tabindex="0" aria-label="filter cards by white mana" tooltip="White mana">
                         <i>
                             <img loading="lazy" src="/images/symbols/W.svg" alt="White mana symbol" title="White mana">
@@ -123,7 +123,7 @@
                     </label>
                 </div>
                 <div>
-                    <input type="checkbox" id="colorless" value="C">
+                    <input type="checkbox" id="colorless" value="C" @onchange="@(e => UpdateColorFilter("C", (bool)e.Value))">
                     <label for="colorless" tabindex="0" aria-label="filter cards by colorless mana" tooltip="Colorless mana">
                         <i>
                             <img loading="lazy" src="/images/symbols/C.svg" alt="Colorless mana symbol" title="Colorless mana">
@@ -131,7 +131,7 @@
                     </label>
                 </div>
                 <div>
-                    <input type="checkbox" id="snow" value="S">
+                    <input type="checkbox" id="snow" value="S" @onchange="@(e => UpdateColorFilter("S", (bool)e.Value))">
                     <label for="snow" tabindex="0" aria-label="filter cards by snow mana" tooltip="Snow mana">
                         <i>
                             <img loading="lazy" src="/images/symbols/S.svg" alt="Snow mana symbol" title="Snow mana">
@@ -142,7 +142,7 @@
             <div class="w-full" grid="columns 2 gap-1">
                 <div class="select">
                     <label for="type">Type</label>
-                    <select id="type">
+                    <select id="type" @onchange="UpdateTypeFilter">
                         <option selected value="">Any</option>
                         @for (int i = 0; i < Types.Length; i++){
                             <option value="@Types[i]">@Types[i]</option>
@@ -156,7 +156,7 @@
                 </div>
                 <div class="select">
                     <label for="type">Subtype</label>
-                    <select id="type">
+                    <select id="type" @onchange="UpdateSubtypeFilter">
                         <option selected value="">Any</option>
                         @for (int i = 0; i < Subtypes.Length; i++){
                             <option value="@Subtypes[i]">@Subtypes[i]</option>
@@ -170,7 +170,7 @@
                 </div>
                 <div class="select">
                     <label for="type">Keywords</label>
-                    <select id="type">
+                    <select id="type" @onchange="UpdateKeywordFilter">
                         <option selected value="">Any</option>
                         @for (int i = 0; i < Keywords.Length; i++){
                             <option value="@Keywords[i]">@Keywords[i]</option>
@@ -292,5 +292,8 @@
             <button @onclick="Back" class="button -solid -primary -rounded mx-0.5" disabled="@(Page == 1)">Back</button>
             <button @onclick="Next" class="button -solid -primary -rounded mx-0.5" disabled="@(Page == TotalPages)">Next</button>
         </div>
+    }
+    @if(Cards.Count == 0){
+        <p class="block text-center font-lg font-grey-700 font-lg font-medium py-6">No cards matched your settings. Try adjusting the filters.</p>
     }
 </div>

@@ -54,6 +54,7 @@ class RefreshCardsJob extends UniqueJob
                         "Vitality" => $vitality,
                         "FaceNames" => $card->faceNames,
                         "ManaCosts" => $card->manaCosts,
+                        "TotalManaCost" => $card->totalManaCosts,
                         "Subtypes" => $card->subtypes,
                         "Colors" => $card->colors,
                         "Keywords" => $card->keywords,
