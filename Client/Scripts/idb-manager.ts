@@ -216,3 +216,48 @@ function Delete(table: string, key: string): Promise<boolean> {
 		);
 	});
 }
+
+function GetCardTypes(): Promise<Array<string>> {
+	return new Promise((resolve) => {
+		if (localStorage.getItem("types")) {
+			resolve(JSON.parse(localStorage.getItem("types")));
+		} else {
+			new Promise((resolveFirst) => {
+				idbManager.send("get-card-types", null, resolveFirst);
+			}).then((results: Array<string>) => {
+				localStorage.setItem("types", JSON.stringify(results));
+				resolve(results);
+			});
+		}
+	});
+}
+
+function GetCardSubtypes(): Promise<Array<string>> {
+	return new Promise((resolve) => {
+		if (localStorage.getItem("subtypes")) {
+			resolve(JSON.parse(localStorage.getItem("subtypes")));
+		} else {
+			new Promise((resolveFirst) => {
+				idbManager.send("get-card-subtypes", null, resolveFirst);
+			}).then((results: Array<string>) => {
+				localStorage.setItem("subtypes", JSON.stringify(results));
+				resolve(results);
+			});
+		}
+	});
+}
+
+function GetCardKeywords(): Promise<Array<string>> {
+	return new Promise((resolve) => {
+		if (localStorage.getItem("keywords")) {
+			resolve(JSON.parse(localStorage.getItem("keywords")));
+		} else {
+			new Promise((resolveFirst) => {
+				idbManager.send("get-card-keywords", null, resolveFirst);
+			}).then((results: Array<string>) => {
+				localStorage.setItem("keywords", JSON.stringify(results));
+				resolve(results);
+			});
+		}
+	});
+}

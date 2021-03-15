@@ -63,6 +63,21 @@ class IDBWorker {
 		const origin = e?.origin ?? null;
 		const { type, data, uid } = messageEventData;
 		switch (type) {
+			case "get-card-keywords":
+				this.getCardKeywords().then((results) => {
+					this.send("response", results, uid, origin);
+				});
+				break;
+			case "get-card-subtypes":
+				this.getCardSubtypes().then((results) => {
+					this.send("response", results, uid, origin);
+				});
+				break;
+			case "get-card-types":
+				this.getCardTypes().then((results) => {
+					this.send("response", results, uid, origin);
+				});
+				break;
 			case "delete":
 				this.delete(data)
 					.then(() => {
@@ -487,6 +502,43 @@ class IDBWorker {
 			output = rows.slice(start, end);
 		} else {
 			output = rows;
+		}
+		return output;
+	}
+
+	private async getCardTypes(): Promise<Array<string>> {
+		const rows: Array<any> = await this.db.getAll("cards");
+		const output = [];
+		for (let i = 0; i < rows.length; i++) {
+			if (!output.includes(rows[i].Type)) {
+				output.push(rows[i].Type);
+			}
+		}
+		return output;
+	}
+
+	private async getCardSubtypes(): Promise<Array<string>> {
+		const rows: Array<any> = await this.db.getAll("cards");
+		const output = [];
+		for (let i = 0; i < rows.length; i++) {
+			for (let k = 0; k < rows[i].Subtypes.length; k++) {
+				if (!output.includes(rows[i].Subtypes[k])) {
+					output.push(rows[i].Subtypes[k]);
+				}
+			}
+		}
+		return output;
+	}
+
+	private async getCardKeywords(): Promise<Array<string>> {
+		const rows: Array<any> = await this.db.getAll("cards");
+		const output = [];
+		for (let i = 0; i < rows.length; i++) {
+			for (let k = 0; k < rows[i].Keywords.length; k++) {
+				if (!output.includes(rows[i].Keywords[k])) {
+					output.push(rows[i].Keywords[k]);
+				}
+			}
 		}
 		return output;
 	}

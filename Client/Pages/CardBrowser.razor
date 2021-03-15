@@ -80,7 +80,7 @@
             </i>
             Filters
         </button>
-        <card-filter-menu>
+        <card-filter-menu tabindex="0">
             <div class="color-checkboxes mb-1.5">
                 <div>
                     <input type="checkbox" id="black" value="B">
@@ -142,8 +142,11 @@
             <div class="w-full" grid="columns 2 gap-1">
                 <div class="select">
                     <label for="type">Type</label>
-                    <select id="type" required>
+                    <select id="type">
                         <option selected value="">Any</option>
+                        @for (int i = 0; i < Types.Length; i++){
+                            <option value="@Types[i]">@Types[i]</option>
+                        }
                     </select>
                     <i>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -153,8 +156,11 @@
                 </div>
                 <div class="select">
                     <label for="type">Subtype</label>
-                    <select id="type" required>
+                    <select id="type">
                         <option selected value="">Any</option>
+                        @for (int i = 0; i < Subtypes.Length; i++){
+                            <option value="@Subtypes[i]">@Subtypes[i]</option>
+                        }
                     </select>
                     <i>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -164,8 +170,11 @@
                 </div>
                 <div class="select">
                     <label for="type">Keywords</label>
-                    <select id="type" required>
+                    <select id="type">
                         <option selected value="">Any</option>
+                        @for (int i = 0; i < Keywords.Length; i++){
+                            <option value="@Keywords[i]">@Keywords[i]</option>
+                        }
                     </select>
                     <i>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -175,8 +184,11 @@
                 </div>
                 <div class="select">
                     <label for="type">Rarity</label>
-                    <select id="type" required>
+                    <select id="type" @onchange="UpdateRarityFilter">
                         <option selected value="">Any</option>
+                        @for (int i = 0; i < Rarities.Length; i++){
+                            <option value="@Rarities[i].ToLower()">@Rarities[i]</option>
+                        }
                     </select>
                     <i>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

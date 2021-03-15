@@ -23,6 +23,10 @@ namespace Client.Pages
         public int Page = 1;
         public int TotalCards = 0;
         public int TotalPages = 1;
+        public string[] Types = {};
+        public string[] Subtypes = {};
+        public string[] Keywords = {};
+        public string[] Rarities = {"Common", "Uncommon", "Rare", "Mythic"};
         protected override async Task Main()
         {
 			SearchDebouceTimer = new Timer(600);
@@ -40,6 +44,9 @@ namespace Client.Pages
                         break;
                 }
             }
+            Types = await JSRuntime.InvokeAsync<string[]>("GetCardTypes");
+            Subtypes = await JSRuntime.InvokeAsync<string[]>("GetCardSubtypes");
+            Keywords = await JSRuntime.InvokeAsync<string[]>("GetCardKeywords");
             await SearchCards();
         }
         public async Task SearchCards()
@@ -104,6 +111,10 @@ namespace Client.Pages
             SearchCards();
         }
         public void UpdateSort(ChangeEventArgs e)
+        {
+            Console.WriteLine(e.Value.ToString());
+        }
+        public void UpdateRarityFilter(ChangeEventArgs e)
         {
             Console.WriteLine(e.Value.ToString());
         }

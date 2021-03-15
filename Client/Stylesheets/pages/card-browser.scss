@@ -120,6 +120,10 @@
 			pointer-events: all;
 		}
 
+		select {
+			text-transform: capitalize;
+		}
+
 		.color-checkboxes {
 			display: grid;
 			gap: 1rem;
