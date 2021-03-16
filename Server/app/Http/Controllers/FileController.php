@@ -12,6 +12,26 @@ use App\Facades\File;
 
 class FileController extends Controller
 {
+    public function getCardImage(string $uid, Request $request)
+    {
+        try {
+            $imageService = new ImageService();
+            $side = $request->input("side", "front");
+            $response = $imageService->getCardImage($uid, $side);
+            return response($response["Body"], 200, [
+                "Content-Type" => $response["ContentType"],
+                "Access-Control-Allow-Credentials" => "true",
+                "Access-Control-Allow-Origin" => rtrim(getenv("APP_URL"), "/"),
+                "Access-Control-Allow-Methods" => "GET, OPTIONS",
+                "Access-Control-Max-Age" => "86400",
+                "Cache-Control" => "public",
+                "Access-Control-Allow-Headers" => "Content-Type, Authorization, X-Requested-With, Accept",
+            ]);
+        } catch (Exception $e) {
+            return response($e->getMessage(), $e->getStatusCode());
+        }
+    }
+
     public function getImage(string $uid, Request $request)
     {
         try {

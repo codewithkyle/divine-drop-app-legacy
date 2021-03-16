@@ -32,6 +32,7 @@ $router->group(["prefix" => "v1"], function () use ($router) {
         $router->post("deck", "DeckController@updateDeck");
         $router->get("deck/{uid}", "DeckController@getDeck");
         $router->delete("deck/{uid}", "DeckController@deleteDeck");
+        $router->get("card/{uid}/image", "FileController@getCardImage");
     });
 
     $router->group(["prefix" => "user", "middleware" => "user"], function () use ($router) {

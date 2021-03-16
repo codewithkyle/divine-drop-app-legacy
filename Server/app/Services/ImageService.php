@@ -12,12 +12,34 @@ use Illuminate\Support\Facades\Queue;
 use codewithkyle\JitterCore\Jitter;
 
 use App\Models\Image;
+use App\Models\Card;
 use App\Facades\File;
 use App\Models\TransformedImage;
 use App\Jobs\PurgeTransformedImagesJob;
 
 class ImageService
 {
+    public function getCardImage(string $cardUid, string $side)
+    {
+        $card = Card::where("uid", $cardUid)->first();
+        if (empty($card)) {
+            throw new Exception(404, "Card does not exist.");
+        }
+        switch ($side) {
+            case "back":
+                $image = Image::where("uid", $card->back)->first();
+                break;
+            default:
+                $image = Image::where("uid", $card->front)->first();
+                break;
+        }
+        if (empty($image)) {
+            throw new Exception(404, "Image does not exist.");
+        }
+        $file = File::Get($image->key);
+        return $file;
+    }
+
     public function deleteImage(string $uid, int $userId): void
     {
         $image = Image::where("uid", $uid)->first();
