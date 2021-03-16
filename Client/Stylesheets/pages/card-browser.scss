@@ -72,6 +72,19 @@
 				width: 100%;
 				border-radius: 0.5rem;
 
+				&.do-hover {
+					transition: all 150ms var(--ease-in-out);
+
+					&:hover,
+					&:focus-visible {
+						transform: scale(1.025);
+					}
+
+					&:active {
+						transform: scale(0.985);
+					}
+				}
+
 				img {
 					position: absolute;
 					top: 0;

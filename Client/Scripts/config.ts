@@ -30,4 +30,5 @@ const stylesheets = [
 	"/css/radio.css",
 	"/css/select.css",
 	"/css/deck-browser.css",
+	"/css/deck-drawer.css",
 ];

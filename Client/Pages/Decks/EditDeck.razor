@@ -2,6 +2,340 @@
 @page "/decks/edit/{UID}"
 @inherits EditDeckBase
 
-@if (Ready){
-    
-}
+
+<div class="card-browser">
+    <div class="w-full my-1" flex="row nowrap">
+        <button tooltip="Switch layout" class="button -text -grey -icon-only -tall -round mr-0.25" @onclick="CycleView">
+            <i class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+            </i>
+        </button>
+        <button class="button -grey -text -icon-only -tall -round mr-0.5 sort-bttn" tooltip="Sort results" aria-label="open sort menu">
+            <i class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                </svg>
+            </i>
+        </button>
+        <card-sort-menu>
+            <div class="radio">
+                <input type="radio"  name="card-sort" id="alphabetical" tabindex="0" value="abc" checked @onchange="UpdateSort" />
+                <label tabindex="0" for="alphabetical">
+                    <i></i>
+                    <span>Alphabetical</span>
+                </label>
+            </div>
+            <div class="radio">
+                <input type="radio"  name="card-sort" id="mana-low" tabindex="0" value="mana-low" @onchange="UpdateSort" />
+                <label tabindex="0" for="mana-low">
+                    <i></i>
+                    <span>Mana Cost (Low to High)</span>
+                </label>
+            </div>
+            <div class="radio">
+                <input type="radio"  name="card-sort" id="mana-high" tabindex="0" value="mana-high" @onchange="UpdateSort" />
+                <label tabindex="0" for="mana-high">
+                    <i></i>
+                    <span>Mana Cost (High to Low)</span>
+                </label>
+            </div>
+            <div class="radio">
+                <input type="radio"  name="card-sort" id="power-low" tabindex="0" value="power-low" @onchange="UpdateSort" />
+                <label tabindex="0" for="power-low">
+                    <i></i>
+                    <span>Power (Low to High)</span>
+                </label>
+            </div>
+            <div class="radio">
+                <input type="radio"  name="card-sort" id="power-high" tabindex="0" value="power-high" @onchange="UpdateSort" />
+                <label tabindex="0" for="power-high">
+                    <i></i>
+                    <span>Power (High to Low)</span>
+                </label>
+            </div>
+            <div class="radio">
+                <input type="radio"  name="card-sort" id="toughness-low" tabindex="0" value="toughness-low" @onchange="UpdateSort" />
+                <label tabindex="0" for="toughness-low">
+                    <i></i>
+                    <span>Toughness (Low to High)</span>
+                </label>
+            </div>
+            <div class="radio">
+                <input type="radio"  name="card-sort" id="toughness-high" tabindex="0" value="toughness-high" @onchange="UpdateSort" />
+                <label tabindex="0" for="toughness-high">
+                    <i></i>
+                    <span>Toughness (High to Low)</span>
+                </label>
+            </div>
+        </card-sort-menu>
+        <div class="input w-full" style="flex: 1;">
+            <input type="search" @bind-value="Search" @bind-value:event="oninput" @onkeyup="DebounceSearch" placeholder="Search cards...">
+        </div>
+        <button class="button -text -grey -rounded ml-0.5 -tall pr-1 pl-0.75 filter-bttn">
+            <i class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                </svg>
+            </i>
+            Filters
+        </button>
+        <card-filter-menu tabindex="0">
+            <div class="color-checkboxes mb-1.5">
+                <div>
+                    <input type="checkbox" id="black" value="B" @onchange="@(e => UpdateColorFilter("B", (bool)e.Value))">
+                    <label for="black" tabindex="0" aria-label="filter cards by black mana" tooltip="Black mana">
+                        <i>
+                            <img loading="lazy" src="/images/symbols/B.svg" alt="Black mana symbol" title="Black mana">
+                        </i>
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="red" value="R" @onchange="@(e => UpdateColorFilter("R", (bool)e.Value))">
+                    <label for="red" tabindex="0" aria-label="filter cards by red mana" tooltip="Red mana">
+                        <i>
+                            <img loading="lazy" src="/images/symbols/R.svg" alt="Red mana symbol" title="Red mana">
+                        </i>
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="green" value="G" @onchange="@(e => UpdateColorFilter("G", (bool)e.Value))">
+                    <label for="green" tabindex="0" aria-label="filter cards by green mana" tooltip="Green mana">
+                        <i>
+                            <img loading="lazy" src="/images/symbols/G.svg" alt="Green mana symbol" title="Green mana">
+                        </i>
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="blue" value="U" @onchange="@(e => UpdateColorFilter("U", (bool)e.Value))">
+                    <label for="blue" tabindex="0" aria-label="filter cards by blue mana" tooltip="Blue mana">
+                        <i>
+                            <img loading="lazy" src="/images/symbols/U.svg" alt="Blue mana symbol" title="Blue mana">
+                        </i>
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="white" value="W" @onchange="@(e => UpdateColorFilter("W", (bool)e.Value))">
+                    <label for="white" tabindex="0" aria-label="filter cards by white mana" tooltip="White mana">
+                        <i>
+                            <img loading="lazy" src="/images/symbols/W.svg" alt="White mana symbol" title="White mana">
+                        </i>
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="colorless" value="C" @onchange="@(e => UpdateColorFilter("C", (bool)e.Value))">
+                    <label for="colorless" tabindex="0" aria-label="filter cards by colorless mana" tooltip="Colorless mana">
+                        <i>
+                            <img loading="lazy" src="/images/symbols/C.svg" alt="Colorless mana symbol" title="Colorless mana">
+                        </i>
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="snow" value="S" @onchange="@(e => UpdateColorFilter("S", (bool)e.Value))">
+                    <label for="snow" tabindex="0" aria-label="filter cards by snow mana" tooltip="Snow mana">
+                        <i>
+                            <img loading="lazy" src="/images/symbols/S.svg" alt="Snow mana symbol" title="Snow mana">
+                        </i>
+                    </label>
+                </div>
+            </div>
+            <div class="w-full" grid="columns 2 gap-1">
+                <div class="select">
+                    <label for="type">Type</label>
+                    <select id="type" @onchange="UpdateTypeFilter">
+                        <option selected value="">Any</option>
+                        @for (int i = 0; i < Types.Length; i++){
+                            <option value="@Types[i]">@Types[i]</option>
+                        }
+                    </select>
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </i>
+                </div>
+                <div class="select">
+                    <label for="type">Subtype</label>
+                    <select id="type" @onchange="UpdateSubtypeFilter">
+                        <option selected value="">Any</option>
+                        @for (int i = 0; i < Subtypes.Length; i++){
+                            <option value="@Subtypes[i]">@Subtypes[i]</option>
+                        }
+                    </select>
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </i>
+                </div>
+                <div class="select">
+                    <label for="type">Keywords</label>
+                    <select id="type" @onchange="UpdateKeywordFilter">
+                        <option selected value="">Any</option>
+                        @for (int i = 0; i < Keywords.Length; i++){
+                            <option value="@Keywords[i]">@Keywords[i]</option>
+                        }
+                    </select>
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </i>
+                </div>
+                <div class="select">
+                    <label for="type">Rarity</label>
+                    <select id="type" @onchange="UpdateRarityFilter">
+                        <option selected value="">Any</option>
+                        @for (int i = 0; i < Rarities.Length; i++){
+                            <option value="@Rarities[i].ToLower()">@Rarities[i]</option>
+                        }
+                    </select>
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </i>
+                </div>
+            </div>
+        </card-filter-menu>
+    </div>
+    <div class="card-grid" layout="@Layout.ToString()">
+        @if(IsLoading){
+           @for (int i = 0; i < 36; i++){
+                @switch (Layout)
+                {
+                    case LayoutType.List:
+                        <div class="w-full bg-white relative border-1 border-solid border-grey-400 radius-0.5 p-0.5" flex="row nowrap">
+                            <div class="ar-12:17 mr-0.5" style="width:200px;">
+                                <div class="skeleton w-full h-full radius-0.5"></div>
+                            </div>
+                            <div class="w-full" style="flex: 1;">
+                                <div class="mb-0.5 skeleton w-full -heading"></div>
+                                <div class="mb-0.5 skeleton w-full -copy"></div>
+                                <div class="mb-0.5 skeleton w-full -copy"></div>
+                                <div class="skeleton w-3/4 -copy"></div>
+                            </div>
+                        </div>
+                        break;
+                    case LayoutType.Card:
+                        <div class="w-full bg-white relative border-1 border-solid border-grey-400 radius-0.5 ar-12:17">
+                            <div class="t-0 l-0 absolute w-full h-full p-0.5">
+                                <div class="skeleton w-full h-full radius-0.5"></div>
+                            </div>
+                        </div>
+                        break;
+                }
+            }
+        } else {
+            for (int i = 0; i < Cards.Count; i++){
+                var Card = Cards[i];
+                @switch (Layout)
+                {
+                    case LayoutType.List:
+                        string Subtypes = "";
+                        for (int t = 0; t < Card.Subtypes.Length; t++){
+                            Subtypes += Card.Subtypes[t] + " ";
+                        }
+                        <div class="card radius-0.5 border-1 border-solid border-grey-400 p-1 shadow-sm">
+                            <div class="inline-block relative ar-12:17 bg-grey-100 radius-0.5 shim" style="width:200px;">
+                                <i class="spinning-icon font-grey-700">
+                                    <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 512 512">
+                                        <g class="fa-group">
+                                            <path class="fa-secondary" fill="currentColor"
+                                                d="M478.71 364.58zm-22 6.11l-27.83-15.9a15.92 15.92 0 0 1-6.94-19.2A184 184 0 1 1 256 72c5.89 0 11.71.29 17.46.83-.74-.07-1.48-.15-2.23-.21-8.49-.69-15.23-7.31-15.23-15.83v-32a16 16 0 0 1 15.34-16C266.24 8.46 261.18 8 256 8 119 8 8 119 8 256s111 248 248 248c98 0 182.42-56.95 222.71-139.42-4.13 7.86-14.23 10.55-22 6.11z"
+                                                opacity="0.4"></path>
+                                            <path class="fa-primary" fill="currentColor"
+                                                d="M271.23 72.62c-8.49-.69-15.23-7.31-15.23-15.83V24.73c0-9.11 7.67-16.78 16.77-16.17C401.92 17.18 504 124.67 504 256a246 246 0 0 1-25 108.24c-4 8.17-14.37 11-22.26 6.45l-27.84-15.9c-7.41-4.23-9.83-13.35-6.2-21.07A182.53 182.53 0 0 0 440 256c0-96.49-74.27-175.63-168.77-183.38z">
+                                            </path>
+                                        </g>
+                                    </svg>
+                                </i>
+                                <img class="radius-0.5 card-image shadow-sm" draggable="false" src="http://api.divinedrop.local/v1/image/@Cards[i].Front" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
+                            </div>
+                            <div class="w-full" style="flex: 1;">
+                                <h2 class="block mb-0.25 line-normal font-grey-800 font-bold font-lg">@Card.Name</h2>
+                                <h3 class="block line-normal font-grey-800 font-sm font-bold">@Card.Type @(String.IsNullOrEmpty(Subtypes) ? "" : "- " + Subtypes)</h3>
+                                @if(!String.IsNullOrEmpty(Card.Text)){
+                                    <card-text class="block w-full line-normal font-grey-700 font-sm mt-0.5">@Card.Text</card-text>
+                                }
+                                @if(!String.IsNullOrEmpty(Card.FlavorText)){
+                                    <p class="block w-full line-normal mt-0.5 font-grey-700 font-sm font-style-italic">@Card.FlavorText</p>
+                                }
+                                <button @onclick="@(e => AddCard(Card.UID))" class="button -solid -primary -icon -rounded mt-1">
+                                    <i class="icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </i>
+                                    Add to Deck
+                                </button>
+                            </div>
+                        </div>
+                        break;
+                    case LayoutType.Card:
+                        <div class="inline-block w-full ar-12:17 card do-hover" style="cursor: copy;" @onclick="@(e => AddCard(Card.UID))">
+                            <i class="spinning-icon font-grey-700">
+                                <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 512 512">
+                                    <g class="fa-group">
+                                        <path class="fa-secondary" fill="currentColor"
+                                            d="M478.71 364.58zm-22 6.11l-27.83-15.9a15.92 15.92 0 0 1-6.94-19.2A184 184 0 1 1 256 72c5.89 0 11.71.29 17.46.83-.74-.07-1.48-.15-2.23-.21-8.49-.69-15.23-7.31-15.23-15.83v-32a16 16 0 0 1 15.34-16C266.24 8.46 261.18 8 256 8 119 8 8 119 8 256s111 248 248 248c98 0 182.42-56.95 222.71-139.42-4.13 7.86-14.23 10.55-22 6.11z"
+                                            opacity="0.4"></path>
+                                        <path class="fa-primary" fill="currentColor"
+                                            d="M271.23 72.62c-8.49-.69-15.23-7.31-15.23-15.83V24.73c0-9.11 7.67-16.78 16.77-16.17C401.92 17.18 504 124.67 504 256a246 246 0 0 1-25 108.24c-4 8.17-14.37 11-22.26 6.45l-27.84-15.9c-7.41-4.23-9.83-13.35-6.2-21.07A182.53 182.53 0 0 0 440 256c0-96.49-74.27-175.63-168.77-183.38z">
+                                        </path>
+                                    </g>
+                                </svg>
+                            </i>
+                            <img draggable="false" src="http://api.divinedrop.local/v1/image/@Cards[i].Front" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
+                        </div>
+                        break;
+                }
+            }
+        }
+    </div>
+    @if(!IsLoading && TotalPages > 1){
+        <div class="block w-full py-2 text-center">
+            <button @onclick="Back" class="button -solid -primary -rounded mx-0.5" disabled="@(Page == 1)">Back</button>
+            <button @onclick="Next" class="button -solid -primary -rounded mx-0.5" disabled="@(Page == TotalPages)">Next</button>
+        </div>
+    }
+    @if(Cards.Count == 0){
+        <p class="block text-center font-lg font-grey-700 font-lg font-medium py-6">No cards matched your settings. Try adjusting the filters.</p>
+    }
+</div>
+<aside class="deck-drawer">
+    @if (Ready){
+        <input @bind="DeckName" @onblur="UpdateDeckName" class="deck-name" type="text">
+        for (int i = 0; i < Deck.Cards.Count; i++){
+            var Card = Deck.Cards[i];
+            <div class="w-full mb-1" flex="row nowrap">
+                <img draggable="false" class="radius-0.5 shadow-sm mr-1" src="http://api.divinedrop.local/v1/card/@Card.UID/image" width="200" loading="lazy">
+                <div class="w-full" style="flex: 1;">
+                    <div class="input mb-0.5">
+                        <label for="@Card.UID" @oninput="@(e => UpdateCardQuantity(Card.UID, e.Value.ToString()))"># of Cards</label>
+                        <input class="w-full" min="1" step="1" max="999" id="@Card.UID" type="number" data-card-uid="@Card.UID" value="@Card.Quantity">
+                    </div>
+                    <button class="button -warning -text -round -icon-only" tooltip="@(Card.UID == Deck.Commander ? "Unset commander" : "Set as commander")" @onclick="@(e => ToggleCommander(Card.UID))">
+                        <i class="icon">
+                            @if (Card.UID == Deck.Commander){
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="star" class="svg-inline--fa fa-star fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path></svg>
+                            } else {
+                                <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="star" class="svg-inline--fa fa-star fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M528.1 171.5L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6zM405.8 317.9l27.8 162L288 403.5 142.5 480l27.8-162L52.5 203.1l162.7-23.6L288 32l72.8 147.5 162.7 23.6-117.7 114.8z"></path></svg>
+                            }
+                        </i>
+                    </button>
+                    <button tooltip="Remove card" class="button -text -danger -round -icon-only" @onclick="@(e => RemoveFromDeck(Card.UID))">
+                        <i class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </i>
+                    </button>
+                </div>
+            </div>
+        }
+    }
+</aside>
