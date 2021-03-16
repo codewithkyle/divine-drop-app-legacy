@@ -436,10 +436,10 @@ class IDBWorker {
 
 	private async put(data): Promise<void> {
 		const { table, key, value } = data;
-		if (key !== null) {
-			await this.db.put(table, value, key);
-		} else {
+		try {
 			await this.db.put(table, value);
+		} catch (e) {
+			console.error(e);
 		}
 		return;
 	}
@@ -482,10 +482,14 @@ class IDBWorker {
 	private async get(data): Promise<unknown> {
 		const { table, key, index } = data;
 		let output = null;
-		if (index !== null) {
-			output = await this.db.getFromIndex(table, index, key);
-		} else {
-			output = await this.db.get(table, key);
+		try {
+			if (index !== null) {
+				output = await this.db.getFromIndex(table, index, key);
+			} else {
+				output = await this.db.get(table, key);
+			}
+		} catch (e) {
+			console.error(e);
 		}
 		return output;
 	}

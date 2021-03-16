@@ -326,3 +326,8 @@ function StashDecks(decks: Array<Deck>) {
 		Put("decks", decks[i]);
 	}
 }
+
+async function GetDeck(uid: string): Promise<Deck> {
+	const deck = await Get("decks", uid);
+	return deck as Deck;
+}

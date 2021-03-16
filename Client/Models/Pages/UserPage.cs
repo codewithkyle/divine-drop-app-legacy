@@ -11,6 +11,7 @@ namespace Client.Models.Pages
     {
         [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
+        public bool Ready = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -28,6 +29,7 @@ namespace Client.Models.Pages
 				}
             }
             await Main();
+            Ready = true;
         }
 
         protected virtual async Task Main() {}
