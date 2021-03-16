@@ -46,3 +46,18 @@ interface ImpersonationLinkResponse extends ResponseCore {
 interface MaintenanceCheckReponse extends ResponseCore {
 	IsUndergoingMaintenance: boolean;
 }
+
+type Deck = {
+	UID: string;
+	Name: string;
+	Commander: string;
+	Cards: Array<string>;
+};
+
+interface DecksReponse extends ResponseCore {
+	Decks: Array<Deck>;
+}
+
+interface CreateDeckResponse extends ResponseCore {
+	UID: string;
+}

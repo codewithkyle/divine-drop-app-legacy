@@ -21,7 +21,7 @@ class DeckController extends Controller
     {
         $service = new DeckService($request->user);
         $deck = $service->getDeck($uid);
-        if (empty($deck)){
+        if (empty($deck)) {
             return $this->buildErrorResponse("Deck doesn't exist.");
         }
         return $this->buildSuccessResponse($decks);
@@ -42,10 +42,10 @@ class DeckController extends Controller
     {
         $service = new DeckService($request->user);
         try {
-            $service->updateDeck($request->all());
+            $uid = $service->updateDeck($request->all());
         } catch (Exception $e) {
             $this->buildErrorResponse($e->getMessage());
         }
-        return $this->buildSuccessResponse();
+        return $this->buildSuccessResponse($uid);
     }
 }

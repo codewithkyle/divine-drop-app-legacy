@@ -1,0 +1,13 @@
+@layout AppShell
+@page "/decks/new"
+@inherits NewDeckBase
+
+<div class="block w-full text-center py-4 max-w-tablet mx-auto">
+    <p class="font-grey-800 line-normal mb-1">Let's start by naming your new deck.</p>
+    <form @onsubmit="CreateDeck" class="w-full" flex="items-center justify-between row nowrap">
+        <div class="input w-full">
+            <input type="text" placeholder="My New Deck" required @bind="DeckName">
+        </div>
+        <button type="submit" class="button -solid -primary -rounded ml-1">Next</button>
+    </form>
+</div>

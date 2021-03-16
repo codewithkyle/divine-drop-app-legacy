@@ -13,11 +13,14 @@ class CreateDecksTable extends Migration
      */
     public function up()
     {
-        Schema::create('decks', function (Blueprint $table) {
+        Schema::create("decks", function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->integer("userId");
             $table->string("name");
-            $table->string("commander")->nullable()->default(null);
+            $table
+                ->string("commander")
+                ->nullable()
+                ->default(null);
             $table->json("cards");
             $table->uuid("uid");
             $table->timestamps();
@@ -31,6 +34,6 @@ class CreateDecksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('decks');
+        Schema::dropIfExists("decks");
     }
 }

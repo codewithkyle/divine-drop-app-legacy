@@ -174,6 +174,20 @@ function Get(table: string, key: string, index: string = null): Promise<unknown>
 	});
 }
 
+// function GetAll(table: string, key: string, index: string = null): Promise<unknown> {
+// 	return new Promise((resolve) => {
+// 		idbManager.send(
+// 			"get-all",
+// 			{
+// 				table: table,
+// 				key: key,
+// 				index: index,
+// 			},
+// 			resolve
+// 		);
+// 	});
+// }
+
 function Search(table: string, query: string, key: string | string[], page: number = 1, limit: number = null): Promise<Array<unknown>> {
 	return new Promise((resolve) => {
 		idbManager.send(
@@ -296,4 +310,19 @@ function CountCards(query: string, page: number, type: string, subtype: string, 
 			resolve
 		);
 	});
+}
+
+function StashNewDeck(uid: string, name: string) {
+	Put("decks", {
+		UID: uid,
+		Name: name,
+		Cards: [],
+		Commander: null,
+	});
+}
+
+function StashDecks(decks: Array<Deck>) {
+	for (let i = 0; i < decks.length; i++) {
+		Put("decks", decks[i]);
+	}
 }

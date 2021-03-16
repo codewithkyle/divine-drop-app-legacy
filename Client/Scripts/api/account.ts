@@ -52,3 +52,25 @@ async function UpdateProfileAvatar(): Promise<ResponseCore> {
 	const response = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
 	return response;
 }
+
+async function GetDecks(): Promise<DecksReponse> {
+	const request = await apiRequest("/v1/decks");
+	const fetchResponse = await request.json();
+	const response: Partial<DecksReponse> = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+	response.Decks = fetchResponse.data;
+	if (response.Decks.length) {
+		StashDecks(response.Decks);
+	}
+	return response as DecksReponse;
+}
+
+async function CreateDeck(name: string): Promise<CreateDeckResponse> {
+	const data = {
+		name: name,
+	};
+	const request = await apiRequest("/v1/deck", "POST", data);
+	const fetchResponse = await request.json();
+	const response: Partial<CreateDeckResponse> = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+	response.UID = fetchResponse.data;
+	return response as CreateDeckResponse;
+}
