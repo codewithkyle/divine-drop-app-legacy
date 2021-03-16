@@ -184,9 +184,11 @@ namespace Client.Pages.Decks
                 NewCard.UID = uid;
                 Deck.Cards.Add(NewCard);
             }
+            string Ticket = await JSRuntime.InvokeAsync<string>("StartLoading");
             await JSRuntime.InvokeVoidAsync("UpdateDeck", Deck);
             string selector = "input[data-card-uid=\"" + uid + "\"]";
             await JSRuntime.InvokeVoidAsync("FocusElement", selector);
+            await JSRuntime.InvokeVoidAsync("StopLoading", Ticket);
             StateHasChanged();
         }
         public async Task ToggleCommander(string uid)
@@ -199,7 +201,9 @@ namespace Client.Pages.Decks
             {
                 Deck.Commander = uid;
             }
+            string Ticket = await JSRuntime.InvokeAsync<string>("StartLoading");
             await JSRuntime.InvokeVoidAsync("UpdateDeck", Deck);
+            await JSRuntime.InvokeVoidAsync("StopLoading", Ticket);
             StateHasChanged();
         }
         public async Task RemoveFromDeck(string uid)
@@ -216,7 +220,9 @@ namespace Client.Pages.Decks
             if (index >= 0)
             {
                 Deck.Cards.RemoveAt(index);
+                string Ticket = await JSRuntime.InvokeAsync<string>("StartLoading");
                 await JSRuntime.InvokeVoidAsync("UpdateDeck", Deck);
+                await JSRuntime.InvokeVoidAsync("StopLoading", Ticket);
             }
             StateHasChanged();
         }
@@ -235,14 +241,18 @@ namespace Client.Pages.Decks
                     break;
                 }
             }
+            string Ticket = await JSRuntime.InvokeAsync<string>("StartLoading");
             await JSRuntime.InvokeVoidAsync("UpdateDeck", Deck);
+            await JSRuntime.InvokeVoidAsync("StopLoading", Ticket);
             StateHasChanged();
         }
         public async Task UpdateDeckName()
         {
             if (Deck.Name != DeckName)
             {
+                string Ticket = await JSRuntime.InvokeAsync<string>("StartLoading");
                 await JSRuntime.InvokeVoidAsync("UpdateDeck", Deck);
+                await JSRuntime.InvokeVoidAsync("StopLoading", Ticket);
             }
         }
     }
