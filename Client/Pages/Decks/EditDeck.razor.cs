@@ -174,7 +174,6 @@ namespace Client.Pages.Decks
                 {
                     isNewCard = false;
                     Deck.Cards[i].Quantity += 1;
-                    // TODO: stash updates
                     break;
                 }
             }
@@ -184,8 +183,8 @@ namespace Client.Pages.Decks
                 NewCard.Quantity = 1;
                 NewCard.UID = uid;
                 Deck.Cards.Add(NewCard);
-                // TODO: stash updates
             }
+            await JSRuntime.InvokeVoidAsync("UpdateDeck", Deck);
             string selector = "input[data-card-uid=\"" + uid + "\"]";
             await JSRuntime.InvokeVoidAsync("FocusElement", selector);
             StateHasChanged();
@@ -200,7 +199,7 @@ namespace Client.Pages.Decks
             {
                 Deck.Commander = uid;
             }
-            // TODO: stash updates
+            await JSRuntime.InvokeVoidAsync("UpdateDeck", Deck);
             StateHasChanged();
         }
         public async Task RemoveFromDeck(string uid)
@@ -217,32 +216,33 @@ namespace Client.Pages.Decks
             if (index >= 0)
             {
                 Deck.Cards.RemoveAt(index);
-                // TODO: stash updates
+                await JSRuntime.InvokeVoidAsync("UpdateDeck", Deck);
             }
             StateHasChanged();
         }
         public async Task UpdateCardQuantity(string uid, string newValue)
         {
+            int newQty = 0;
             if (newValue != "e")
             {
-                int newQty = Int16.Parse(newValue);
-                for (int i = 0; i < Deck.Cards.Count; i++)
-                {
-                    if (Deck.Cards[i].UID == uid)
-                    {
-                        Deck.Cards[i].Quantity = newQty;
-                        break;
-                    }
-                }
-                // TODO: stash updates
-                StateHasChanged();
+                newQty = Int16.Parse(newValue);
             }
+            for (int i = 0; i < Deck.Cards.Count; i++)
+            {
+                if (Deck.Cards[i].UID == uid)
+                {
+                    Deck.Cards[i].Quantity = newQty;
+                    break;
+                }
+            }
+            await JSRuntime.InvokeVoidAsync("UpdateDeck", Deck);
+            StateHasChanged();
         }
         public async Task UpdateDeckName()
         {
             if (Deck.Name != DeckName)
             {
-                // TODO: update deck name
+                await JSRuntime.InvokeVoidAsync("UpdateDeck", Deck);
             }
         }
     }

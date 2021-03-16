@@ -308,15 +308,17 @@
 </div>
 <aside class="deck-drawer">
     @if (Ready){
-        <input @bind="DeckName" @onblur="UpdateDeckName" class="deck-name" type="text">
+        <div class="bg-white w-full block sticky t-0 p-1" style="z-index: 9999;">
+            <input @bind="DeckName" @onblur="UpdateDeckName" class="deck-name" type="text">
+        </div>
         for (int i = 0; i < Deck.Cards.Count; i++){
             var Card = Deck.Cards[i];
-            <div class="w-full mb-1" flex="row nowrap">
+            <div class="w-full px-1 mb-1" flex="row nowrap">
                 <img draggable="false" class="radius-0.5 shadow-sm mr-1" src="http://api.divinedrop.local/v1/card/@Card.UID/image" width="200" loading="lazy">
                 <div class="w-full" style="flex: 1;">
                     <div class="input mb-0.5">
-                        <label for="@Card.UID" @oninput="@(e => UpdateCardQuantity(Card.UID, e.Value.ToString()))"># of Cards</label>
-                        <input class="w-full" min="1" step="1" max="999" id="@Card.UID" type="number" data-card-uid="@Card.UID" value="@Card.Quantity">
+                        <label for="@Card.UID"># of Cards</label>
+                        <input class="w-full" min="1" step="1" max="999" id="@Card.UID" type="number" data-card-uid="@Card.UID" value="@Card.Quantity" @oninput="@(e => UpdateCardQuantity(Card.UID, e.Value.ToString()))">
                     </div>
                     <button class="button -warning -text -round -icon-only" tooltip="@(Card.UID == Deck.Commander ? "Unset commander" : "Set as commander")" @onclick="@(e => ToggleCommander(Card.UID))">
                         <i class="icon">

@@ -76,10 +76,17 @@ async function CreateDeck(name: string): Promise<CreateDeckResponse> {
 }
 
 async function UpdateDeck(deck): Promise<ResponseCore> {
+	const cards = [];
+	for (let i = 0; i < deck.cards.length; i++) {
+		cards.push({
+			UID: deck.cards[i].uid,
+			Quantity: deck.cards[i].quantity,
+		});
+	}
 	const data = {
 		UID: deck.uid,
 		Name: deck.name,
-		Cards: deck.cards,
+		Cards: cards,
 		Commander: deck.commander,
 	};
 	await Put("decks", data);
