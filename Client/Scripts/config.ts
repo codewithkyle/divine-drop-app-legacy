@@ -29,4 +29,5 @@ const stylesheets = [
 	"/css/card-browser.css",
 	"/css/radio.css",
 	"/css/select.css",
+	"/css/deck-browser.css",
 ];

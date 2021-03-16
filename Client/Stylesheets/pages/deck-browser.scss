@@ -1,0 +1,89 @@
+.deck-browser {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 300px);
+	gap: 2rem;
+	max-width: calc(300px * 4 + 6rem);
+	width: 100%;
+	margin: 0 auto;
+	padding: 4rem 0;
+
+	.deck {
+		display: inline-block;
+		width: 100%;
+
+		&:hover,
+		&:focus-visible {
+			img {
+				&:nth-child(2) {
+					transform: rotate(0deg);
+				}
+
+				&:nth-child(3) {
+					transform: rotate(0deg);
+				}
+			}
+		}
+
+		img {
+			position: absolute;
+			transition: all 150ms var(--ease-in-out);
+			box-shadow: var(--shadow-sm);
+			border-radius: 0.5rem;
+			overflow: hidden;
+
+			&:nth-child(2) {
+				transform: rotate(15deg);
+			}
+
+			&:nth-child(3) {
+				transform: rotate(15deg);
+			}
+		}
+
+		button {
+			width: 36px;
+			height: 36px;
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			color: var(--grey-700);
+			transition: all 150ms var(--ease-in-out);
+			vertical-align: middle;
+
+			&:hover,
+			&:focus-visible {
+				color: var(--grey-800);
+
+				&::before {
+					opacity: 0.1;
+				}
+			}
+
+			&:active {
+				color: var(--grey-900);
+
+				&::before {
+					opacity: 0.15;
+				}
+			}
+
+			&::before {
+				content: "";
+				background-color: var(--grey-500);
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				border-radius: 50%;
+				opacity: 0;
+				transition: all 75ms var(--ease-in-out);
+			}
+
+			svg {
+				width: 14px;
+				height: 14px;
+			}
+		}
+	}
+}

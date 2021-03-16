@@ -74,3 +74,25 @@ async function CreateDeck(name: string): Promise<CreateDeckResponse> {
 	response.UID = fetchResponse.data;
 	return response as CreateDeckResponse;
 }
+
+async function UpdateDeck(deck): Promise<ResponseCore> {
+	const data = {
+		UID: deck.uid,
+		Name: deck.name,
+		Cards: deck.cards,
+		Commander: deck.commander,
+	};
+	await Put("decks", data);
+	const request = await apiRequest("/v1/deck", "POST", data);
+	const fetchResponse = await request.json();
+	const response = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+	return response;
+}
+
+async function DeleteDeck(UID: string): Promise<ResponseCore> {
+	Delete("decks", UID);
+	const request = await apiRequest(`/v1/deck/${UID}`, "DELETE");
+	const fetchResponse = await request.json();
+	const response = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+	return response;
+}

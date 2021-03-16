@@ -65,16 +65,16 @@ class DeckService
 
     public function updateDeck(array $params): string
     {
-        if (isset($params["uid"]) && !is_null($params["uid"])) {
-            $deck = Deck::where("uid", $uid)->first();
+        if (isset($params["UID"]) && !is_null($params["UID"])) {
+            $deck = Deck::where("uid", $params["UID"])->first();
             if (empty($deck)) {
                 throw new Exception(404, "Deck doesn't exist.");
             } elseif ($deck->userId !== $this->user->id) {
                 throw new Exception(401, "You do not have permission to update this deck.");
             }
-            $deck->name = $params["name"];
-            $deck->cards = $params["cards"];
-            $deck->commander = $params["commander"];
+            $deck->name = $params["Name"];
+            $deck->cards = $params["Cards"];
+            $deck->commander = $params["Commander"];
             $deck->save();
         } else {
             $deck = Deck::create([

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Client.Models.Pages;
 using Client.Models.Data;
@@ -36,6 +37,53 @@ namespace Client.Pages.Decks
                 await JSRuntime.InvokeVoidAsync("Alert", "error", "Error", "Failed to get your decks from the database.");
             }
             StateHasChanged();
+        }
+        public async Task RenameDeck(string UID, string currentName)
+        {
+            string newName = await JSRuntime.InvokeAsync<string>("Prompt", "What would you like the new deck name to be?", currentName);
+            if (!String.IsNullOrEmpty(newName) && !String.IsNullOrWhiteSpace(newName))
+            {
+                for (int i = 0; i < Decks.Count; i++)
+                {
+                    if (Decks[i].UID == UID)
+                    {
+                        Decks[i].Name = newName;
+                        await JSRuntime.InvokeVoidAsync("UpdateDeck", Decks[i]);
+                        break;
+                    }
+                }
+            }
+        }
+
+        public async Task DeleteDeck(string UID, string name)
+        {
+            bool isConfirmed = await JSRuntime.InvokeAsync<bool>("Confirm", "Are you sure you want to delete \"" + name + "\"?");
+            if (isConfirmed)
+            {
+                int index = -1;
+                for (int i = 0; i < Decks.Count; i++)
+                {
+                    if (Decks[i].UID == UID)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index >= 0)
+                {
+                    ResponseCore Response = await JSRuntime.InvokeAsync<ResponseCore>("DeleteDeck", Decks[index].UID);
+                    if (Response.Success)
+                    {
+                        await JSRuntime.InvokeVoidAsync("Alert", "success", "Deck Deleted", name + " has been deleted.");
+                        Decks.RemoveAt(index);
+                        StateHasChanged();
+                    }
+                    else
+                    {
+                        await JSRuntime.InvokeVoidAsync("Alert", "error", "Error", Response.Error);
+                    }
+                }
+            }
         }
     }
 }
