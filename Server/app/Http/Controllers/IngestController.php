@@ -81,6 +81,13 @@ class IngestController extends Controller
         }
     }
 
+    public function getCardsHead(Request $request)
+    {
+        $path = storage_path("ndjson/cards.ndjson");
+        $etag = $this->generateEtag($path);
+        return response("")->header("ETag", $etag);
+    }
+
     public function getUsersHead(Request $request)
     {
         $path = storage_path("ndjson/users.ndjson");

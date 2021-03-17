@@ -304,15 +304,18 @@ class IDBWorker {
 		const cached = await this.lookupIngestInfo(route);
 		const expectedTotal = await this.fetchExpectedTotal(route);
 		const incomingETag = await this.fetchIngestEtag(route);
+		const currentTotal = await (await this.db.getAll(table)).length;
 
 		// No network connection -- continue anyways and brace for the jank
 		if (incomingETag === null) {
+			// if (expectedTotal !== currentTotal){
+			// 	return { ingestRequired: true, expectedTotal: expectedTotal };
+			// }
 			return { ingestRequired: false, expectedTotal: 0 };
 		}
 
 		if (typeof cached !== "undefined") {
 			if (cached.etag === incomingETag) {
-				const currentTotal = await (await this.db.getAll(table)).length;
 				if (currentTotal !== expectedTotal) {
 					ingestRequired = true;
 				}
