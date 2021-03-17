@@ -90,21 +90,23 @@ async function tryFetch(request){
 }
 
 async function onFetch(event) {
+    const modified = new Request(event.request);
+    modified.integrity = null;
     const shouldServeIndexHtml = event.request.mode === 'navigate';
-    const request = shouldServeIndexHtml ? 'index.html' : event.request;
+    const request = shouldServeIndexHtml ? 'index.html' : modified;
     try {
         if (event.request.method === 'GET' && !event.request.url.match(/app\.json$/)) {
             let response = await tryAppCache(request);
             if (!response){
-                if (event.request.url.indexOf("/image") !== -1){
-                    response = await tryImageCache(event.request);
+                if (request.url.indexOf("/image") !== -1){
+                    response = await tryImageCache(request);
                     if (response){
                         return response;
                     }
                 }
             }
             if (!response){
-                response = await tryFetch(event.request);
+                response = await tryFetch(request);
             }
             return response;
         } else {
