@@ -282,7 +282,7 @@ class IDBWorker {
 				method: "HEAD",
 				credentials: "include",
 			});
-			const incomingETag = response.headers.get("x-ingest-version") ?? null;
+			const incomingETag = response.headers.get("ingest-version") ?? null;
 			return incomingETag;
 		} catch (e) {
 			return null;
