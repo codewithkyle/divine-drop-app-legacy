@@ -127,11 +127,11 @@ async function Bootstrap() {
 			classes: ["install-notification"],
 		});
 		navigator.serviceWorker.onmessage = (e) => {
-			const { type } = e.data;
-			if (type === "reload"){
-				location.reload();
-			}
+			location.reload();
 		}
+		setTimeout(()=>{
+			location.reload();
+		}, 10000);
 	} else {
 		document.title = `${document.title} v${loadedVersion}`;
 		await LoadStylesheets();
