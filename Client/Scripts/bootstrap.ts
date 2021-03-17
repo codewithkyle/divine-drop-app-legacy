@@ -11,7 +11,7 @@ async function LoadScripts(version) {
 	for (const resource of scripts) {
 		await new Promise<void>((loaded) => {
 			const script = document.createElement("script");
-			script.src = `${resource}?v=${version}`;
+			script.src = `${resource}`;
 			script.onload = () => {
 				loaded();
 			};
@@ -31,7 +31,7 @@ async function LoadStylesheets(version) {
 			new Promise<void>((loaded) => {
 				const stylesheet = document.createElement("link");
 				stylesheet.rel = "stylesheet";
-				stylesheet.href = `${resource}?v=${version}`;
+				stylesheet.href = `${resource}`;
 				stylesheet.onload = () => {
 					loaded();
 				};
@@ -131,7 +131,7 @@ async function Bootstrap() {
 		}
 		setTimeout(()=>{
 			location.reload();
-		}, 10000);
+		}, 30000);
 	} else {
 		if (loadedVersion !== null){
 			document.title = `${document.title} v${loadedVersion}`;
