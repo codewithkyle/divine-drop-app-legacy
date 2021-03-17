@@ -69,3 +69,10 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
         script: chown -R www-data /var/www/divine-drop
+        
+    - name: Purge cache
+      uses: nathanvaughn/actions-cloudflare-purge@master
+      if: success()
+      env:
+        CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
+        CLOUDFLARE_AUTH_KEY: ${{ secrets.CLOUDFLARE_AUTH_KEY }}
