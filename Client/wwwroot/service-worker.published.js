@@ -48,8 +48,9 @@ async function onActivate(event) {
 }
 
 async function tryAppCache(request){
+    const tempRequest = new Request(request).url.replace(/\?v\=.*/, "");
     const cache = await caches.open(cacheName);
-    const cachedResponse = await cache.match(request);
+    const cachedResponse = await cache.match(tempRequest);
     return cachedResponse;
 }
 
