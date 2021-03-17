@@ -17,7 +17,7 @@ class IngestController extends Controller
         $decks = $ingestService->getDecks($request->user->id);
         $count = $ingestService->countDecks($request->user->id);
         $etag = $this->generateDataEtag($deck, $count);
-        return response(file_get_contents($path))->header("ingest-version", $etag);
+        return response()->header("ingest-version", $etag);
     }
 
     public function getDecks(Request $request)

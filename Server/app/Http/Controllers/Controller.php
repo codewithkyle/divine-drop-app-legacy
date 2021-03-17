@@ -92,6 +92,6 @@ class Controller extends BaseController
 
     protected function generateDataEtag(array $data, int $count): string
     {
-        return \md5(\count($data) . "-" . $count);
+        return md5(count($data) . "-" . $count);
     }
 }
