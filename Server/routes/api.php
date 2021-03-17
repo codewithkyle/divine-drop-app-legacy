@@ -28,7 +28,6 @@ $router->group(["prefix" => "v1"], function () use ($router) {
         $router->post("logout", "AuthController@logout");
         $router->get("image/{uid}", "FileController@getImage");
         $router->get("file/{uid}", "FileController@getFile");
-        $router->get("decks", "DeckController@getDecks");
         $router->post("deck", "DeckController@updateDeck");
         $router->get("deck/{uid}", "DeckController@getDeck");
         $router->delete("deck/{uid}", "DeckController@deleteDeck");

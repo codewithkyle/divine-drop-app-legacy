@@ -297,3 +297,18 @@ function ResetScroll() {
 		behavior: "auto",
 	});
 }
+
+let bgDownloadWorker = null;
+async function DownloadImages(){
+	// @ts-ignore
+	const saveData = navigator?.connection?.saveData === false ?? false;
+	if (!saveData && bgDownloadWorker === null){
+		bgDownloadWorker = new Worker("/js/background-downloader.js");
+		const cards = await Select("cards");
+		bgDownloadWorker.postMessage(cards);
+		bgDownloadWorker.onmessage = ()=>{
+			bgDownloadWorker.terminate();
+		}
+	}
+	return;
+}

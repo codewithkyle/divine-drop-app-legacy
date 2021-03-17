@@ -18,21 +18,6 @@ class DeckService
         $this->user = $user;
     }
 
-    public function getDecks(): array
-    {
-        $decks = Deck::where("userId", $this->user->id)->get();
-        $output = [];
-        foreach ($decks as $deck) {
-            $output[] = [
-                "UID" => $deck->uid,
-                "Name" => $deck->name,
-                "Commander" => $deck->commander,
-                "Cards" => $deck->cards,
-            ];
-        }
-        return $output;
-    }
-
     public function getDeck(string $uid): array
     {
         $deck = Deck::where([

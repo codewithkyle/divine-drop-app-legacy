@@ -10,13 +10,6 @@ use App\Services\DeckService;
 
 class DeckController extends Controller
 {
-    public function getDecks(Request $request): JsonResponse
-    {
-        $service = new DeckService($request->user);
-        $decks = $service->getDecks();
-        return $this->buildSuccessResponse($decks);
-    }
-
     public function getDeck(string $uid, Request $request): JsonResponse
     {
         $service = new DeckService($request->user);

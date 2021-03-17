@@ -128,7 +128,7 @@ function reloadClients(){
 function clearCache(){
     caches.delete(imageCacheName);
     caches.delete(apiCacheName);
-    indexedDB.deleteDatabase("localdb");
+    indexedDB.deleteDatabase("application");
 }
 
 let db = null;

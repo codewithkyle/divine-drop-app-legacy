@@ -1,0 +1,62 @@
+name: Deploy
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Setup Node and NPM
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.5.0
+
+    - name: Install NPM Packages
+      run: npm ci
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Build
+      run: npm run production
+
+    - name: Clear Old App Files
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: rm -rf /var/www/divine-drop/public
+
+    - name: Copy App Files
+      uses: appleboy/scp-action@master
+      env:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+      with:
+        source: "./Client/public"
+        target: "/var/www/divine-drop/public"
+
+    - name: Copy API Files
+      uses: appleboy/scp-action@master
+      env:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+      with:
+        source: "./Server"
+        target: "/var/www/divine-drop/server"
