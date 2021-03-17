@@ -8,7 +8,7 @@ namespace Client.Pages
     {
         protected override async Task Main()
         {
-            await JSRuntime.InvokeVoidAsync("DownloadImages");
+            
         }
     }
 }

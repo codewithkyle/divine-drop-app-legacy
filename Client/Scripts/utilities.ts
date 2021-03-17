@@ -297,22 +297,3 @@ function ResetScroll() {
 		behavior: "auto",
 	});
 }
-
-let bgDownloadWorker = null;
-let isDownloading = false;
-async function DownloadImages(){
-	// @ts-ignore
-	const saveData = navigator?.connection?.saveData === false ?? false;
-	if (!saveData && isDownloading === false){
-		alert("do the thing");
-		bgDownloadWorker = new Worker(`${location.origin}/js/background-downloader.js`);
-		const cards = await Select("cards");
-		bgDownloadWorker.postMessage(cards);
-		isDownloading = true;
-		bgDownloadWorker.onmessage = ()=>{
-			alert("worker messaged");
-			bgDownloadWorker.terminate();
-		}
-	}
-	return;
-}
