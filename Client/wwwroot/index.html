@@ -17,13 +17,12 @@
 	<meta name="msapplication-TileColor" content="#4338CA">
     <meta name="theme-color" content="#4338CA">
 
-    <script>navigator.serviceWorker.register('service-worker.js');</script>
-
-	<!-- STOP! Scripts and Stylesheets should be registered in the config.ts file -->
-
-	<script defer src="/js/config.js"></script>
-	<script defer src="/js/notifyjs.js"></script>
-	<script defer src="/js/bootstrap.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js').then(async () => {
+        console.log("SW registered");
+        await import("/js/config.js");
+        await import("/js/notifyjs.js");
+        await import("/js/bootstrap.js");
+    });</script>
 
 	<!-- STOP! Scripts and Stylesheets should be registered in the config.ts file -->
 
