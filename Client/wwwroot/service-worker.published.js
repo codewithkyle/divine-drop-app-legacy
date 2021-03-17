@@ -39,6 +39,7 @@ async function onActivate(event) {
     await Promise.all(cacheKeys
         .filter(key => key.startsWith(imageCacheName) && key !== cacheName)
         .map(key => caches.delete(key)));
+    reloadClients();
 }
 
 async function tryAppCache(request){

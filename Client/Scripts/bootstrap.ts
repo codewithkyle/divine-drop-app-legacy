@@ -120,22 +120,7 @@ async function Bootstrap() {
 		const app: HTMLElement = document.body.querySelector("app");
 		app.style.display = "none";
 		snackbar({
-			message: `A manditory update must be installed.`,
-			buttons: [
-				{
-					label: "install update",
-					autofocus: true,
-					callback: () => {
-						const snackbar = document.body.querySelector("snackbar-component");
-						if (snackbar) {
-							snackbar.remove();
-						}
-						app.style.display = "flex";
-						loadingText.innerText = `Installing update, please wait.`;
-						location.reload();
-					},
-				},
-			],
+			message: `An update is installing. Please wait.`,
 			duration: Infinity,
 			force: true,
 			closeable: false,
