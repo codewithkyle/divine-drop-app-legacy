@@ -299,15 +299,15 @@ function ResetScroll() {
 }
 
 let bgDownloadWorker = null;
+let isDownloading = false;
 async function DownloadImages(){
 	// @ts-ignore
 	const saveData = navigator?.connection?.saveData === false ?? false;
-	alert(saveData);
-	alert(typeof bgDownloadWorker);
-	if (!saveData && bgDownloadWorker === null){
+	if (!saveData && isDownloading === false){
 		bgDownloadWorker = new Worker("/js/background-downloader.js");
 		const cards = await Select("cards");
 		bgDownloadWorker.postMessage(cards);
+		isDownloading = true;
 		bgDownloadWorker.onmessage = ()=>{
 			bgDownloadWorker.terminate();
 		}
