@@ -21,7 +21,8 @@ async function onInstall(event) {
         .filter(asset => !offlineAssetsExclude.some(pattern => pattern.test(asset.url)))
         .map(asset => {
             return new Request(asset.url, {
-                cache: "reload"
+                cache: "reload",
+                integrity: asset.hash,
             });
         });
     let somethingFailed = false;
