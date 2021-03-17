@@ -133,6 +133,7 @@ async function Bootstrap() {
 			}
 		}
 	} else {
+		document.title = `${document.title} v${loadedVersion}`;
 		await LoadStylesheets();
 		await LoadScripts();
 		await LoadCards();

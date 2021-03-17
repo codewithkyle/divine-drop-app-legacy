@@ -20,12 +20,17 @@ async function onInstall(event) {
         .filter(asset => offlineAssetsInclude.some(pattern => pattern.test(asset.url)))
         .filter(asset => !offlineAssetsExclude.some(pattern => pattern.test(asset.url)))
         .map(asset => new Request(asset.url));
+    let somethingFailed = false;
 	for (const request of assetsRequests){
 		await caches.open(cacheName).then(cache => cache.add(request)).catch(error => {
 			console.error("Failed to cache:", request, error);
+            somethingFailed = true;
 		});
 	}
     await prepOutbox();
+    if (somethingFailed){
+        reloadClients(true);
+    }
 }
 
 async function onActivate(event) {
