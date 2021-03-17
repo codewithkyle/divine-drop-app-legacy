@@ -73,6 +73,7 @@ $router->group(["prefix" => "v1"], function () use ($router) {
 
         $router->group(["middleware" => ["user"]], function () use ($router) {
             $router->get("decks", "IngestController@getDecks");
+            $router->head("decks", "IngestController@getDecksHead");
             $router->get("decks/count", "IngestController@countDecks");
         });
     });

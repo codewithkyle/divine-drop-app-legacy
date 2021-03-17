@@ -89,4 +89,9 @@ class Controller extends BaseController
     {
         return md5_file($path) . filesize($path) . filemtime($path);
     }
+
+    protected function generateDataEtag(array $data, int $count): string
+    {
+        return \md5(\count($data) . "-" . $count);
+    }
 }
