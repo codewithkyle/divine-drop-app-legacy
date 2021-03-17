@@ -59,7 +59,9 @@ async function tryAppCache(request){
 
 async function tryImageCache(request){
     const cache = await caches.open(imageCacheName);
-    const cachedResponse = await cache.match(request);
+    const modifedRequest = new Request(request);
+    delete modifedRequest?.integrity;
+    const cachedResponse = await cache.match(modifedRequest);
     return cachedResponse;
 }
 

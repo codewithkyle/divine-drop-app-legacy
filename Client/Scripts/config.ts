@@ -1,4 +1,18 @@
 const API_URL = "https://api.divinedrop.app";
+const scripts = [
+	"/js/uid.js",
+	"/js/utilities.js",
+	"/js/tooltipper.js",
+	"/js/lit-html.js",
+	"/js/idb-manager.js",
+	"/js/auth.js",
+	"/js/account.js",
+	"/js/admin.js",
+	"/js/pubsub.js",
+	"/js/card-text.js",
+	"/js/deck.js",
+	"/js/uuid.js",
+];
 const stylesheets = [
 	"/css/spinner.css",
 	"/css/loading.css",

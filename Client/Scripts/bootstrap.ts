@@ -1,10 +1,27 @@
 const loadingText: HTMLSpanElement = document.body.querySelector(".js-loading-text");
 let loaded = 0;
-let totalResources = stylesheets.length;
+let totalResources = scripts.length + stylesheets.length;
 
 function UpdateLoadingText() {
 	loaded++;
 	loadingText.innerText = `Loading resource ${loaded} of ${totalResources}.`;
+}
+
+async function LoadScripts() {
+	for (const resource of scripts) {
+		await new Promise<void>((loaded) => {
+			const script = document.createElement("script");
+			script.src = resource;
+			script.onload = () => {
+				loaded();
+			};
+			script.onerror = () => {
+				loaded();
+			};
+			document.head.appendChild(script);
+		});
+		UpdateLoadingText();
+	}
 }
 
 async function LoadStylesheets() {
@@ -31,6 +48,13 @@ async function LoadStylesheets() {
 			});
 		}
 	});
+}
+
+function LoadFramework() {
+	loadingText.innerText = `Launching, please wait.`;
+	const framework = document.createElement("script");
+	framework.src = "/_framework/blazor.webassembly.js";
+	document.head.appendChild(framework);
 }
 
 function LoadCards(): Promise<void> {
@@ -113,7 +137,9 @@ async function Bootstrap() {
 			document.title = `${document.title} v${loadedVersion}`;
 		}
 		await LoadStylesheets();
+		await LoadScripts();
 		await LoadCards();
+		LoadFramework();
 	}
 }
 Bootstrap();
