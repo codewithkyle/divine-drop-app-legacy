@@ -297,3 +297,5 @@ function ResetScroll() {
 		behavior: "auto",
 	});
 }
+
+window.addEventListener("contextmenu", e => e.preventDefault());
