@@ -313,7 +313,7 @@ function CountCards(query: string, page: number, type: string, subtype: string, 
 }
 
 function StashNewDeck(uid: string, name: string) {
-	Put("decks", {
+	return Put("decks", {
 		UID: uid,
 		Name: name,
 		Cards: [],
@@ -321,9 +321,9 @@ function StashNewDeck(uid: string, name: string) {
 	});
 }
 
-function StashDecks(decks: Array<Deck>) {
-	for (let i = 0; i < decks.length; i++) {
-		Put("decks", decks[i]);
+async function StashDecks(decks: Array<Deck>) {
+	for (const deck of decks) {
+		await Put("decks", decks[i]);
 	}
 }
 

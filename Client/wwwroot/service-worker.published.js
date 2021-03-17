@@ -33,6 +33,12 @@ async function onActivate(event) {
     await Promise.all(cacheKeys
         .filter(key => key.startsWith(cacheNamePrefix) && key !== cacheName)
         .map(key => caches.delete(key)));
+    await Promise.all(cacheKeys
+        .filter(key => key.startsWith(apiCachePrefix) && key !== cacheName)
+        .map(key => caches.delete(key)));
+    await Promise.all(cacheKeys
+        .filter(key => key.startsWith(imageCacheName) && key !== cacheName)
+        .map(key => caches.delete(key)));
 }
 
 async function tryAppCache(request){
@@ -56,7 +62,7 @@ async function tryFetch(request){
     // Only cache image API responses
     if (response.type === "cors"){
         const responseToCache = response.clone();
-        if (response.url.indexOf("/v1/image/") !== -1){
+        if (response.url.indexOf("/image") !== -1){
             const imgCache = await caches.open(imageCacheName);
             await imgCache.put(request, responseToCache);
         } else {
@@ -76,7 +82,7 @@ async function onFetch(event) {
         if (event.request.method === 'GET' && !event.request.url.match(/app\.json$/)) {
             let response = await tryAppCache(request);
             if (!response){
-                if (event.request.url.indexOf("/v1/image/") !== -1){
+                if (event.request.url.indexOf("/image") !== -1){
                     response = await tryImageCache(event.request);
                     if (response){
                         return response;
@@ -94,7 +100,11 @@ async function onFetch(event) {
         // API cache is only hit when the client doesn't have a network connection
         const apiCache = await caches.open(apiCacheName);
         const cachedResponse = await apiCache.match(request);
-        return cachedResponse;
+        if (cachedResponse){
+            return cachedResponse;
+        } else {
+            throw "Network error";
+        }
     }
 }
 
@@ -123,12 +133,18 @@ function clearCache(){
 
 let db = null;
 function queue(url, method, payload){
-    db.put("outbox", {
-        uid: uid(),
+    const data = {
+        uid: Date.now(),
         url: url,
         method: method,
-        payload: payload,
-    });
+        payload: null,
+    };
+    if (typeof payload === "object" && payload !== null){
+        data.payload = JSON.stringify(payload);
+    } else if (payload !== null){
+        data.payload = payload;
+    }
+    db.put("outbox", data);
 }
 
 async function prepOutbox(){
@@ -155,6 +171,9 @@ async function tryRequest(request){
         const response = await fetch(request.url, {
             method: request.method,
             credentials: "include",
+            headers: new Headers({
+                "Content-Type": "application/json",
+            }),
             body: request.payload,
         });
         return response.ok;
@@ -169,6 +188,9 @@ async function flushOutbox(){
         return;
     }
     flushingOutbox = true;
+    if (db === null){
+        await prepOutbox();
+    }
     const requests = await db.getAll("outbox");
     for (const request of requests){
         if (navigator.onLine){
@@ -185,14 +207,6 @@ async function flushOutbox(){
     flushingOutbox = false;
 }
 
-// @ts-ignore
-var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-connection.addEventListener("change", (e) => {
-	if (navigator.onLine) {
-		flushOutbox();
-	}
-});
-
 self.onmessage = async (event) => {
     const { type } = event.data;
     switch (type){
@@ -200,7 +214,7 @@ self.onmessage = async (event) => {
             flushOutbox();
             break;
         case "queue":
-            if (event.data?.url && event.data?.method && event.data?.payload){
+            if (event.data?.url && event.data?.method){
                 queue(event.data.url, event.data.method, event.data.payload);
             }
             break;

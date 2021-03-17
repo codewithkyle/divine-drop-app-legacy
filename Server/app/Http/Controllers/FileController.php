@@ -19,7 +19,7 @@ class FileController extends Controller
             $side = $request->input("side", "front");
             $response = $imageService->getCardImage($uid, $side);
             return response($response["Body"], 200, [
-                "Content-Type" => $response["ContentType"],
+                "Content-Type" => "image/jpeg",
                 "Access-Control-Allow-Credentials" => "true",
                 "Access-Control-Allow-Origin" => rtrim(getenv("APP_URL"), "/"),
                 "Access-Control-Allow-Methods" => "GET, OPTIONS",

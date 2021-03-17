@@ -12,7 +12,7 @@
                         <span class="text-center inline-block font-grey-700 font-xs line-normal">This deck doesn't have any cards.</span>
                     } else {
                         if (Deck.Commander != null){
-                            <img width="200" loading="lazy" draggable="false" src="http://api.divinedrop.local/v1/card/@Deck.Commander/image">
+                            <img crossorigin="use-credentials" width="200" loading="lazy" draggable="false" src="http://api.divinedrop.local/v1/card/@Deck.Commander/image">
                         }
                         int renderedCards = 0;
                         for (int c = 0; c < Deck.Cards.Count; c++){
@@ -20,7 +20,7 @@
                                 if (renderedCards == 2 && Deck.Commander != null || renderedCards == 3){
                                     break;
                                 } else {
-                                    <img width="200" loading="lazy" draggable="false" src="http://api.divinedrop.local/v1/card/@Deck.Cards[c].UID/image">
+                                    <img crossorigin="use-credentials" width="200" loading="lazy" draggable="false" src="http://api.divinedrop.local/v1/card/@Deck.Cards[c].UID/image">
                                 }
                                 renderedCards++;
                             }

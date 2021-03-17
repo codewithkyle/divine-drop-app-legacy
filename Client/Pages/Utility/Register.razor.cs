@@ -21,7 +21,7 @@ namespace Client.Pages.Utility
             {
 				switch (UserVerificationResponse.StatusCode){
 					case 503:
-						NavigationManager.NavigateTo("/maintenance");
+						NavigationManager.NavigateTo("/maintenance", true);
 						return;
 					default:
 						ViewIsReady = true;

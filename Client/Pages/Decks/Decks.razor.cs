@@ -22,19 +22,18 @@ namespace Client.Pages.Decks
             {
                 GetDecks();
             }
-            
         }
 
         private async Task GetDecks()
         {
-            DecksResponse DecksResponse = await JSRuntime.InvokeAsync<DecksResponse>("GetDecks");
-            if (DecksResponse.Success)
+            bool Success = await JSRuntime.InvokeAsync<bool>("Ingest", "/v1/ingest/decks", "decks");
+            if (Success)
             {
-                Decks = DecksResponse.Decks;
+                Decks = await JSRuntime.InvokeAsync<List<Deck>>("Select", "decks");
             }
             else
             {
-                await JSRuntime.InvokeVoidAsync("Alert", "error", "Error", "Failed to get your decks from the database.");
+                await JSRuntime.InvokeVoidAsync("Alert", "error", "Error", "Failed to sync your decks with the database.");
             }
             StateHasChanged();
         }
@@ -75,7 +74,7 @@ namespace Client.Pages.Decks
                     if (Response.Success)
                     {
                         await JSRuntime.InvokeVoidAsync("Alert", "success", "Deck Deleted", name + " has been deleted.");
-                        Decks.RemoveAt(index);
+                        Decks = await JSRuntime.InvokeAsync<List<Deck>>("Select", "decks");
                         StateHasChanged();
                     }
                     else

@@ -21,10 +21,10 @@ namespace Client.Pages.Utility
             {
 				switch (UserVerificationResponse.StatusCode){
 					case 503:
-						NavigationManager.NavigateTo("/maintenance");
+						NavigationManager.NavigateTo("/maintenance", true);
 						return;
                     case 502:
-						NavigationManager.NavigateTo("/network-offline");
+						NavigationManager.NavigateTo("/network-offline", true);
 						break;
 					default:
 						ViewIsReady = true;
@@ -33,7 +33,7 @@ namespace Client.Pages.Utility
             }
 			else
 			{
-				NavigationManager.NavigateTo("/dashboard");
+				NavigationManager.NavigateTo("/dashboard", true);
 			}
         }
 
@@ -47,11 +47,11 @@ namespace Client.Pages.Utility
                 LoginForm.Succeed();
                 if (Response.IsPendingEmailVerificaiton)
 				{
-                    NavigationManager.NavigateTo("/verification/pending");
+                    NavigationManager.NavigateTo("/verification/pending", true);
                 }
 				else
 				{
-                    NavigationManager.NavigateTo("/dashboard");
+                    NavigationManager.NavigateTo("/dashboard", true);
                 }
             }
 			else

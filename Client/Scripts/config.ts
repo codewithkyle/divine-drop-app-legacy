@@ -10,6 +10,8 @@ const scripts = [
 	"/js/admin.js",
 	"/js/pubsub.js",
 	"/js/card-text.js",
+	"/js/deck.js",
+	"/js/uuid.js",
 ];
 const stylesheets = [
 	"/css/spinner.css",

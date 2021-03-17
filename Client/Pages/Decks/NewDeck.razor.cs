@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Client.Models.Pages;
 using Client.Models.API;
 using Microsoft.JSInterop;
+using System;
 
 namespace Client.Pages.Decks
 {
@@ -13,8 +14,7 @@ namespace Client.Pages.Decks
             CreateDeckResponse Response = await JSRuntime.InvokeAsync<CreateDeckResponse>("CreateDeck", DeckName);
             if (Response.Success)
             {
-                await JSRuntime.InvokeVoidAsync("Alert", "success", "Deck Created", "Your new deck has been created.");
-                await JSRuntime.InvokeVoidAsync("StashNewDeck", Response.UID, DeckName);
+                await JSRuntime.InvokeVoidAsync("Alert", "success", "Deck Created", DeckName + " has been created.");
                 NavigationManager.NavigateTo("/decks/edit/" + Response.UID);
             }
             else

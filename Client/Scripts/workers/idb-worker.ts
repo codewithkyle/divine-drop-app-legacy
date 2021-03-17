@@ -257,15 +257,19 @@ class IDBWorker {
 	}
 
 	private async fetchExpectedTotal(route) {
-		const countRequest = await fetch(`${API_URL}/${route}/count`, {
-			method: "GET",
-			credentials: "include",
-			headers: new Headers({
-				Accept: "application/json",
-			}),
-		});
-		const countResponse = await countRequest.json();
-		return countResponse.data;
+		try {
+			const countRequest = await fetch(`${API_URL}/${route}/count`, {
+				method: "GET",
+				credentials: "include",
+				headers: new Headers({
+					Accept: "application/json",
+				}),
+			});
+			const countResponse = await countRequest.json();
+			return countResponse.data;
+		} catch (e) {
+			return 0;
+		}
 	}
 
 	private async lookupIngestInfo(route) {
@@ -273,12 +277,16 @@ class IDBWorker {
 	}
 
 	private async fetchIngestEtag(route: string) {
-		const response = await fetch(`${API_URL}/${route}`, {
-			method: "HEAD",
-			credentials: "include",
-		});
-		const incomingETag = response.headers.get("ETag") ?? null;
-		return incomingETag;
+		try {
+			const response = await fetch(`${API_URL}/${route}`, {
+				method: "HEAD",
+				credentials: "include",
+			});
+			const incomingETag = response.headers.get("ETag") ?? null;
+			return incomingETag;
+		} catch (e) {
+			return null;
+		}
 	}
 
 	private putIngestInfoInCache(route, etag): Promise<void> {
@@ -296,6 +304,11 @@ class IDBWorker {
 		const cached = await this.lookupIngestInfo(route);
 		const expectedTotal = await this.fetchExpectedTotal(route);
 		const incomingETag = await this.fetchIngestEtag(route);
+
+		// No network connection -- continue anyways and brace for the jank
+		if (incomingETag === null) {
+			return { ingestRequired: false, expectedTotal: 0 };
+		}
 
 		if (typeof cached !== "undefined") {
 			if (cached.etag === incomingETag) {

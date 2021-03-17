@@ -8,11 +8,33 @@ use Illuminate\Support\Facades\Cache;
 
 use App\Models\User;
 use App\Models\Card;
+use App\Models\Deck;
 
 use App\Services\ImageService;
 
 class IngestService
 {
+    public function getDecks($userId): array
+    {
+        $decks = Deck::where("userId", $userId)->get();
+        $output = [];
+        foreach ($decks as $deck) {
+            $output[] = [
+                "Name" => $deck->name,
+                "UID" => $deck->uid,
+                "Commander" => $deck->commander,
+                "Cards" => $deck->cards,
+            ];
+        }
+        return $output;
+    }
+
+    public function countDecks($userId)
+    {
+        $count = Deck::where("userId", $userId)->count();
+        return $count;
+    }
+
     public function addCard(array $params, $front, $back)
     {
         $imageService = new ImageService();

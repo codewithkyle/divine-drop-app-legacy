@@ -208,23 +208,22 @@ namespace Client.Pages.Decks
         }
         public async Task RemoveFromDeck(string uid)
         {
-            int index = -1;
             for (int i = 0; i < Deck.Cards.Count; i++)
             {
                 if (Deck.Cards[i].UID == uid)
                 {
-                    index = i;
+                    Deck.Cards.RemoveAt(i);
+                    if (uid == Deck.Commander)
+                    {
+                        Deck.Commander = null;
+                    }
+                    string Ticket = await JSRuntime.InvokeAsync<string>("StartLoading");
+                    await JSRuntime.InvokeVoidAsync("UpdateDeck", Deck);
+                    await JSRuntime.InvokeVoidAsync("StopLoading", Ticket);
+                    StateHasChanged();
                     break;
                 }
             }
-            if (index >= 0)
-            {
-                Deck.Cards.RemoveAt(index);
-                string Ticket = await JSRuntime.InvokeAsync<string>("StartLoading");
-                await JSRuntime.InvokeVoidAsync("UpdateDeck", Deck);
-                await JSRuntime.InvokeVoidAsync("StopLoading", Ticket);
-            }
-            StateHasChanged();
         }
         public async Task UpdateCardQuantity(string uid, string newValue)
         {
@@ -251,6 +250,7 @@ namespace Client.Pages.Decks
             if (Deck.Name != DeckName)
             {
                 string Ticket = await JSRuntime.InvokeAsync<string>("StartLoading");
+                Deck.Name = DeckName;
                 await JSRuntime.InvokeVoidAsync("UpdateDeck", Deck);
                 await JSRuntime.InvokeVoidAsync("StopLoading", Ticket);
             }

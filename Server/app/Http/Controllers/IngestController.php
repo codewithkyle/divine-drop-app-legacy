@@ -11,6 +11,24 @@ use App\Services\IngestService;
 
 class IngestController extends Controller
 {
+    public function getDecks(Request $request)
+    {
+        $ingestService = new IngestService();
+        $decks = $ingestService->getDecks($request->user->id);
+        $response = "";
+        foreach ($decks as $deck) {
+            $response .= \json_encode($deck) . "\n";
+        }
+        return response($response, 200);
+    }
+
+    public function countDecks(Request $request)
+    {
+        $ingestService = new IngestService();
+        $count = $ingestService->countDecks($request->user->id);
+        return $this->buildSuccessResponse($count);
+    }
+
     public function addCard(Request $request)
     {
         try {
