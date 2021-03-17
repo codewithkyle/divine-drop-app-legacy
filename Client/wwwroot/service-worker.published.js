@@ -91,35 +91,38 @@ async function tryFetch(request){
 }
 
 async function onFetch(event) {
-    const shouldServeIndexHtml = event.request.mode === 'navigate';
-    const request = shouldServeIndexHtml ? 'index.html' : event.request;
-    try {
-        if (event.request.method === 'GET' && !event.request.url.match(/app\.json$/)) {
-            let response = await tryAppCache(request);
-            if (!response){
-                if (event.request.url.indexOf("/image") !== -1){
-                    response = await tryImageCache(event.request);
-                    if (response){
-                        return response;
-                    }
-                }
-            }
-            if (!response){
-                response = await tryFetch(event.request);
-            }
-            return response;
-        } else {
-            return fetch(event.request);
+    let request = event.request;
+    if (request.mode === 'navigate' || request.url.indexOf(self.origin) !== -1){
+        const shouldServeIndexHtml = event.request.mode === 'navigate';
+        if (shouldServeIndexHtml){
+            request = 'index.html';
         }
-    } catch (e){
-        // API cache is only hit when the client doesn't have a network connection
-        const apiCache = await caches.open(apiCacheName);
-        const cachedResponse = await apiCache.match(request);
-        if (cachedResponse){
-            return cachedResponse;
-        } else {
+        let response = await tryAppCache(request);
+        if (!response){
+            response = await fetch(request);
+        }
+        return response;
+    } else if (request.url.indexOf(API_URL) !== -1){
+        let response;
+        if (request.url.indexOf("/image") !== -1){
+            response = await tryImageCache(request);
+            if (response){
+                return response;
+            }
+        }
+        try{
+            response = await tryFetch(event.request);
+        } catch (e) {
+            const apiCache = await caches.open(apiCacheName);
+            response = await apiCache.match(request);
+        }
+        if (response){
+            return response;
+        }else{
             throw "Network error";
         }
+    } else {
+        return fetch(event.request);
     }
 }
 
