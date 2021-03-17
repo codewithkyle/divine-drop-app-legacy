@@ -39,7 +39,7 @@ async function onActivate(event) {
     await Promise.all(cacheKeys
         .filter(key => key.startsWith(imageCacheName) && key !== cacheName)
         .map(key => caches.delete(key)));
-    reloadClients();
+    reloadClients(true);
 }
 
 async function tryAppCache(request){
@@ -109,10 +109,10 @@ async function onFetch(event) {
     }
 }
 
-function reloadClients(){
+function reloadClients(force = false){
 	self.clients.matchAll().then(clients => {
 		clients.forEach(client => {
-			if (!client.focused){
+			if (!client.focused || force){
 				client.postMessage({
 					type: "reload",
 				});

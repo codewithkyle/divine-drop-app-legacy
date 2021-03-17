@@ -26,6 +26,11 @@ app {
 	transition: none !important;
 	transform: scale(1) translateX(-50%);
 	opacity: 1;
+
+	p{
+		width: 100%;
+		text-align: center;
+	}
 }
 
 a {
