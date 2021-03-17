@@ -107,11 +107,7 @@ function Ingest(route: string, table: string): Promise<boolean> {
 			);
 		})
 			.then((data) => {
-				if (data === null) {
-					resolve(true);
-				} else {
-					resolve(false);
-				}
+				resolve(true);
 			})
 			.catch(() => {
 				resolve(false);

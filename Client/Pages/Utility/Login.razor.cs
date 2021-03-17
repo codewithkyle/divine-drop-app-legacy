@@ -33,7 +33,7 @@ namespace Client.Pages.Utility
             }
 			else
 			{
-				NavigationManager.NavigateTo("/dashboard", true);
+				NavigationManager.NavigateTo("/dashboard");
 			}
         }
 
@@ -47,11 +47,11 @@ namespace Client.Pages.Utility
                 LoginForm.Succeed();
                 if (Response.IsPendingEmailVerificaiton)
 				{
-                    NavigationManager.NavigateTo("/verification/pending", true);
+                    NavigationManager.NavigateTo("/verification/pending");
                 }
 				else
 				{
-                    NavigationManager.NavigateTo("/dashboard", true);
+                    NavigationManager.NavigateTo("/dashboard");
                 }
             }
 			else
