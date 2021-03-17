@@ -91,7 +91,7 @@ async function tryFetch(request){
 
 async function onFetch(event) {
     const modified = new Request(event.request);
-    delete modified?.integrity;
+    modified.integrity = null;
     const shouldServeIndexHtml = event.request.mode === 'navigate';
     const request = shouldServeIndexHtml ? 'index.html' : modified;
     try {
