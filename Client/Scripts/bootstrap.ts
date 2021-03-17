@@ -7,11 +7,11 @@ function UpdateLoadingText() {
 	loadingText.innerText = `Loading resource ${loaded} of ${totalResources}.`;
 }
 
-async function LoadScripts(version) {
+async function LoadScripts() {
 	for (const resource of scripts) {
 		await new Promise<void>((loaded) => {
 			const script = document.createElement("script");
-			script.src = `${resource}`;
+			script.src = resource;
 			script.onload = () => {
 				loaded();
 			};
@@ -24,14 +24,14 @@ async function LoadScripts(version) {
 	}
 }
 
-async function LoadStylesheets(version) {
+async function LoadStylesheets() {
 	await new Promise<void>((resolve) => {
 		let resolved = 0;
 		for (const resource of stylesheets) {
 			new Promise<void>((loaded) => {
 				const stylesheet = document.createElement("link");
 				stylesheet.rel = "stylesheet";
-				stylesheet.href = `${resource}`;
+				stylesheet.href = resource;
 				stylesheet.onload = () => {
 					loaded();
 				};
@@ -136,8 +136,8 @@ async function Bootstrap() {
 		if (loadedVersion !== null){
 			document.title = `${document.title} v${loadedVersion}`;
 		}
-		await LoadStylesheets(latestVersion);
-		await LoadScripts(latestVersion);
+		await LoadStylesheets();
+		await LoadScripts();
 		await LoadCards();
 		LoadFramework();
 	}
