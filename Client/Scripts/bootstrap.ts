@@ -120,12 +120,18 @@ async function Bootstrap() {
 		const app: HTMLElement = document.body.querySelector("app");
 		app.style.display = "none";
 		snackbar({
-			message: `An update is installing. Please wait.`,
+			message: `We are installing an update. Please wait.`,
 			duration: Infinity,
 			force: true,
 			closeable: false,
 			classes: ["install-notification"],
 		});
+		navigator.serviceWorker.onmessage = (e) => {
+			const { type } = e.data;
+			if (type === "reload"){
+				location.reload();
+			}
+		}
 	} else {
 		await LoadStylesheets();
 		await LoadScripts();
