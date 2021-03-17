@@ -351,7 +351,7 @@ class IDBWorker {
 				// @ts-ignore
 				importScripts("/js/stream-parser.js");
 			}
-			const parser = new StreamParser(route, workerUid, this.workerInbox.bind(this));
+			const parser = new StreamParser(`${API_URL}/${route}`, workerUid, this.workerInbox.bind(this));
 			this.workerPool[workerUid] = {
 				worker: parser,
 				table: table,
