@@ -282,7 +282,7 @@ class IDBWorker {
 				method: "HEAD",
 				credentials: "include",
 			});
-			const incomingETag = response.headers.get("ETag") ?? null;
+			const incomingETag = response.headers.get("x-ingest-version") ?? null;
 			return incomingETag;
 		} catch (e) {
 			return null;
@@ -308,9 +308,6 @@ class IDBWorker {
 
 		// No network connection -- continue anyways and brace for the jank
 		if (incomingETag === null) {
-			// if (expectedTotal !== currentTotal){
-			// 	return { ingestRequired: true, expectedTotal: expectedTotal };
-			// }
 			return { ingestRequired: false, expectedTotal: 0 };
 		}
 

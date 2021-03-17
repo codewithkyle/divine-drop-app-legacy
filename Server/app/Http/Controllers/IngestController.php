@@ -52,7 +52,7 @@ class IngestController extends Controller
     {
         $path = storage_path("ndjson/cards.ndjson");
         $etag = $this->generateEtag($path);
-        return response(file_get_contents($path))->header("ETag", $etag);
+        return response(file_get_contents($path))->header("x-ingest-version", $etag);
     }
 
     public function countCards(Request $request): JsonResponse
@@ -73,7 +73,7 @@ class IngestController extends Controller
             case "application/x-ndjson":
                 $path = storage_path("ndjson/users.ndjson");
                 $etag = $this->generateEtag($path);
-                return response(file_get_contents($path))->header("ETag", $etag);
+                return response(file_get_contents($path))->header("x-ingest-version", $etag);
             case "application/json":
                 $ingestService = new IngestService();
                 $data = $ingestService->getAllUsers();
@@ -85,14 +85,14 @@ class IngestController extends Controller
     {
         $path = storage_path("ndjson/cards.ndjson");
         $etag = $this->generateEtag($path);
-        return response("")->header("ETag", $etag);
+        return response("")->header("x-ingest-version", $etag);
     }
 
     public function getUsersHead(Request $request)
     {
         $path = storage_path("ndjson/users.ndjson");
         $etag = $this->generateEtag($path);
-        return response("")->header("ETag", $etag);
+        return response("")->header("x-ingest-version", $etag);
     }
 
     public function countUsers(Request $request): JsonResponse
