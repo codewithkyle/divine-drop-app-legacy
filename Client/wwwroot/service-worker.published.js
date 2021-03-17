@@ -14,12 +14,28 @@ const apiCacheName = `${apiCachePrefix}${self.assetsManifest.version}`;
 const offlineAssetsInclude = [ /\.dll$/, /\.pdb$/, /\.wasm/, /\.html/, /\.js$/, /\.css$/, /\.png$/, /\.jpeg$/, /\.jpg$/, /\.gif$/, /\.webp$/, /\.svg$/, /\.mp3$/, /\.wav$/, /\.json$/, /\.webmanifest$/ ];
 const offlineAssetsExclude = [ /service-worker\.js$/, /app\.json$/, ];
 
+async function getBuildVersion(){
+    const request = await fetch("/app.json");
+    const response = await request.json();
+    return response.build;
+}
+
 async function onInstall(event) {
     self.skipWaiting();
+    // const version = await getBuildVersion();
     const assetsRequests = self.assetsManifest.assets
         .filter(asset => offlineAssetsInclude.some(pattern => pattern.test(asset.url)))
         .filter(asset => !offlineAssetsExclude.some(pattern => pattern.test(asset.url)))
-        .map(asset => new Request(asset.url));
+        .map(asset => {
+            // if (asset.url.indexOf(".js" !== -1) || asset.url.indexOf(".css") !== -1){
+            //     return new Request(asset.url);
+            // } else {
+            //     return new Request(asset.url);
+            // }
+            return new Request(asset.url, {
+                cache: "reload"
+            });
+        });
     let somethingFailed = false;
 	for (const request of assetsRequests){
 		await caches.open(cacheName).then(cache => cache.add(request)).catch(error => {
@@ -48,9 +64,8 @@ async function onActivate(event) {
 }
 
 async function tryAppCache(request){
-    const tempRequest = new Request(request).url.replace(/\?v\=.*/, "");
     const cache = await caches.open(cacheName);
-    const cachedResponse = await cache.match(tempRequest);
+    const cachedResponse = await cache.match(request);
     return cachedResponse;
 }
 
