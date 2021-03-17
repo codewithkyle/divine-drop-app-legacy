@@ -133,7 +133,9 @@ async function Bootstrap() {
 			location.reload();
 		}, 10000);
 	} else {
-		document.title = `${document.title} v${loadedVersion}`;
+		if (loadedVersion !== null){
+			document.title = `${document.title} v${loadedVersion}`;
+		}
 		await LoadStylesheets();
 		await LoadScripts();
 		await LoadCards();
