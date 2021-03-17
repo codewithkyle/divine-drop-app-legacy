@@ -1,27 +1,10 @@
 const loadingText: HTMLSpanElement = document.body.querySelector(".js-loading-text");
 let loaded = 0;
-let totalResources = scripts.length + stylesheets.length;
+let totalResources = stylesheets.length;
 
 function UpdateLoadingText() {
 	loaded++;
 	loadingText.innerText = `Loading resource ${loaded} of ${totalResources}.`;
-}
-
-async function LoadScripts() {
-	for (const resource of scripts) {
-		await new Promise<void>((loaded) => {
-			const script = document.createElement("script");
-			script.src = resource;
-			script.onload = () => {
-				loaded();
-			};
-			script.onerror = () => {
-				loaded();
-			};
-			document.head.appendChild(script);
-		});
-		UpdateLoadingText();
-	}
 }
 
 async function LoadStylesheets() {
@@ -42,7 +25,7 @@ async function LoadStylesheets() {
 			}).then(() => {
 				UpdateLoadingText();
 				resolved++;
-				if (resolved === scripts.length) {
+				if (resolved === stylesheets.length) {
 					resolve();
 				}
 			});
@@ -130,7 +113,6 @@ async function Bootstrap() {
 			document.title = `${document.title} v${loadedVersion}`;
 		}
 		await LoadStylesheets();
-		await LoadScripts();
 		await LoadCards();
 	}
 }
