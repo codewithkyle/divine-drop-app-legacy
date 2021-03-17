@@ -64,7 +64,7 @@ class StreamParser {
 			}),
 		});
 		if (response.ok) {
-			await readStream(response.body);
+			await this.readStream(response.body);
 			this.inbox({
 				data: {
 					type: "done",
