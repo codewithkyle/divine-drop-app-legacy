@@ -1,4 +1,4 @@
-const API_URL = "http://api.divinedrop.local";
+const API_URL = "https://api.divinedrop.app";
 const scripts = [
 	"/js/uid.js",
 	"/js/utilities.js",
