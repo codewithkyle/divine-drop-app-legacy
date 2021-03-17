@@ -22,7 +22,6 @@ async function onInstall(event) {
         .map(asset => {
             return new Request(asset.url, {
                 cache: "reload",
-                integrity: asset.hash,
             });
         });
     let somethingFailed = false;
