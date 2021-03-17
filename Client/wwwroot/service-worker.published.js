@@ -53,15 +53,15 @@ async function onActivate(event) {
 
 async function tryAppCache(request){
     const cache = await caches.open(cacheName);
+    const modifedRequest = new Request(request);
+    delete modifedRequest?.integrity;
     const cachedResponse = await cache.match(request);
     return cachedResponse;
 }
 
 async function tryImageCache(request){
     const cache = await caches.open(imageCacheName);
-    const modifedRequest = new Request(request);
-    delete modifedRequest?.integrity;
-    const cachedResponse = await cache.match(modifedRequest);
+    const cachedResponse = await cache.match(request);
     return cachedResponse;
 }
 
