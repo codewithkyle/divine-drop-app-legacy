@@ -117,14 +117,8 @@ async function Bootstrap() {
 		latestVersion = localStorage.getItem("version");
 	}
 	if (loadedVersion !== latestVersion && loadedVersion !== null) {
-		const sw: ServiceWorker = navigator?.serviceWorker?.controller ?? null;
 		const app: HTMLElement = document.body.querySelector("app");
 		app.style.display = "none";
-		if (sw) {
-			sw.postMessage({
-				type: "reinstall",
-			});
-		}
 		snackbar({
 			message: `A manditory update must be installed.`,
 			buttons: [

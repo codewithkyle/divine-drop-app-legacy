@@ -108,11 +108,6 @@ async function onFetch(event) {
     }
 }
 
-async function cachebust(){
-    const cacheKeys = await caches.keys();
-    await Promise.all(cacheKeys.map(key => caches.delete(key)));
-}
-
 function reloadClients(){
 	self.clients.matchAll().then(clients => {
 		clients.forEach(client => {
@@ -225,9 +220,6 @@ self.onmessage = async (event) => {
             clearCache();
 			reloadClients();
 			break;
-        case "reinstall":
-            await cachebust();
-            break;
         default:
             break;
     }

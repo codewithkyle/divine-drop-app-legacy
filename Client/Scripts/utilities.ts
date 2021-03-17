@@ -302,6 +302,8 @@ let bgDownloadWorker = null;
 async function DownloadImages(){
 	// @ts-ignore
 	const saveData = navigator?.connection?.saveData === false ?? false;
+	alert(saveData);
+	alert(typeof bgDownloadWorker);
 	if (!saveData && bgDownloadWorker === null){
 		bgDownloadWorker = new Worker("/js/background-downloader.js");
 		const cards = await Select("cards");
