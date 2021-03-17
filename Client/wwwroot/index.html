@@ -17,18 +17,8 @@
 	<meta name="msapplication-TileColor" content="#4338CA">
     <meta name="theme-color" content="#4338CA">
 
-    <script>navigator.serviceWorker.register('service-worker.js').then(async () => {
-        console.log("SW registered");
-        for (const resource of ["/js/config.js", "/js/notifyjs.js", "/js/bootstrap.js"]){
-            console.log("loading", resource);
-            const script = document.createElement("script");
-            script.src = resource;
-            document.head.appendChild(script);
-            await new Promise((resolve) => {
-                script.onload = resolve;
-            });
-        }
-    });</script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
+
 
 	<!-- STOP! Scripts and Stylesheets should be registered in the config.ts file -->
 
@@ -56,6 +46,14 @@
         <transition-bar-one></transition-bar-one>
         <transition-bar-two></transition-bar-two>
     </soft-loading>
+
+    <!-- STOP! Scripts and Stylesheets should be registered in the config.ts file -->
+
+	<script src="/js/config.js"></script>
+	<script src="/js/notifyjs.js"></script>
+	<script src="/js/bootstrap.js"></script>
+
+    <script src="_framework/blazor.webassembly.js"></script>
 </body>
 
 </html>

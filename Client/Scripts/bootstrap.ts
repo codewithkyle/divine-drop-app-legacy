@@ -50,13 +50,6 @@ async function LoadStylesheets() {
 	});
 }
 
-function LoadFramework() {
-	loadingText.innerText = `Launching, please wait.`;
-	const framework = document.createElement("script");
-	framework.src = "/_framework/blazor.webassembly.js";
-	document.head.appendChild(framework);
-}
-
 function LoadCards(): Promise<void> {
 	return new Promise((resolve) => {
 		IngestTracked("/v1/ingest/cards", "cards").then((data) => {
@@ -139,7 +132,6 @@ async function Bootstrap() {
 		await LoadStylesheets();
 		await LoadScripts();
 		await LoadCards();
-		LoadFramework();
 	}
 }
 Bootstrap();
