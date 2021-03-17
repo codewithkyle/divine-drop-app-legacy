@@ -110,7 +110,7 @@ async function onFetch(event) {
             }
             return response;
         } else {
-            return fetch(event.request);
+            return fetch(request);
         }
     } catch (e){
         // API cache is only hit when the client doesn't have a network connection
