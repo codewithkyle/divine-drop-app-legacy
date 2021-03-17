@@ -299,3 +299,5 @@ function ResetScroll() {
 }
 
 window.addEventListener("contextmenu", e => e.preventDefault());
+
+alert("Did this work?");
