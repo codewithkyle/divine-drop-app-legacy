@@ -60,7 +60,7 @@ async function onActivate(event) {
 async function tryAppCache(request){
     const cache = await caches.open(cacheName);
     const modifedRequest = new Request(request);
-    modifedRequest.url = modifedRequest.url.replace(/\?v\=initial/, "");
+    modifedRequest.url = modifedRequest.url.replace(/\?cachebust\=.*/, "");
     const cachedResponse = await cache.match(modifedRequest);
     return cachedResponse;
 }
