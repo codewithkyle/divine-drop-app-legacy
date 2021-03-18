@@ -71,5 +71,20 @@ namespace Client.Pages.Admin
             }
             await JSRuntime.InvokeAsync<ResponseCore>("StopLoading", ticket);
 		}
+
+        public async Task PurgeImageTransforms()
+        {
+            string ticket = await JSRuntime.InvokeAsync<string>("StartLoading");
+            ResponseCore Response = await JSRuntime.InvokeAsync<ResponseCore>("PurgeImageTransforms");
+            if (Response.Success)
+            {
+				await JSRuntime.InvokeVoidAsync("Alert", "success", "Success","Image transforms have been purged.");
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("Alert", "error", "Error", Response.Error);
+            }
+            await JSRuntime.InvokeAsync<ResponseCore>("StopLoading", ticket);
+        }
     }
 }

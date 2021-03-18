@@ -89,3 +89,10 @@ async function SetMaintenanceMode(isUndergoingMaintenance: boolean): Promise<Res
 	const response = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
 	return response;
 }
+
+async function PurgeImageTransforms(): Promise<ResponseCore> {
+	const request = await apiRequest(`/v1/admin/purge/transformed-images`, "POST");
+	const fetchResponse: FetchReponse = await request.json();
+	const response: ResponseCore = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+	return response;
+}

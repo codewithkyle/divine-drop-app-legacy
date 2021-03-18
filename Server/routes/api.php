@@ -56,6 +56,7 @@ $router->group(["prefix" => "v1"], function () use ($router) {
         $router->post("clear-redis-cache", "AdminController@clearRedisCache");
         $router->post("clear-ndjson-cache", "AdminController@clearNDJSONCache");
         $router->post("set-maintenance-mode", "AdminController@setMaintenanceMode");
+        $router->post("purge/transformed-images", "AdminController@purgeTransformedImages");
     });
 
     $router->group(["prefix" => "ingest"], function () use ($router) {
