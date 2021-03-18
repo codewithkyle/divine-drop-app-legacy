@@ -19,9 +19,9 @@ class AdminController extends Controller
 {
     public function purgeTransformedImages(Request $request)
     {
-        try{
+        try {
             \App\Models\TransformedImage::chunk(100, function ($images) {
-                foreach ($images as $image){
+                foreach ($images as $image) {
                     \App\Facades\File::Delete($image->key);
                     $image->delete();
                 }
