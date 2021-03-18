@@ -8,7 +8,7 @@ namespace Client.Models.Globals
 			Profile,
 		}
 		public static Modal ActiveModal = Modal.None;
-        public static string API = "https://api.divinedrop.app";
+        public static string API = "http://api.divinedrop.local";
         public static void OpenModal(Modal modal)
         {
             ActiveModal = modal;

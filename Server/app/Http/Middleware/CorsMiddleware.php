@@ -24,7 +24,7 @@ class CorsMiddleware
             "Access-Control-Max-Age" => "86400",
             "Access-Control-Allow-Headers" => "Content-Type, Authorization, X-Requested-With, Accept, ETag, ingest-version",
             "Access-Control-Expose-Headers" => "ETag, ingest-version",
-            "Cache-Control" => "public"
+            "Cache-Control" => "public",
         ];
 
         if ($request->isMethod("OPTIONS")) {

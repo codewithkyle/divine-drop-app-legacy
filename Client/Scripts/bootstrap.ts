@@ -128,12 +128,12 @@ async function Bootstrap() {
 		});
 		navigator.serviceWorker.onmessage = (e) => {
 			location.reload();
-		}
-		setTimeout(()=>{
+		};
+		setTimeout(() => {
 			location.reload();
 		}, 30000);
 	} else {
-		if (loadedVersion !== null){
+		if (loadedVersion !== null) {
 			document.title = `${document.title} v${loadedVersion}`;
 		}
 		await LoadStylesheets();

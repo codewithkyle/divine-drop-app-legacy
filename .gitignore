@@ -3,3 +3,4 @@ node_modules
 /brixi
 .vscode
 web_modules
+.env
