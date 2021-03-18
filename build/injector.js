@@ -18,4 +18,4 @@ fs.writeFileSync(ConfigFile, data);
 const IndexFile = path.join(cwd, "Client", "wwwroot", "index.html");
 data = fs.readFileSync(IndexFile, { encoding: "utf-8"}).toString();
 data = data.replace("REPLACE_WITH_CACHEBUST", Date.now());
-fs.writeFileSync(ConfigFile, data);
+fs.writeFileSync(IndexFile, data);
