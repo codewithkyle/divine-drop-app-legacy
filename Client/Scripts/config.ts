@@ -33,5 +33,5 @@ const stylesheets = [
 	"/css/select.css",
 	"/css/deck-browser.css",
 	"/css/deck-drawer.css",
-	"/css/test.css",
+	"/css/test-2.css",
 ];
