@@ -11,6 +11,7 @@ self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
 const cacheNamePrefix = 'resource-cache-';
 const apiCachePrefix = "api-cache-";
 const imageCacheName = "image-cache";
+const cardImageCacheName = "card-image-cache";
 const cacheName = `${cacheNamePrefix}${self.assetsManifest.version}`;
 const apiCacheName = `${apiCachePrefix}${self.assetsManifest.version}`;
 const offlineAssetsInclude = [ /\.dll$/, /\.pdb$/, /\.wasm/, /\.html/, /\.js$/, /\.css$/, /\.png$/, /\.jpeg$/, /\.jpg$/, /\.gif$/, /\.webp$/, /\.svg$/, /\.mp3$/, /\.wav$/, /\.json$/, /\.webmanifest$/ ];
@@ -50,6 +51,9 @@ async function onActivate(event) {
     await Promise.all(cacheKeys
         .filter(key => key.startsWith(imageCacheName) && key !== cacheName)
         .map(key => caches.delete(key)));
+    await Promise.all(cacheKeys
+        .filter(key => key.startsWith(cardImageCacheName) && key !== cacheName)
+        .map(key => caches.delete(key)));
     reloadClients(true);
 }
 
@@ -67,6 +71,12 @@ async function tryImageCache(request){
     return cachedResponse;
 }
 
+async function tryCardImageCache(request){
+    const cache = await caches.open(cardImageCacheName);
+    const cachedResponse = await cache.match(request);
+    return cachedResponse;
+}
+
 async function tryFetch(request){
     const response =  await fetch(request);
     // Skip caching bad responses
@@ -77,8 +87,13 @@ async function tryFetch(request){
     if (response.type === "cors"){
         const responseToCache = response.clone();
         if (response.url.indexOf("/image") !== -1){
-            const imgCache = await caches.open(imageCacheName);
-            await imgCache.put(request, responseToCache);
+            if (request.url.indexOf("/image/card/" !== -1)){
+                const imgCache = await caches.open(cardImageCacheName);
+                await imgCache.put(request, responseToCache);
+            } else {
+                const imgCache = await caches.open(imageCacheName);
+                await imgCache.put(request, responseToCache);
+            }
         } else {
             const apiCache = await caches.open(apiCacheName);
             await apiCache.put(request, responseToCache);
@@ -97,9 +112,16 @@ async function onFetch(event) {
             let response = await tryAppCache(request);
             if (!response){
                 if (request.url.indexOf("/image") !== -1){
-                    response = await tryImageCache(request);
-                    if (response){
-                        return response;
+                    if (request.url.indexOf("/image/card/" !== -1)){
+                        response = await tryCardImageCache(request);
+                        if (response){
+                            return response;
+                        }
+                    } else {
+                        response = await tryImageCache(request);
+                        if (response){
+                            return response;
+                        }
                     }
                 }
             }
