@@ -60,8 +60,8 @@ async function onActivate(event) {
 async function tryAppCache(request){
     const cache = await caches.open(cacheName);
     const modifedRequest = new Request(request);
-    delete modifedRequest?.integrity;
-    const cachedResponse = await cache.match(request);
+    modifedRequest.url = modifedRequest.url.replace(/\?v\=initial/, "");
+    const cachedResponse = await cache.match(modifedRequest);
     return cachedResponse;
 }
 
@@ -94,7 +94,7 @@ async function tryFetch(request){
                 const imgCache = await caches.open(imageCacheName);
                 await imgCache.put(request, responseToCache);
             }
-        } else {
+        } else if (response.url.indexOf("https://api." !== -1) || response.url.indexOf("http://api." !== -1)) {
             const apiCache = await caches.open(apiCacheName);
             await apiCache.put(request, responseToCache);
         }
