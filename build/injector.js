@@ -3,7 +3,7 @@ const path = require("path");
 const cwd = process.cwd();
 require("dotenv").config();
 
-const API_URL = process.env?.NODE_ENV === "production" ? "https://api.divinedrop.app" : process.env.DEV_API_URL;
+const API_URL = process.env?.DEV_API_URL ?? "https://api.divinedrop.app";
 
 const AppSettingsFile = path.join(cwd, "Client", "Models", "Globals", "AppSettings.cs");
 const ConfigFile = path.join(cwd, "Client", "Scripts", "config.ts");
