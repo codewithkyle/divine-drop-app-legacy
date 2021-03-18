@@ -3,8 +3,6 @@ const path = require("path");
 const cwd = process.cwd();
 require("dotenv").config();
 
-console.log(process.env.API_URL);
-
 const AppSettingsFile = path.join(cwd, "Client", "Models", "Globals", "AppSettings.cs");
 const ConfigFile = path.join(cwd, "Client", "Scripts", "config.ts");
 

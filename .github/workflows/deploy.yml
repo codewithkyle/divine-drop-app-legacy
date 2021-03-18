@@ -29,6 +29,8 @@ jobs:
 
     - name: Build
       run: npm run production
+      env:
+        API_URL: https://api.divinedrop.app/
 
     - name: Clear Old App Files
       uses: appleboy/ssh-action@master
