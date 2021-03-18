@@ -12,6 +12,7 @@
 	max-width: calc(100vw - 1rem);
 	overflow-y: auto;
 	z-index: 1000;
+	overscroll-behavior: contian;
 
 	&:hover,
 	&:focus-within {
@@ -104,5 +105,9 @@
 			height: 24px;
 			position: absolute;
 		}
+	}
+
+	img{
+		min-height: 283px;
 	}
 }
