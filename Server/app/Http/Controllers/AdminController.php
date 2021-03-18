@@ -20,12 +20,11 @@ class AdminController extends Controller
     public function purgeTransformedImages(Request $request)
     {
         try {
-            \App\Models\TransformedImage::chunk(100, function ($images) {
-                foreach ($images as $image) {
-                    \App\Facades\File::Delete($image->key);
-                    $image->delete();
-                }
-            });
+            $images = \App\Models\TransformedImage::get();
+            foreach ($images as $image) {
+                \App\Facades\File::Delete($image->key);
+                $image->delete();
+            }
         } catch (Exception $e) {
             return $this->buildErrorResponse($e->getMessage());
         }

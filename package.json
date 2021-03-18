@@ -1,5 +1,5 @@
 {
-    "version": "0.1.30",
+    "version": "0.1.32",
     "scripts": {
         "reset": "rm -rf ./Client/wwwroot/css && mkdir ./Client/wwwroot/css && rm -rf ./Client/wwwroot/js && mkdir ./Client/wwwroot/js && rm -rf ./Client/public",
         "brixi": "brixi",
@@ -7,7 +7,8 @@
         "build": "npm run reset && npm run prettier && node ./build/injector.js && npm-run-all build:* && node ./Client/build/relocate.js && npm run publish",
         "build:css": "cssmonster",
         "build:js": "tsc",
-        "production": "npm run reset && cross-env API_URL=\"https://api.divinedrop.app/\" node ./build/injector.js && npm-run-all build:* && node ./Client/build/minify.js && node ./Client/build/release.js && npm run publish",
+        "injector": "node ./build/injector.js",
+        "production": "npm run reset && npm-run-all build:* && node ./Client/build/minify.js && node ./Client/build/release.js && npm run publish",
         "publish": "dotnet publish ./Client -c Release && mkdir ./Client/public && mv ./Client/bin/Release/net5.0/publish/wwwroot/* ./Client/public",
         "bundle": "snowpack install",
         "prettier": "npm-run-all prettier:*",
@@ -23,7 +24,6 @@
         "@codewithkyle/pubsub": "^1.1.0",
         "@prettier/plugin-php": "^0.16.1",
         "brixi": "^0.3.1",
-        "cross-env": "^7.0.3",
         "cssmonster": "^0.3.0",
         "dotenv": "^8.2.0",
         "glob": "^7.1.6",

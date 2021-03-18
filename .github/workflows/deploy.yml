@@ -27,6 +27,11 @@ jobs:
       with:
         dotnet-version: 5.0.x
 
+    - name: Injector
+      run: npm run injector
+      env:
+        API_URL: ${{ secrets.API_URL }}
+
     - name: Build
       run: npm run production
 
