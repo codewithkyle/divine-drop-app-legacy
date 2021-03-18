@@ -17,6 +17,8 @@
 	<meta name="msapplication-TileColor" content="#4338CA">
     <meta name="theme-color" content="#4338CA">
 
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
+
 	<!-- STOP! Scripts and Stylesheets should be registered in the config.ts file -->
 
     <link href="/css/normalize.css" rel="stylesheet">
@@ -46,11 +48,9 @@
 
     <!-- STOP! Scripts and Stylesheets should be registered in the config.ts file -->
 
-	<script src="/js/config.js?cachebust=REPLACE_WITH_CACHEBUST"></script>
-	<script src="/js/notifyjs.js?cachebust=REPLACE_WITH_CACHEBUST"></script>
-	<script src="/js/bootstrap.js?cachebust=REPLACE_WITH_CACHEBUST"></script>
-
-    <script>navigator.serviceWorker.register('service-worker.js');</script>
+	<script src="/js/config.js"></script>
+	<script src="/js/notifyjs.js"></script>
+	<script src="/js/bootstrap.js"></script>
 
     <!-- STOP! Scripts and Stylesheets should be registered in the config.ts file -->
 

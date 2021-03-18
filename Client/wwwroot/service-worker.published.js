@@ -27,7 +27,6 @@ async function onInstall(event) {
                 cache: "reload",
             });
         });
-    let somethingFailed = false;
 	for (const request of assetsRequests){
 		await caches.open(cacheName).then(cache => cache.add(request)).catch(error => {
 			console.error("Failed to cache:", request, error);
@@ -35,9 +34,6 @@ async function onInstall(event) {
 		});
 	}
     await prepOutbox();
-    if (somethingFailed){
-        reloadClients(true);
-    }
 }
 
 async function onActivate(event) {
@@ -59,9 +55,7 @@ async function onActivate(event) {
 
 async function tryAppCache(request){
     const cache = await caches.open(cacheName);
-    const modifedRequest = new Request(request);
-    modifedRequest.url = modifedRequest.url.replace(/\?cachebust\=.*/, "");
-    const cachedResponse = await cache.match(modifedRequest);
+    const cachedResponse = await cache.match(request);
     return cachedResponse;
 }
 

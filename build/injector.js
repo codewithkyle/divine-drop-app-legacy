@@ -14,8 +14,3 @@ const ConfigFile = path.join(cwd, "Client", "Scripts", "config.ts");
 data = fs.readFileSync(ConfigFile, { encoding: "utf-8"}).toString();
 data = data.replace(/const\sAPI\_URL\s\=.*?\;/, `const API_URL = "${process.env.API_URL}";`);
 fs.writeFileSync(ConfigFile, data);
-
-const IndexFile = path.join(cwd, "Client", "wwwroot", "index.html");
-data = fs.readFileSync(IndexFile, { encoding: "utf-8"}).toString();
-data = data.replace(/REPLACE_WITH_CACHEBUST/g, Date.now());
-fs.writeFileSync(IndexFile, data);
