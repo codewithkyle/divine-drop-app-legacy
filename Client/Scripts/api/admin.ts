@@ -73,13 +73,6 @@ async function ClearApplicationCache(): Promise<ResponseCore> {
 	return response;
 }
 
-async function ClearCloudflareCache(): Promise<ResponseCore> {
-	const request = await apiRequest("/v1/admin/clear-cloudflare-cache", "POST");
-	const fetchResponse = await request.json();
-	const response = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
-	return response;
-}
-
 async function ClearNDJSONCache(): Promise<ResponseCore> {
 	const request = await apiRequest("/v1/admin/clear-ndjson-cache", "POST");
 	const fetchResponse = await request.json();

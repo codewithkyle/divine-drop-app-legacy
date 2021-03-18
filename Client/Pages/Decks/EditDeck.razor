@@ -252,7 +252,7 @@
                                         </g>
                                     </svg>
                                 </i>
-                                <img crossorigin="use-credentials" class="radius-0.5 card-image shadow-sm" draggable="false" src="@AppSettings.API/v1/image/@Cards[i].Front" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
+                                <img crossorigin="use-credentials" class="radius-0.5 card-image shadow-sm" draggable="false" src="@AppSettings.API/v1/image/card/@Cards[i].UID" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
                             </div>
                             <div class="w-full" style="flex: 1;">
                                 <h2 class="block mb-0.25 line-normal font-grey-800 font-bold font-lg">@Card.Name</h2>
@@ -289,7 +289,7 @@
                                     </g>
                                 </svg>
                             </i>
-                            <img crossorigin="use-credentials" draggable="false" src="@AppSettings.API/v1/image/@Cards[i].Front" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
+                            <img crossorigin="use-credentials" draggable="false" src="@AppSettings.API/v1/image/card/@Cards[i].UID" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
                         </div>
                         break;
                 }
@@ -320,7 +320,7 @@
         for (int i = 0; i < Deck.Cards.Count; i++){
             var Card = Deck.Cards[i];
             <div class="w-full px-1 mb-1" flex="row nowrap">
-                <img crossorigin="use-credentials" draggable="false" class="radius-0.5 shadow-sm mr-1" src="@AppSettings.API/v1/card/@Card.UID/image" width="200" loading="lazy">
+                <img crossorigin="use-credentials" draggable="false" class="radius-0.5 shadow-sm mr-1" src="@AppSettings.API/v1/image/card/@Card.UID" width="200" loading="lazy">
                 <div class="w-full" style="flex: 1;">
                     <div class="input mb-0.5">
                         <label for="@Card.UID"># of Cards</label>

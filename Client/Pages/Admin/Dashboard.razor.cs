@@ -33,21 +33,6 @@ namespace Client.Pages.Admin
             await JSRuntime.InvokeAsync<ResponseCore>("StopLoading", ticket);
 		}
 
-		public async Task ClearCloudflareCache()
-		{
-			string ticket = await JSRuntime.InvokeAsync<string>("StartLoading");
-            ResponseCore Response = await JSRuntime.InvokeAsync<ResponseCore>("ClearCloudflareCache");
-            if (Response.Success)
-            {
-                await JSRuntime.InvokeVoidAsync("Alert", "success", "Success","The Cloudflare cache has been cleared.");
-            }
-            else
-            {
-                await JSRuntime.InvokeVoidAsync("Alert", "error", "Error", Response.Error);
-            }
-            await JSRuntime.InvokeAsync<ResponseCore>("StopLoading", ticket);
-		}
-
 		public async Task ClearNDJSONCache()
 		{
 			string ticket = await JSRuntime.InvokeAsync<string>("StartLoading");

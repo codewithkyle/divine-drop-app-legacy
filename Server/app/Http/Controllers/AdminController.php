@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Queue;
 use Symfony\Component\HttpKernel\Exception\HttpException as Exception;
 
 use App\Models\User;
-use App\Facades\Cloudflare;
 use App\Services\UserService;
 use App\Services\AdminService;
 use App\Jobs\RefreshUsersFileJob;
@@ -167,16 +166,6 @@ class AdminController extends Controller
         Queue::push(new RefreshUsersFileJob());
         Queue::push(new RefreshCardsJob());
         return $this->buildSuccessResponse();
-    }
-
-    public function clearCloudflareCache(Request $request): JsonResponse
-    {
-        $success = Cloudflare::flush();
-        if ($success) {
-            return $this->buildSuccessResponse();
-        } else {
-            return $this->buildErrorResponse("Failed to clear Cloudflare cache.");
-        }
     }
 
     public function setMaintenanceMode(Request $request): JsonResponse

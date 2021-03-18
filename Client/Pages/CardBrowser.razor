@@ -252,7 +252,7 @@
                                         </g>
                                     </svg>
                                 </i>
-                                <img crossorigin="use-credentials" class="radius-0.5 card-image shadow-sm" draggable="false" src="@AppSettings.API/v1/image/@Cards[i].Front" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
+                                <img crossorigin="use-credentials" class="radius-0.5 card-image shadow-sm" draggable="false" src="@AppSettings.API/v1/image/card/@Cards[i].UID" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
                             </div>
                             <div class="w-full" style="flex: 1;">
                                 <h2 class="block mb-0.25 line-normal font-grey-800 font-bold font-lg">@Card.Name</h2>
@@ -281,7 +281,7 @@
                                     </g>
                                 </svg>
                             </i>
-                            <img crossorigin="use-credentials" draggable="false" src="@AppSettings.API/v1/image/@Cards[i].Front" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
+                            <img crossorigin="use-credentials" draggable="false" src="@AppSettings.API/v1/image/card/@Cards[i].UID" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
                         </div>
                         break;
                 }

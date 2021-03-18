@@ -27,11 +27,11 @@ $router->group(["prefix" => "v1"], function () use ($router) {
         $router->post("resend-verification-email", "AuthController@resendVerificationEmail");
         $router->post("logout", "AuthController@logout");
         $router->get("image/{uid}", "FileController@getImage");
+        $router->get("image/card/{uid}", "FileController@getCardImage");
         $router->get("file/{uid}", "FileController@getFile");
         $router->post("deck", "DeckController@updateDeck");
         $router->get("deck/{uid}", "DeckController@getDeck");
         $router->delete("deck/{uid}", "DeckController@deleteDeck");
-        $router->get("card/{uid}/image", "FileController@getCardImage");
     });
 
     $router->group(["prefix" => "user", "middleware" => "user"], function () use ($router) {
@@ -54,7 +54,6 @@ $router->group(["prefix" => "v1"], function () use ($router) {
         $router->post("grant-admin-status", "AdminController@grantAdminStatus");
         $router->post("impersonation-link", "AuthController@getImpersonationLink");
         $router->post("clear-redis-cache", "AdminController@clearRedisCache");
-        $router->post("clear-cloudflare-cache", "AdminController@clearCloudflareCache");
         $router->post("clear-ndjson-cache", "AdminController@clearNDJSONCache");
         $router->post("set-maintenance-mode", "AdminController@setMaintenanceMode");
     });
