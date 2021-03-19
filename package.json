@@ -1,5 +1,5 @@
 {
-    "version": "0.1.38",
+    "version": "0.1.39",
     "scripts": {
         "reset": "rm -rf ./Client/wwwroot/css && mkdir ./Client/wwwroot/css && rm -rf ./Client/wwwroot/js && mkdir ./Client/wwwroot/js && rm -rf ./Client/public",
         "brixi": "brixi",

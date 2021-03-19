@@ -81,7 +81,7 @@ async function tryFetch(request){
     if (response.type === "cors"){
         const responseToCache = response.clone();
         if (response.url.indexOf("/image") !== -1){
-            if (request.url.indexOf("/image/card/" !== -1)){
+            if (request.url.indexOf("/card/" !== -1)){
                 const imgCache = await caches.open(cardImageCacheName);
                 await imgCache.put(request, responseToCache);
             } else {
@@ -106,7 +106,7 @@ async function onFetch(event) {
             let response = await tryAppCache(request);
             if (!response){
                 if (request.url.indexOf("/image") !== -1){
-                    if (request.url.indexOf("/image/card/" !== -1)){
+                    if (request.url.indexOf("/card/" !== -1)){
                         response = await tryCardImageCache(request);
                         if (response){
                             return response;

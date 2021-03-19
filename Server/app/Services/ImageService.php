@@ -8,7 +8,6 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\Exception\HttpException as Exception;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Queue;
 use codewithkyle\JitterCore\Jitter;
 
 use App\Models\Image;
@@ -51,7 +50,7 @@ class ImageService
             File::Delete($image->key);
             $image->deleted = true;
             $image->save();
-            Queue::push(new PurgeTransformedImagesJob($image->id));
+            new PurgeTransformedImagesJob($image->id);
         }
     }
 
