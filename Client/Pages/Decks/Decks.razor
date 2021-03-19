@@ -8,7 +8,7 @@
         @for (int i = 0; i < Decks.Count; i++){
             var Deck = Decks[i];
             <div class="deck">
-                <a href="/decks/edit/@Deck.UID" class="bg-grey-100 ar-12:17 mx-auto mb-1 radius-0.5 p-1" style="width: 200px;" flex="justify-center items-center">
+                <a href="/decks/edit/@Deck.UID" class="bg-grey-100 ar-12:17 mx-auto mb-1 p-1" style="width: 200px;" flex="justify-center items-center">
                     @if(Deck.Cards.Count == 0){
                         <span class="text-center inline-block font-grey-700 font-xs line-normal">This deck doesn't have any cards.</span>
                     } else {
