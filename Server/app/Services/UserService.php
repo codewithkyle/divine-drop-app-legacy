@@ -7,6 +7,7 @@ use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Illuminate\Support\Facades\Queue;
 use Symfony\Component\HttpKernel\Exception\HttpException as Exception;
 
 // Models
@@ -62,7 +63,7 @@ class UserService
         }
         $this->user->delete();
         Cache::forget("user-" . $this->user->uid);
-        new RefreshUsersFileJob();
+        Queue::push(new RefreshUsersFileJob());
     }
 
     public function grantAdminStatus(): void
@@ -242,7 +243,7 @@ class UserService
     {
         $this->user->save();
         Cache::put("user-" . $this->user->uid, json_encode($this->user));
-        new RefreshUsersFileJob();
+        Queue::push(new RefreshUsersFileJob());
     }
 
     private function sendMail(string $email, \Illuminate\Mail\Mailable $mail): void
