@@ -220,6 +220,11 @@ namespace Client.Pages.Admin
 		{
 			SearchDebouceTimer.Stop();
 			SearchDebouceTimer.Start();
-		}   
+		}
+
+        public void RefreshUI()
+        {
+            LoadUserData();
+        }
     }
 }

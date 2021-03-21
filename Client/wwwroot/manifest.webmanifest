@@ -4,7 +4,7 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#EDF2F7",
-  "theme_color": "#4773B8",
+  "theme_color": "#4338CA",
   "icons": [
 	{
 		"src": "/images/icons/maskable/icon-48.png",

@@ -284,6 +284,7 @@ function SearchCards(query: string, page: number, type: string, subtype: string,
 				rarity: rarity,
 				colors: colors,
 				sort: sort,
+				keyword: keyword,
 			},
 			resolve
 		);
@@ -302,6 +303,7 @@ function CountCards(query: string, page: number, type: string, subtype: string, 
 				rarity: rarity,
 				colors: colors,
 				sort: sort,
+				keyword: keyword,
 			},
 			resolve
 		);
@@ -326,4 +328,10 @@ async function StashDecks(decks: Array<Deck>) {
 async function GetDeck(uid: string): Promise<Deck> {
 	const deck = await Get("decks", uid);
 	return deck as Deck;
+}
+
+async function UpdateUser(user: Partial<User>): Promise<boolean> {
+	return new Promise((resolve) => {
+		idbManager.send("update-user", user, resolve);
+	});
 }

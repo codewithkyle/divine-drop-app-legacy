@@ -56,6 +56,7 @@ async function RefreshToken(): Promise<ResponseCore> {
 	return response;
 }
 RefreshToken();
+setInterval(RefreshToken, 3600000);
 
 async function Logout() {
 	ClearStorage();

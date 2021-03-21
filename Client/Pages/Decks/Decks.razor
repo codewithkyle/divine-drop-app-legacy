@@ -4,6 +4,11 @@
 @using Client.Models.Globals
 
 @if (Decks.Count > 0){
+    <div class="block w-full text-center pt-2">
+        <a href="/decks/new" class="button -solid -primary -rounded">
+            Create a New Deck
+        </a>
+    </div>
     <div class="deck-browser">
         @for (int i = 0; i < Decks.Count; i++){
             var Deck = Decks[i];
@@ -75,11 +80,7 @@
             </div>
         }
     </div>
-    <div class="block w-full text-center mt-2">
-        <a href="/decks/new" class="button -solid -primary -rounded">
-            Create a Deck
-        </a>
-    </div>
+
 } else {
     <div class="block w-full text-center py-4">
         <p class="font-grey-700 line-normal mb-1">It looks like you don't have any decks.</p>

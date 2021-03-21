@@ -10,23 +10,47 @@ async function GetUsers(page: number = 0, limit: number = 10): Promise<UsersResp
 }
 
 async function SuspendUser(uid: string): Promise<ResponseCore> {
-	const request = await apiRequest(`/v1/admin/ban`, "POST", { uid: uid });
-	const fetchResponse: FetchReponse = await request.json();
-	const response: ResponseCore = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+	let response: ResponseCore;
+	try {
+		const request = await apiRequest(`/v1/admin/ban`, "POST", { uid: uid });
+		const fetchResponse: FetchReponse = await request.json();
+		response = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+		if (response.Success) {
+			UpdateUser({ Uid: uid, Suspended: true });
+		}
+	} catch (e) {
+		response = buildResponseCore(false, 502, "This feature requires a network connection.");
+	}
 	return response;
 }
 
 async function UnsuspendUser(uid: string): Promise<ResponseCore> {
-	const request = await apiRequest(`/v1/admin/unban`, "POST", { uid: uid });
-	const fetchResponse: FetchReponse = await request.json();
-	const response: ResponseCore = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+	let response: ResponseCore;
+	try {
+		const request = await apiRequest(`/v1/admin/unban`, "POST", { uid: uid });
+		const fetchResponse: FetchReponse = await request.json();
+		response = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+		if (response.Success) {
+			UpdateUser({ Uid: uid, Suspended: false });
+		}
+	} catch (e) {
+		response = buildResponseCore(false, 502, "This feature requires a network connection.");
+	}
 	return response;
 }
 
 async function ActivateUser(uid: string): Promise<ResponseCore> {
-	const request = await apiRequest(`/v1/admin/activate`, "POST", { uid: uid });
-	const fetchResponse: FetchReponse = await request.json();
-	const response: ResponseCore = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+	let response: ResponseCore;
+	try {
+		const request = await apiRequest(`/v1/admin/activate`, "POST", { uid: uid });
+		const fetchResponse: FetchReponse = await request.json();
+		response = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+		if (response.Success) {
+			UpdateUser({ Uid: uid, Verified: true });
+		}
+	} catch (e) {
+		response = buildResponseCore(false, 502, "This feature requires a network connection.");
+	}
 	return response;
 }
 
@@ -38,16 +62,32 @@ async function SendActivationEmail(uid: string): Promise<ResponseCore> {
 }
 
 async function RevokeAdmin(uid: string): Promise<ResponseCore> {
-	const request = await apiRequest(`/v1/admin/revoke-admin-status`, "POST", { uid: uid });
-	const fetchResponse: FetchReponse = await request.json();
-	const response: ResponseCore = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+	let response: ResponseCore;
+	try {
+		const request = await apiRequest(`/v1/admin/revoke-admin-status`, "POST", { uid: uid });
+		const fetchResponse: FetchReponse = await request.json();
+		response = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+		if (response.Success) {
+			UpdateUser({ Uid: uid, Admin: false });
+		}
+	} catch (e) {
+		response = buildResponseCore(false, 502, "This feature requires a network connection.");
+	}
 	return response;
 }
 
 async function GrantAdmin(uid: string): Promise<ResponseCore> {
-	const request = await apiRequest(`/v1/admin/grant-admin-status`, "POST", { uid: uid });
-	const fetchResponse: FetchReponse = await request.json();
-	const response: ResponseCore = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+	let response: ResponseCore;
+	try {
+		const request = await apiRequest(`/v1/admin/grant-admin-status`, "POST", { uid: uid });
+		const fetchResponse: FetchReponse = await request.json();
+		response = buildResponseCore(fetchResponse.success, request.status, fetchResponse.error);
+		if (response.Success) {
+			UpdateUser({ Uid: uid, Admin: true });
+		}
+	} catch (e) {
+		response = buildResponseCore(false, 502, "This feature requires a network connection.");
+	}
 	return response;
 }
 
