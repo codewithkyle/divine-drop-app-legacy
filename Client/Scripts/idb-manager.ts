@@ -329,3 +329,9 @@ async function GetDeck(uid: string): Promise<Deck> {
 	const deck = await Get("decks", uid);
 	return deck as Deck;
 }
+
+async function UpdateUser(user: Partial<User>): Promise<boolean> {
+	return new Promise((resolve) => {
+		idbManager.send("update-user", user, resolve);
+	});
+}

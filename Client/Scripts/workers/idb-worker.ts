@@ -63,6 +63,11 @@ class IDBWorker {
 		const origin = e?.origin ?? null;
 		const { type, data, uid } = messageEventData;
 		switch (type) {
+			case "update-user":
+				this.updateUser(data).then((results) => {
+					this.send("response", results, uid, origin);
+				});
+				break;
 			case "count-cards":
 				this.countCards(data).then((results) => {
 					this.send("response", results, uid, origin);
@@ -765,6 +770,21 @@ class IDBWorker {
 	private async countCards(data): Promise<number> {
 		const output = await this.searchCards(data);
 		return output.length;
+	}
+
+	private async updateUser(data): Promise<boolean> {
+		let success = false;
+		try {
+			let user = await this.db.get("users", data.Uid);
+			if (user) {
+				user = Object.assign(user, data);
+				await this.db.put("users", user);
+				success = true;
+			}
+		} catch (e) {
+			console.error(e);
+		}
+		return success;
 	}
 }
 new IDBWorker();
