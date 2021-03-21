@@ -284,6 +284,7 @@ function SearchCards(query: string, page: number, type: string, subtype: string,
 				rarity: rarity,
 				colors: colors,
 				sort: sort,
+				keyword: keyword,
 			},
 			resolve
 		);
@@ -302,6 +303,7 @@ function CountCards(query: string, page: number, type: string, subtype: string, 
 				rarity: rarity,
 				colors: colors,
 				sort: sort,
+				keyword: keyword,
 			},
 			resolve
 		);

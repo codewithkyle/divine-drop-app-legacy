@@ -570,48 +570,15 @@ class IDBWorker {
 		return output.sort();
 	}
 
-	private async searchCards({ query, page, type, subtype, rarity, colors, sort }): Promise<Array<unknown>> {
+	private async searchCards({ query, page, type, subtype, rarity, colors, sort, keyword }): Promise<Array<unknown>> {
 		const rows: Array<any> = await this.db.getAll("cards");
 		let output = [];
 		let filteredOutput = [];
 
 		if (query.length) {
-			output = this.fuzzySearch(rows, query, ["Name", "Text", "FlavorText"]);
+			output = this.fuzzySearch(rows, query, ["Name", "Text"]);
 		} else {
 			output = rows;
-		}
-
-		if (rarity.length) {
-			for (let i = 0; i < output.length; i++) {
-				if (output[i].Rarity === rarity) {
-					filteredOutput.push(output[i]);
-				}
-			}
-			output = filteredOutput;
-			filteredOutput = [];
-		}
-
-		if (type.length) {
-			for (let i = 0; i < output.length; i++) {
-				if (output[i].Type === type) {
-					filteredOutput.push(output[i]);
-				}
-			}
-			output = filteredOutput;
-			filteredOutput = [];
-		}
-
-		if (subtype.length) {
-			for (let i = 0; i < output.length; i++) {
-				for (let k = 0; k < output[i].Subtypes.length; k++) {
-					if (output[i].Subtypes[k] === subtype) {
-						filteredOutput.push(output[i]);
-						break;
-					}
-				}
-			}
-			output = filteredOutput;
-			filteredOutput = [];
 		}
 
 		if (colors.length) {
@@ -662,6 +629,52 @@ class IDBWorker {
 				}
 				if (!containsExtraColor) {
 					filteredOutput.push(output[i]);
+				}
+			}
+			output = filteredOutput;
+			filteredOutput = [];
+		}
+
+		if (rarity.length) {
+			for (let i = 0; i < output.length; i++) {
+				if (output[i].Rarity === rarity) {
+					filteredOutput.push(output[i]);
+				}
+			}
+			output = filteredOutput;
+			filteredOutput = [];
+		}
+
+		if (type.length) {
+			for (let i = 0; i < output.length; i++) {
+				if (output[i].Type === type) {
+					filteredOutput.push(output[i]);
+				}
+			}
+			output = filteredOutput;
+			filteredOutput = [];
+		}
+
+		if (subtype.length) {
+			for (let i = 0; i < output.length; i++) {
+				for (let k = 0; k < output[i].Subtypes.length; k++) {
+					if (output[i].Subtypes[k].indexOf(subtype) !== -1) {
+						filteredOutput.push(output[i]);
+						break;
+					}
+				}
+			}
+			output = filteredOutput;
+			filteredOutput = [];
+		}
+
+		if (keyword.length) {
+			for (let i = 0; i < output.length; i++) {
+				for (let k = 0; k < output[i].Keywords.length; k++) {
+					if (output[i].Keywords[k] === keyword) {
+						filteredOutput.push(output[i]);
+						break;
+					}
 				}
 			}
 			output = filteredOutput;
