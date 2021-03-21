@@ -20,7 +20,7 @@
                     class="@(RegistrationForm.IsSubmitting ? "submitting" : "")">
                     <DataAnnotationsValidator />
                     <div class="input">
-                        <label for="Name">Name</label>
+                        <label for="Name">Username</label>
                         <InputText id="Name" @bind-Value="@RegistrationForm.Name" />
                         <ValidationMessage For="@(() => RegistrationForm.Name)" />
                     </div>

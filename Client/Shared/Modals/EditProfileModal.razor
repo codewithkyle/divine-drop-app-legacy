@@ -62,7 +62,7 @@
 		<EditForm Model="@ProfileForm" OnValidSubmit="@UpdateProfile" grid="columns 1 gap-1.5" class="@(ProfileForm.IsSubmitting ? "submitting" : "")">
 			<DataAnnotationsValidator />
 			<div class="input">
-				<label for="name">Name</label>
+				<label for="name">Username</label>
 				<InputText type="text" id="name" @bind-Value="@ProfileForm.Name" />
 				<ValidationMessage For="@(() => ProfileForm.Name)" />
 			</div>
