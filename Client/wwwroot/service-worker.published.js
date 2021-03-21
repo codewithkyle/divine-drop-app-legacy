@@ -150,13 +150,44 @@ function reloadClients(force = false){
 	});
 }
 
+let db = null;
+
 function clearCache(){
-    caches.delete(imageCacheName);
-    caches.delete(apiCacheName);
-    indexedDB.deleteDatabase("application");
+    return new Promise(async (resolve) => {
+        caches.delete(imageCacheName);
+        caches.delete(apiCacheName);
+        indexedDB.deleteDatabase("service-worker");
+        const request = await fetch(`${self.origin}/schema.json`);
+        const response = await request.json();
+        const db = await idb.openDB("application", response.version, {
+            blocked() {
+                indexedDB.deleteDatabase("applicaiton");
+                resolve();
+            },
+            blocking() {
+                indexedDB.deleteDatabase("applicaiton");
+                resolve();
+            },
+        });
+        const tables = response.tables;
+        for (let t = 0; t < tables.length; t++){
+            const name = tables[t].name;
+            const key = tables[t]?.keyPath ?? "id";
+            if (typeof tables[t]?.preserve === "undefined" || tables[t]?.preserve !== true){
+                const rows = await db.getAll(name);
+                for (const row of rows){
+                    await db.delete(name, row[key]);
+                }
+            }
+        }
+        const ingestRows = await db.getAll("ingest-tracker");
+        for (const row of ingestRows){
+            await db.delete("ingest-tracker", row["route"]);
+        }
+        resolve();
+    });
 }
 
-let db = null;
 function queue(url, method, payload){
     const data = {
         uid: Date.now(),
@@ -247,7 +278,7 @@ self.onmessage = async (event) => {
 			reloadClients();
 			break;
 		case "logout":
-            clearCache();
+            await clearCache();
 			reloadClients();
 			break;
         default:

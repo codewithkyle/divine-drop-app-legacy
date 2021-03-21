@@ -29,6 +29,7 @@
 		{
 			"name": "cards",
 			"keyPath": "UID",
+			"preserve": true,
 			"columns": [
 				{
 					"key": "UID",

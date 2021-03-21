@@ -306,7 +306,7 @@ class IDBWorker {
 		const incomingETag = await this.fetchIngestEtag(route);
 		const currentTotal = await (await this.db.getAll(table)).length;
 
-		// No network connection -- continue anyways and brace for the jank
+		// No network connection
 		if (incomingETag === null) {
 			return { ingestRequired: false, expectedTotal: 0 };
 		}
