@@ -4,10 +4,17 @@
 @using Client.Models.Globals
 
 <data-table class="w-full max-w-laptop mx-auto">
-    <div class="w-full mb-1">
-		<div class="input">
+    <div class="w-full mb-1" flex="items-center row nowrap">
+		<div class="input" style="flex: 1;">
 			<input type="text" @bind-value="Query" @bind-value:event="oninput" @onkeyup="HandleKeyUp" placeholder="Search" />
 		</div>
+		<button @onclick="RefreshUI" class="button -tall -outline -grey -icon-only -rounded ml-1">
+			<i class="icon">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+				</svg>
+			</i>
+		</button>
 	</div>
 	<table class="table user-table w-laptop">
 		<thead>
