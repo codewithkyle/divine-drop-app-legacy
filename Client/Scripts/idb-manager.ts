@@ -94,7 +94,7 @@ class IDBManager {
 }
 const idbManager = new IDBManager();
 
-function Ingest(route: string, table: string): Promise<boolean> {
+function Ingest(route: string, table: string): Promise<void> {
 	return new Promise((resolve) => {
 		new Promise((streamStartedCallback) => {
 			idbManager.send(
@@ -105,13 +105,26 @@ function Ingest(route: string, table: string): Promise<boolean> {
 				},
 				streamStartedCallback
 			);
-		})
-			.then((data) => {
-				resolve(true);
-			})
-			.catch(() => {
-				resolve(false);
-			});
+		}).then((data) => {
+			if (data !== null) {
+				// @ts-ignore
+				const { workerUid, total } = data;
+				EventBus.create(workerUid);
+				Alert("warning", "Stale Data Detected", "Some of the data on this page could be out of sync with the server. Attempting to background sync the dataset.");
+				const inbox = (data) => {
+					switch (data) {
+						case "unpack-finished":
+							Alert("success", "Background Sync Complete", "Your local dataset has been successfully synced with the server.");
+							EventBus.destroy(workerUid);
+							break;
+						default:
+							break;
+					}
+				};
+				EventBus.subscribe(workerUid, inbox.bind(this));
+			}
+			resolve();
+		});
 	});
 }
 

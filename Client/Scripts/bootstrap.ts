@@ -57,43 +57,26 @@ function LoadFramework() {
 	document.head.appendChild(framework);
 }
 
-function LoadCards(): Promise<void> {
-	return new Promise((resolve) => {
-		IngestTracked("/v1/ingest/cards", "cards").then((data) => {
-			if (data === null) {
-				resolve();
-				return;
-			}
-			const { workerUid, total } = data;
-			EventBus.create(workerUid);
-			loadingText.innerText = `Downloading ${total} cards.`;
-			let download = 0;
-			let unpack = 0;
-			let finishedDownloading = false;
-			const inbox = (data) => {
-				switch (data) {
-					case "download-tick":
-						download++;
-						loadingText.innerText = `Download card ${download} of ${total}`;
-						break;
-					case "unpack-tick":
-						unpack++;
-						if (finishedDownloading) {
-							loadingText.innerText = `Unpacking card ${unpack} of ${total}`;
-						}
-						break;
-					case "download-finished":
-						finishedDownloading = true;
-						break;
-					case "unpack-finished":
-						EventBus.destroy(workerUid);
-						resolve();
-						break;
-					default:
-						break;
-				}
-			};
-			EventBus.subscribe(workerUid, inbox.bind(this));
+function LoadCards() {
+	IngestTracked("/v1/ingest/cards", "cards").then((data) => {
+		if (data === null) {
+			return;
+		}
+		const { workerUid, total } = data;
+		EventBus.create(workerUid);
+		tracker({
+			total: total,
+			count: 0,
+			ticket: workerUid,
+			label: "Downloading cards",
+			tickType: "download",
+		});
+		tracker({
+			total: total,
+			count: 0,
+			ticket: workerUid,
+			label: "Unpacking cards",
+			tickType: "unpack",
 		});
 	});
 }
@@ -138,7 +121,6 @@ async function Bootstrap() {
 		}
 		await LoadStylesheets();
 		await LoadScripts();
-		await LoadCards();
 		LoadFramework();
 	}
 }

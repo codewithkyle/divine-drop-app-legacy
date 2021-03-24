@@ -19,6 +19,32 @@
 		transform: translateX(0);
 	}
 
+	.card-container {
+		display: flex;
+		flex-flow: column wrap;
+
+		@media (min-width: 500px) {
+			flex-flow: row nowrap;
+		}
+
+		.card {
+			width: 200px;
+			height: 283px;
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			margin: 0 auto 1rem;
+
+			@media (min-width: 500px) {
+				margin: auto;
+			}
+
+			img {
+				transition: all 150ms var(--ease-in-out);
+			}
+		}
+	}
+
 	.deck-name {
 		display: block;
 		height: 36px;
@@ -105,9 +131,5 @@
 			height: 24px;
 			position: absolute;
 		}
-	}
-
-	img {
-		min-height: 283px;
 	}
 }
