@@ -188,3 +188,16 @@
 		}
 	}
 }
+.skeleton-deck-grid {
+	display: grid;
+	gap: calc(2rem + 66.66px);
+	grid-template-columns: minmax(0px, 1fr);
+	max-width: calc(300px * 4 + 6rem);
+	width: 100%;
+	margin: 0 auto;
+	padding: 4rem 0;
+
+	@media (min-width: 768px) {
+		grid-template-columns: repeat(auto-fill, 250px);
+	}
+}
