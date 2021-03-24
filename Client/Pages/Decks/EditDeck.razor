@@ -238,7 +238,7 @@
                             Subtypes += Card.Subtypes[t] + " ";
                         }
                         <div class="card radius-0.5 border-1 border-solid border-grey-400 p-1 shadow-sm">
-                            <div class="inline-block relative ar-12:17 bg-grey-100 shim" style="width:200px;">
+                            <div class="inline-block relative ar-12:17 bg-grey-100 shim" style="width:250px;">
                                 <i class="spinning-icon font-grey-700">
                                     <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 512 512">
@@ -255,10 +255,23 @@
                                 <img crossorigin="use-credentials" class="card-image shadow-sm" draggable="false" src="@AppSettings.API/v1/image/card/@Cards[i].UID" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
                             </div>
                             <div class="w-full" style="flex: 1;">
-                                <h2 class="block mb-0.25 line-normal font-grey-800 font-bold font-lg">@Card.Name</h2>
+                                <h2 class="mb-0.25 line-normal font-grey-800 font-bold font-lg w-full" flex="items-center row wrap">
+                                    @Card.Name 
+                                    @if(Card.ManaCosts.Length > 0){
+                                        <span card-text="raw" class="inline-block ml-0.5 pb-0.25">@Card.ManaCosts[0]</span>
+                                    }
+                                </h2>
                                 <h3 class="block line-normal font-grey-800 font-sm font-bold">@Card.Type @(String.IsNullOrEmpty(Subtypes) ? "" : "- " + Subtypes)</h3>
+                                @if (Card.Vitality.Length > 0){
+                                    <p class="block w-full line-normal mt-0.5 font-grey-800 font-sm">
+                                        <span class="font-bold">Power:</span> @Card.Vitality[0].Power
+                                    </p>
+                                    <p class="block w-full line-normal mt-0.5 font-grey-800 font-sm">
+                                        <span class="font-bold">Toughness:</span> @Card.Vitality[0].Toughness
+                                    </p>
+                                }
                                 @if(!String.IsNullOrEmpty(Card.Text)){
-                                    <card-text class="block w-full line-normal font-grey-700 font-sm mt-0.5">@Card.Text</card-text>
+                                    <p card-text="raw" class="block w-full line-normal font-grey-700 font-sm mt-0.5">@Card.Text</p>
                                 }
                                 @if(!String.IsNullOrEmpty(Card.FlavorText)){
                                     <p class="block w-full line-normal mt-0.5 font-grey-700 font-sm font-style-italic">@Card.FlavorText</p>

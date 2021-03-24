@@ -2,9 +2,9 @@
  * @see https://scryfall.com/docs/api/colors
  */
 function updateCardText() {
-	const textElements = document.body.querySelectorAll("card-text:not([updated])");
+	const textElements = document.body.querySelectorAll(`[card-text="raw"]`);
 	textElements.forEach((el: HTMLElement) => {
-		el.setAttribute("updated", "true");
+		el.setAttribute("card-text", "rendered");
 		const raw = el.innerHTML;
 		const updated = raw
 			.replace(
