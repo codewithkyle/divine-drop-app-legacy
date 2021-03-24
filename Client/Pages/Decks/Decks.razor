@@ -18,7 +18,7 @@
                         <span class="text-center inline-block font-grey-700 font-xs line-normal">This deck doesn't have any cards.</span>
                     } else {
                         if (Deck.Commander != null){
-                            <img crossorigin="use-credentials" width="200" loading="lazy" draggable="false" src="@AppSettings.API/v1/image/card/@Deck.Commander">
+                            <img crossorigin="use-credentials" width="200" loading="lazy" draggable="false" src="@AppSettings.API/v1/image/card/@Deck.Commander" style="opacity: 0;transition:opacity 150ms var(--ease-in-out);" onload="this.style.opacity = '1';">
                         }
                         int renderedCards = 0;
                         for (int c = 0; c < Deck.Cards.Count; c++){
@@ -26,7 +26,7 @@
                                 if (renderedCards == 2 && Deck.Commander != null || renderedCards == 3){
                                     break;
                                 } else {
-                                    <img crossorigin="use-credentials" width="200" loading="lazy" draggable="false" src="@AppSettings.API/v1/image/card/@Deck.Cards[c].UID">
+                                    <img crossorigin="use-credentials" width="200" loading="lazy" draggable="false" src="@AppSettings.API/v1/image/card/@Deck.Cards[c].UID" style="opacity: 0;transition:opacity 150ms var(--ease-in-out);" onload="this.style.opacity = '1';">
                                 }
                                 renderedCards++;
                             }

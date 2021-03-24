@@ -252,7 +252,7 @@
                                         </g>
                                     </svg>
                                 </i>
-                                <img crossorigin="use-credentials" class="card-image shadow-sm" draggable="false" src="@AppSettings.API/v1/image/card/@Cards[i].UID" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
+                                <img crossorigin="use-credentials" class="card-image shadow-sm" draggable="false" src="@AppSettings.API/v1/image/card/@Cards[i].UID" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;transition:opacity 150ms var(--ease-in-out);" onload="this.style.opacity = '1';">
                             </div>
                             <div class="w-full" style="flex: 1;">
                                 <h2 class="mb-0.25 line-normal font-grey-800 font-bold font-lg w-full" flex="items-center row wrap">
@@ -302,7 +302,7 @@
                                     </g>
                                 </svg>
                             </i>
-                            <img crossorigin="use-credentials" draggable="false" src="@AppSettings.API/v1/image/card/@Cards[i].UID" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
+                            <img crossorigin="use-credentials" draggable="false" src="@AppSettings.API/v1/image/card/@Cards[i].UID" alt="@Cards[i].Name" width="480" loading="lazy" style="opacity: 0;transition:opacity 150ms var(--ease-in-out);" onload="this.style.opacity = '1';">
                         </div>
                         break;
                 }
@@ -332,8 +332,23 @@
         </div>
         for (int i = 0; i < Deck.Cards.Count; i++){
             var Card = Deck.Cards[i];
-            <div class="w-full px-1 mb-1" flex="row nowrap">
-                <img crossorigin="use-credentials" draggable="false" class="shadow-sm mr-1" src="@AppSettings.API/v1/image/card/@Card.UID" width="200" loading="lazy">
+            <div class="w-full px-1 mb-1 card-container">
+                <div class="card">
+                    <i class="spinning-icon font-grey-700">
+                        <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512">
+                            <g class="fa-group">
+                                <path class="fa-secondary" fill="currentColor"
+                                    d="M478.71 364.58zm-22 6.11l-27.83-15.9a15.92 15.92 0 0 1-6.94-19.2A184 184 0 1 1 256 72c5.89 0 11.71.29 17.46.83-.74-.07-1.48-.15-2.23-.21-8.49-.69-15.23-7.31-15.23-15.83v-32a16 16 0 0 1 15.34-16C266.24 8.46 261.18 8 256 8 119 8 8 119 8 256s111 248 248 248c98 0 182.42-56.95 222.71-139.42-4.13 7.86-14.23 10.55-22 6.11z"
+                                    opacity="0.4"></path>
+                                <path class="fa-primary" fill="currentColor"
+                                    d="M271.23 72.62c-8.49-.69-15.23-7.31-15.23-15.83V24.73c0-9.11 7.67-16.78 16.77-16.17C401.92 17.18 504 124.67 504 256a246 246 0 0 1-25 108.24c-4 8.17-14.37 11-22.26 6.45l-27.84-15.9c-7.41-4.23-9.83-13.35-6.2-21.07A182.53 182.53 0 0 0 440 256c0-96.49-74.27-175.63-168.77-183.38z">
+                                </path>
+                            </g>
+                        </svg>
+                    </i>
+                    <img crossorigin="use-credentials" draggable="false" class="shadow-sm mr-1" src="@AppSettings.API/v1/image/card/@Card.UID" width="200" loading="lazy" style="opacity: 0;" onload="this.style.opacity = '1';">
+                </div>
                 <div class="w-full" style="flex: 1;">
                     <div class="input mb-0.5">
                         <label for="@Card.UID"># of Cards</label>
