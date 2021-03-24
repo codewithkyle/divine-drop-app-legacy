@@ -25,6 +25,7 @@ namespace Client.Shared
                 CurrentUser.SetCurrentUser(Profile.User);
 				CanRender = true;
 				StateHasChanged();
+				await JSRuntime.InvokeVoidAsync("LoadCards");
             }
 			else
 			{

@@ -173,6 +173,69 @@ class ToastComponent extends HTMLElement {
     }
 }
 
+class IngestTracker extends HTMLElement{
+    constructor(settings){
+        super();
+        this.model = settings;
+        this.progressEl = null;
+        this.el = this.render();
+        this.inboxId = EventBus.subscribe(settings.ticket, this.inbox.bind(this));
+    }
+
+    inbox(data){
+        switch (this.model.tickType){
+            case "download":
+                switch(data){
+                    case "download-tick":
+                        this.model.count++;
+                        this.progressEl.innerText = `${Math.floor(this.model.count / this.model.total * 100)}%`;
+                        break;
+                    case "download-finished":
+                        this.remove();
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "unpack":
+                switch(data){
+                    case "unpack-tick":
+                        this.model.count++;
+                        this.progressEl.innerText = `${Math.floor(this.model.count / this.model.total * 100)}%`;
+                        break;
+                    case "unpack-finished":
+                        this.remove();
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    render(){
+        this.className = "bg-white p-1 radius-0.5 border-1 border-solid border-grey-500 shadow-sm text-center line-normal mx-auto mt-1 mb-0 w-full";
+        this.style.cssText = "display: flex;align-items: center;opacity: 0;transition: all 150ms var(--ease-in-out);animation: grow 300ms forwards var(--ease-in);";
+        this.innerHTML = `
+            <i class="font-grey-700 spin" style="width: 36px;height: 36px;" flex="items-center justify-center">
+                <svg class="spinner" style="width: 24px;height: 24px;" aria-hidden="true" focusable="false" data-prefix="fad" data-icon="spinner-third" class="svg-inline--fa fa-spinner-third fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g class="fa-group"><path class="fa-secondary" fill="currentColor" d="M478.71 364.58zm-22 6.11l-27.83-15.9a15.92 15.92 0 0 1-6.94-19.2A184 184 0 1 1 256 72c5.89 0 11.71.29 17.46.83-.74-.07-1.48-.15-2.23-.21-8.49-.69-15.23-7.31-15.23-15.83v-32a16 16 0 0 1 15.34-16C266.24 8.46 261.18 8 256 8 119 8 8 119 8 256s111 248 248 248c98 0 182.42-56.95 222.71-139.42-4.13 7.86-14.23 10.55-22 6.11z" opacity="0.4"></path><path class="fa-primary" fill="currentColor" d="M271.23 72.62c-8.49-.69-15.23-7.31-15.23-15.83V24.73c0-9.11 7.67-16.78 16.77-16.17C401.92 17.18 504 124.67 504 256a246 246 0 0 1-25 108.24c-4 8.17-14.37 11-22.26 6.45l-27.84-15.9c-7.41-4.23-9.83-13.35-6.2-21.07A182.53 182.53 0 0 0 440 256c0-96.49-74.27-175.63-168.77-183.38z"></path></g></svg>
+            </i>
+            <div class="pb-0.125">
+                <span class="inline-block ml-0.5 mr-0.25">${this.model.label}</span>
+                (<span class="js-download-progress inline-block font-success-700">0%</span>)
+            </div>
+        `;
+        this.progressEl = this.querySelector(".js-download-progress");
+        return this;
+    }
+
+    disconnectedCallback(){
+        EventBus.unsubscribe(this.inboxId, this.model.ticket);
+    }
+}
+
 class Notifier {
     constructor() {
         this.snackbarQueue = [];
@@ -433,10 +496,21 @@ class Notifier {
         }
         shell.appendChild(toast.el);
     }
+    ingest(settings = null){
+        const tracker = new IngestTracker(settings);
+        let shell = document.body.querySelector("toaster-component") || null;
+        if (!shell) {
+            shell = document.createElement("toaster-component");
+            document.body.appendChild(shell);
+        }
+        shell.appendChild(tracker.el);
+    }
 }
 
 const globalNotifier = new Notifier();
 const snackbar = globalNotifier.snackbar.bind(globalNotifier);
 const toast = globalNotifier.toast.bind(globalNotifier);
+const tracker = globalNotifier.ingest.bind(globalNotifier);
 customElements.define("snackbar-component", SnackbarComponent);
 customElements.define("toast-component", ToastComponent);
+customElements.define("ingest-tracker", IngestTracker);
