@@ -373,5 +373,18 @@
                 </div>
             </div>
         }
+    } else {
+        <div class="w-full p-1" grid="columns 1 gap-1">
+            <div class="skeleton w-full -heading"></div>
+            @for (int i = 0; i < 6; i++){
+                <div class="w-full" flex="row nowrap">
+                    <div class="skeleton w-1/2 -image ar-12:17 pr-1"></div>
+                    <div class="w-1/2 pl-1">
+                        <div class="skeleton w-full -heading mb-0.5"></div>
+                        <div class="skeleton w-3/4 -copy"></div>
+                    </div>
+                </div>
+            }
+        </div>
     }
 </aside>
